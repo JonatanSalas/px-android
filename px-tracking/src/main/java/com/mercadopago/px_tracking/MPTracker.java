@@ -204,6 +204,15 @@ public class MPTracker {
         }
     }
 
+    /**
+     * This method tracks a list of events in one request
+     *
+     * @param clientId Id that identifies the client that is using the SDK
+     * @param appInformation Info about this application and SDK integration
+     * @param deviceInfo Info about the device that is using the app
+     * @param events List of events to track
+     * @param context Application context
+     */
     public void trackEventList(String clientId, AppInformation appInformation, DeviceInfo deviceInfo, List<Event> events, Context context) {
         EventTrackIntent eventTrackIntent = new EventTrackIntent(clientId, appInformation, deviceInfo, events);
         MPTrackingService.getInstance().trackEvent(eventTrackIntent, context);
@@ -225,7 +234,6 @@ public class MPTracker {
         Map<String, String> eventMap = new HashMap<>();
 
         String eventJson = JsonConverter.getInstance().toJson(actionEvent);
-
         Type type = new TypeToken<Map<String, String>>() {}.getType();
         Map<String, String> actionEventDataMap = new Gson().fromJson(eventJson, type);
 

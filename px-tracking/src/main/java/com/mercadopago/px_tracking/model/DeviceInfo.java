@@ -11,11 +11,11 @@ public class DeviceInfo {
     private String systemVersion;
     private String resolution;
 
-    public DeviceInfo(String model, String os, String systemVersion, String resolution) {
-        this.model = model;
-        this.os = os;
-        this.systemVersion = systemVersion;
-        this.resolution = resolution;
+    private DeviceInfo(Builder builder) {
+        this.model = builder.model;
+        this.os = builder.os;
+        this.systemVersion = builder.systemVersion;
+        this.resolution = builder.resolution;
     }
 
     public String getModel() {
@@ -34,19 +34,35 @@ public class DeviceInfo {
         return resolution;
     }
 
-    public void setModel(String model) {
-        this.model = model;
-    }
+    public static class Builder {
 
-    public void setOs(String os) {
-        this.os = os;
-    }
+        private String model;
+        private String os;
+        private String systemVersion;
+        private String resolution;
 
-    public void setSystemVersion(String systemVersion) {
-        this.systemVersion = systemVersion;
-    }
+        public Builder setModel(String model) {
+            this.model = model;
+            return this;
+        }
 
-    public void setResolution(String resolution) {
-        this.resolution = resolution;
+        public Builder setOS(String os) {
+            this.os = os;
+            return this;
+        }
+
+        public Builder setSystemVersion(String systemVersion) {
+            this.systemVersion = systemVersion;
+            return this;
+        }
+
+        public Builder setResolution(String resolution) {
+            this.resolution = resolution;
+            return this;
+        }
+
+        public DeviceInfo build() {
+            return new DeviceInfo(this);
+        }
     }
 }

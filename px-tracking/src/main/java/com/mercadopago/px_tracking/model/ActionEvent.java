@@ -8,64 +8,90 @@ import java.sql.Timestamp;
 
 public class ActionEvent extends Event {
 
-    private @ScreenId String screenId;
-    private @ScreenName String screenName;
+    private String screenId;
+    private String screenName;
     private String action;
     private String category;
     private String label;
     private String value;
 
-    public ActionEvent() {
+    private ActionEvent(Builder builder) {
         super();
         setType(TYPE_ACTION);
         setTimestamp(new Timestamp(System.currentTimeMillis()));
+        this.screenId = builder.screenId;
+        this.screenName = builder.screenName;
+        this.action = builder.action;
+        this.category = builder.category;
+        this.label = builder.label;
+        this.value = builder.value;
     }
 
-    public @ScreenId String getScreenId() {
+    public String getScreenId() {
         return screenId;
     }
 
-    public void setScreenId(@ScreenId String screenId) {
-        this.screenId = screenId;
-    }
-
-    public @ScreenName String getScreenName() {
+    public String getScreenName() {
         return screenName;
-    }
-
-    public void setScreenName(@ScreenName String screenName) {
-        this.screenName = screenName;
     }
 
     public String getAction() {
         return action;
     }
 
-    public void setAction(String action) {
-        this.action = action;
-    }
-
     public String getCategory() {
         return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     public String getLabel() {
         return label;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
     public String getValue() {
         return value;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public static class Builder {
+
+        private String screenId;
+        private String screenName;
+        private String action;
+        private String category;
+        private String label;
+        private String value;
+
+        public Builder setScreenId(String screenId) {
+            this.screenId = screenId;
+            return this;
+        }
+
+        public Builder setScreenName(String screenName) {
+            this.screenName = screenName;
+            return this;
+        }
+
+        public Builder setAction(String action) {
+            this.action = action;
+            return this;
+        }
+
+        public Builder setCategory(String category) {
+            this.category = category;
+            return this;
+        }
+
+        public Builder setLabel(String label) {
+            this.label = label;
+            return this;
+        }
+
+        public Builder setValue(String value) {
+            this.value = value;
+            return this;
+        }
+
+        public ActionEvent build() {
+            return new ActionEvent(this);
+        }
     }
 }

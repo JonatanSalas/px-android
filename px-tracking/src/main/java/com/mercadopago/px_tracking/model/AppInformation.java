@@ -10,33 +10,47 @@ public class AppInformation {
     private String checkoutVersion;
     private String platform;
 
-    public AppInformation(String publicKey, String checkoutVersion, String platform) {
-        this.publicKey = publicKey;
-        this.checkoutVersion = checkoutVersion;
-        this.platform = platform;
+    private AppInformation(Builder builder) {
+        this.publicKey = builder.publicKey;
+        this.checkoutVersion = builder.checkoutVersion;
+        this.platform = builder.platform;
     }
 
     public String getPublicKey() {
         return publicKey;
     }
 
-    public void setPublicKey(String publicKey) {
-        this.publicKey = publicKey;
-    }
-
     public String getCheckoutVersion() {
         return checkoutVersion;
-    }
-
-    public void setCheckoutVersion(String checkoutVersion) {
-        this.checkoutVersion = checkoutVersion;
     }
 
     public String getPlatform() {
         return platform;
     }
 
-    public void setPlatform(String platform) {
-        this.platform = platform;
+    public static class Builder {
+
+        private String publicKey;
+        private String checkoutVersion;
+        private String platform;
+
+        public Builder setPublicKey(String publicKey) {
+            this.publicKey = publicKey;
+            return this;
+        }
+
+        public Builder setCheckoutVersion(String checkoutVersion) {
+            this.checkoutVersion = checkoutVersion;
+            return this;
+        }
+
+        public Builder setPlatform(String platform) {
+            this.platform = platform;
+            return this;
+        }
+
+        public AppInformation build() {
+            return new AppInformation(this);
+        }
     }
 }

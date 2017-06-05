@@ -8,28 +8,42 @@ import java.sql.Timestamp;
 
 public class ScreenViewEvent extends Event {
 
-    private @ScreenId String screenId;
-    private @ScreenName String screenName;
+    private String screenId;
+    private String screenName;
 
-    public ScreenViewEvent() {
+    private ScreenViewEvent(Builder builder) {
         super();
         setType(TYPE_SCREEN_VIEW);
         setTimestamp(new Timestamp(System.currentTimeMillis()));
+        this.screenId = builder.screenId;
+        this.screenName = builder.screenName;
     }
 
-    public @ScreenName String getScreenName() {
+    public String getScreenName() {
         return screenName;
     }
 
-    public void setScreenName(@ScreenName String screenName) {
-        this.screenName = screenName;
-    }
-
-    public @ScreenId String getScreenId() {
+    public String getScreenId() {
         return screenId;
     }
 
-    public void setScreenId(@ScreenId String screenId) {
-        this.screenId = screenId;
+    public static class Builder {
+
+        private String screenId;
+        private String screenName;
+
+        public Builder setScreenId(String screenId) {
+            this.screenId = screenId;
+            return this;
+        }
+
+        public Builder setScreenName(String screenName) {
+            this.screenName = screenName;
+            return this;
+        }
+
+        public ScreenViewEvent build() {
+            return new ScreenViewEvent(this);
+        }
     }
 }
