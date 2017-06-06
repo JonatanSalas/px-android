@@ -217,6 +217,10 @@ public class Fingerprint {
         return ram;
     }
 
+    public static float getDeviceScreenDensity(Context context) {
+        return context.getResources().getDisplayMetrics().density;
+    }
+
     public long getDiskSpace() {
         StatFs statFs = new StatFs(Environment.getDataDirectory().getPath());
         return ((long) statFs.getBlockSize() * (long) statFs.getBlockCount()) / 1048576;
@@ -397,7 +401,7 @@ public class Fingerprint {
         }
 
         public float getScreenDensity() {
-            return mContext.getResources().getDisplayMetrics().density;
+            return getDeviceScreenDensity(mContext);
         }
     }
 

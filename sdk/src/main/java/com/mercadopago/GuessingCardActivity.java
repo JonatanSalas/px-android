@@ -418,19 +418,6 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
 
     @Override
     public void onValidStart() {
-        //TODO testing tracker
-        MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
-                .setContext(getApplicationContext())
-                .setCheckoutVersion(BuildConfig.VERSION_NAME)
-                .setPublicKey(getPresenter().getPublicKey())
-                .build();
-        ScreenViewEvent event = new ScreenViewEvent.Builder()
-                .setScreenId(TrackingUtil.SCREEN_ID_CARD_FORM)
-                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM)
-                .build();
-        mpTrackingProvider.addTrackEvent(event);
-
-
         mPresenter.initializeMercadoPago();
         mPresenter.initializeCardToken();
         initializeViews();

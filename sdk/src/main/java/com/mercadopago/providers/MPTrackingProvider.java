@@ -57,7 +57,8 @@ public class MPTrackingProvider {
                 .setModel(Build.MODEL)
                 .setOS("android")
                 .setSystemVersion(Fingerprint.getDeviceSystemVersion())
-                .setResolution(Fingerprint.getDeviceResolution(this.context))
+                .setScreenSize(Fingerprint.getDeviceResolution(this.context))
+                .setResolution(String.valueOf(Fingerprint.getDeviceScreenDensity(this.context)))
                 .build();
     }
 

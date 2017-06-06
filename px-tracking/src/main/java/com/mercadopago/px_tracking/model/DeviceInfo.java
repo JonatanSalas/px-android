@@ -10,12 +10,14 @@ public class DeviceInfo {
     private String os;
     private String systemVersion;
     private String resolution;
+    private String screenSize;
 
     private DeviceInfo(Builder builder) {
         this.model = builder.model;
         this.os = builder.os;
         this.systemVersion = builder.systemVersion;
         this.resolution = builder.resolution;
+        this.screenSize = builder.screenSize;
     }
 
     public String getModel() {
@@ -34,12 +36,17 @@ public class DeviceInfo {
         return resolution;
     }
 
+    public String getScreenSize() {
+        return screenSize;
+    }
+
     public static class Builder {
 
         private String model;
         private String os;
         private String systemVersion;
         private String resolution;
+        private String screenSize;
 
         public Builder setModel(String model) {
             this.model = model;
@@ -58,6 +65,11 @@ public class DeviceInfo {
 
         public Builder setResolution(String resolution) {
             this.resolution = resolution;
+            return this;
+        }
+
+        public Builder setScreenSize(String screenSize) {
+            this.screenSize = screenSize;
             return this;
         }
 
