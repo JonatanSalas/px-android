@@ -26,9 +26,9 @@ import com.mercadopago.model.PaymentResult;
 import com.mercadopago.model.PaymentResultAction;
 import com.mercadopago.model.ReviewSubscriber;
 import com.mercadopago.model.Reviewable;
-import com.mercadopago.mptracker.MPTracker;
 import com.mercadopago.observers.TimerObserver;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
+import com.mercadopago.px_tracking.MPTracker;
 import com.mercadopago.util.ColorsUtil;
 import com.mercadopago.util.ErrorUtil;
 import com.mercadopago.util.JsonUtil;
@@ -97,7 +97,7 @@ public class PendingActivity extends MercadoPagoBaseActivity implements TimerObs
     }
 
     protected void setContentView() {
-        MPTracker.getInstance().trackScreen("RESULT", "2", mMerchantPublicKey, BuildConfig.VERSION_NAME, this);
+        MPTracker.getInstance().trackScreen("RESULT", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, this);
         setContentView(R.layout.mpsdk_activity_pending);
     }
 
@@ -341,7 +341,7 @@ public class PendingActivity extends MercadoPagoBaseActivity implements TimerObs
 
     @Override
     public void onBackPressed() {
-        MPTracker.getInstance().trackEvent("PENDING", "BACK_PRESSED", "2", mMerchantPublicKey, BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackEvent("PENDING", "BACK_PRESSED", "", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, this);
 
         if (mBackPressedOnce) {
             finishWithOkResult();
@@ -353,7 +353,7 @@ public class PendingActivity extends MercadoPagoBaseActivity implements TimerObs
     }
 
     public void onClickPendingOptionButton() {
-        MPTracker.getInstance().trackEvent("PENDING", "SELECT_OTHER_PAYMENT_METHOD", "2", mMerchantPublicKey, BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackEvent("PENDING", "SELECT_OTHER_PAYMENT_METHOD", "", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, this);
 
         Intent returnIntent = new Intent();
         returnIntent.putExtra("nextAction", PaymentResultAction.SELECT_OTHER_PAYMENT_METHOD);

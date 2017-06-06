@@ -7,6 +7,7 @@ import com.mercadopago.px_tracking.model.EventTrackIntent;
 import com.mercadopago.px_tracking.model.PaymentIntent;
 import com.mercadopago.px_tracking.model.TrackingIntent;
 import com.mercadopago.px_tracking.utils.HttpClientUtil;
+import com.mercadopago.px_tracking.utils.JsonConverter;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,12 +21,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MPTrackingService {
 
-    private static final String API_BETA_VERSION = "beta";
-    private static final String API_PROD_VERSION = "v1";
     private static final String BASE_URL = "https://api.mercadopago.com/";
     private static MPTrackingService mTrackingService;
-
-    private String mTrackPath = API_PROD_VERSION;
 
     protected MPTrackingService() {
 
@@ -38,14 +35,10 @@ public class MPTrackingService {
         return mTrackingService;
     }
 
-    public void enableTestMode(){
-        mTrackPath = API_BETA_VERSION;
-    }
-
     private Retrofit getRetrofit(Context context) {
         return new Retrofit.Builder()
                 .client(HttpClientUtil.getClient(context))
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(JsonConverter.getInstance().getGson()))
                 .baseUrl(BASE_URL)
                 .build();
     }
@@ -55,7 +48,7 @@ public class MPTrackingService {
         Retrofit retrofit = getRetrofit(context);
         TrackingService service = retrofit.create(TrackingService.class);
 
-        Call<Void> call = service.trackToken(trackingIntent, mTrackPath);
+        Call<Void> call = service.trackToken(trackingIntent);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -76,7 +69,7 @@ public class MPTrackingService {
         Retrofit retrofit = getRetrofit(context);
         TrackingService service = retrofit.create(TrackingService.class);
 
-        Call<Void> call = service.trackPaymentId(paymentIntent, mTrackPath);
+        Call<Void> call = service.trackPaymentId(paymentIntent);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -96,7 +89,7 @@ public class MPTrackingService {
         Retrofit retrofit = getRetrofit(context);
         TrackingService service = retrofit.create(TrackingService.class);
 
-        Call<Void> call = service.trackEvents(eventTrackIntent, mTrackPath);
+        Call<Void> call = service.trackEvents(eventTrackIntent);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

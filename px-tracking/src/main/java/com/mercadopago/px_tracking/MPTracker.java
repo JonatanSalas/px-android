@@ -61,14 +61,6 @@ public class MPTracker {
         this.mTracksListener = tracksListener;
     }
 
-    /**
-     * Enable the test mode. If it is enable, this tracker will not track to Google Analytics and
-     * will track to the beta version of MPService
-     */
-    public void enableTestMode() {
-        MPTrackingService.getInstance().enableTestMode();
-    }
-
     private void trackScreenLaunchedListener(String screenName) {
         if (this.mTracksListener != null) {
             this.mTracksListener.onScreenLaunched(screenName);

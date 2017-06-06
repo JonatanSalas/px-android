@@ -37,7 +37,6 @@ import com.mercadopago.model.PaymentMethodSearch;
 import com.mercadopago.model.PaymentMethodSearchItem;
 import com.mercadopago.model.Site;
 import com.mercadopago.model.Token;
-import com.mercadopago.mptracker.MPTracker;
 import com.mercadopago.observers.TimerObserver;
 import com.mercadopago.preferences.DecorationPreference;
 import com.mercadopago.preferences.FlowPreference;
@@ -45,6 +44,7 @@ import com.mercadopago.preferences.PaymentPreference;
 import com.mercadopago.preferences.ServicePreference;
 import com.mercadopago.presenters.PaymentVaultPresenter;
 import com.mercadopago.providers.PaymentVaultProviderImpl;
+import com.mercadopago.px_tracking.MPTracker;
 import com.mercadopago.uicontrollers.FontCache;
 import com.mercadopago.uicontrollers.discounts.DiscountRowView;
 import com.mercadopago.uicontrollers.paymentmethodsearch.PaymentMethodSearchCustomOption;
@@ -221,7 +221,8 @@ public class PaymentVaultActivity extends MercadoPagoBaseActivity implements Pay
     }
 
     protected void initialize(boolean selectAutomatically) {
-        MPTracker.getInstance().trackScreen("PAYMENT_METHOD_SEARCH", "2", mPublicKey, mPaymentVaultPresenter.getSite().getId(), BuildConfig.VERSION_NAME, this);
+        String siteId = mPaymentVaultPresenter.getSite() == null ? "" : mPaymentVaultPresenter.getSite().getId();
+        MPTracker.getInstance().trackScreen("PAYMENT_METHOD_SEARCH", "2", mPublicKey, siteId, BuildConfig.VERSION_NAME, this);
         showTimer();
         mPaymentVaultPresenter.initialize(selectAutomatically);
     }
@@ -416,7 +417,8 @@ public class PaymentVaultActivity extends MercadoPagoBaseActivity implements Pay
             setResult(RESULT_OK, data);
             finish();
         } else if (resultCode == RESULT_CANCELED && data != null && data.hasExtra("mercadoPagoError")) {
-            MPTracker.getInstance().trackEvent(PAYMENT_VAULT_SCREEN_NAME, "CANCELED", "2", mPublicKey, mPaymentVaultPresenter.getSite().getId(), BuildConfig.VERSION_NAME, this);
+//            String siteId = mPaymentVaultPresenter.getSite() == null ? "" : mPaymentVaultPresenter.getSite().getId();
+//            MPTracker.getInstance().trackEvent(PAYMENT_VAULT_SCREEN_NAME, "CANCELED", "", "2", mPublicKey, siteId, BuildConfig.VERSION_NAME, this);
             setResult(Activity.RESULT_CANCELED, data);
             this.finish();
         } else {
@@ -448,8 +450,8 @@ public class PaymentVaultActivity extends MercadoPagoBaseActivity implements Pay
 
             finishWithCardResult();
         } else {
-            String siteId = mPaymentVaultPresenter.getSite() == null ? "" : mPaymentVaultPresenter.getSite().getId();
-            MPTracker.getInstance().trackEvent(PAYMENT_VAULT_SCREEN_NAME, "CANCELED", "2", mPublicKey, siteId, BuildConfig.VERSION_NAME, this);
+//            String siteId = mPaymentVaultPresenter.getSite() == null ? "" : mPaymentVaultPresenter.getSite().getId();
+//            MPTracker.getInstance().trackEvent(PAYMENT_VAULT_SCREEN_NAME, "CANCELED", "", "2", mPublicKey, siteId, BuildConfig.VERSION_NAME, this);
             if (shouldFinishOnBack(data)) {
                 setResult(Activity.RESULT_CANCELED, data);
                 this.finish();
@@ -607,8 +609,8 @@ public class PaymentVaultActivity extends MercadoPagoBaseActivity implements Pay
 
     @Override
     public void onBackPressed() {
-        String siteId = mPaymentVaultPresenter.getSite() == null ? "" : mPaymentVaultPresenter.getSite().getId();
-        MPTracker.getInstance().trackEvent(PAYMENT_VAULT_SCREEN_NAME, "BACK_PRESSED", "2", mPublicKey, siteId, BuildConfig.VERSION_NAME, this);
+//        String siteId = mPaymentVaultPresenter.getSite() == null ? "" : mPaymentVaultPresenter.getSite().getId();
+//        MPTracker.getInstance().trackEvent(PAYMENT_VAULT_SCREEN_NAME, "BACK_PRESSED", "", "2", mPublicKey, siteId, BuildConfig.VERSION_NAME, this);
         Intent returnIntent = new Intent();
         returnIntent.putExtra("discount", JsonUtil.getInstance().toJson(mPaymentVaultPresenter.getDiscount()));
         setResult(RESULT_CANCELED, returnIntent);

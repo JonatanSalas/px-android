@@ -37,12 +37,12 @@ import com.mercadopago.model.ReviewSubscriber;
 import com.mercadopago.model.Reviewable;
 import com.mercadopago.model.Site;
 import com.mercadopago.model.Token;
-import com.mercadopago.mptracker.MPTracker;
 import com.mercadopago.observers.TimerObserver;
 import com.mercadopago.preferences.DecorationPreference;
 import com.mercadopago.preferences.ReviewScreenPreference;
 import com.mercadopago.presenters.ReviewAndConfirmPresenter;
 import com.mercadopago.providers.ReviewAndConfirmProviderImpl;
+import com.mercadopago.px_tracking.MPTracker;
 import com.mercadopago.uicontrollers.FontCache;
 import com.mercadopago.util.ErrorUtil;
 import com.mercadopago.util.JsonUtil;
@@ -418,8 +418,9 @@ public class ReviewAndConfirmActivity extends MercadoPagoBaseActivity implements
     }
 
     private void trackScreen() {
-        if (mSite != null && !TextUtil.isEmpty(mPublicKey)) {
-            MPTracker.getInstance().trackScreen("REVIEW_AND_CONFIRM", "2", mPublicKey, mSite.getId(), BuildConfig.VERSION_NAME, this);
+        if(mSite != null && !TextUtil.isEmpty(mPublicKey)) {
+            String siteId = mSite == null ?  "" : mSite.getId();
+            MPTracker.getInstance().trackScreen("REVIEW_AND_CONFIRM", "2", mPublicKey, siteId, BuildConfig.VERSION_NAME, this);
         }
     }
 }

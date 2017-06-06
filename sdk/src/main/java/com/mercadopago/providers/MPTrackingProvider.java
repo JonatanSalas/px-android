@@ -1,7 +1,10 @@
 package com.mercadopago.providers;
 
 import android.content.Context;
+import android.os.Build;
+import android.provider.Settings;
 
+import com.mercadopago.model.Fingerprint;
 import com.mercadopago.px_tracking.MPTracker;
 import com.mercadopago.px_tracking.model.AppInformation;
 import com.mercadopago.px_tracking.model.DeviceInfo;
@@ -17,25 +20,47 @@ import java.util.List;
 public class MPTrackingProvider {
 
     private Context context;
-    private String publicKey;
-    private String checkoutVersion;
     private List<Event> eventList;
-
     private String clientId;
     private AppInformation appInformation;
     private DeviceInfo deviceInfo;
 
     private MPTrackingProvider(Builder builder) {
         this.context = builder.context;
-        this.publicKey = builder.publicKey;
-        this.checkoutVersion = builder.checkoutVersion;
         this.eventList = new ArrayList<>();
         if (builder.eventList != null && !builder.eventList.isEmpty()) {
             this.eventList = builder.eventList;
         }
-
-        //TODO initialize clientId, appInformation, deviceInfo
+        if (this.context != null) {
+            this.clientId = initializeClientId();
+            this.deviceInfo = initializeDeviceInfo();
+        }
+        if (builder.publicKey != null && builder.checkoutVersion != null) {
+            this.appInformation = initializeAppInformation(builder.publicKey, builder.checkoutVersion);
+        }
     }
+
+    private String initializeClientId() {
+        return Fingerprint.getAndroidId(this.context);
+    }
+
+    private AppInformation initializeAppInformation(String publicKey, String checkoutVersion) {
+        return new AppInformation.Builder()
+                .setPublicKey(publicKey)
+                .setCheckoutVersion(checkoutVersion)
+                .setPlatform("native/android")
+                .build();
+    }
+
+    private DeviceInfo initializeDeviceInfo() {
+        return new DeviceInfo.Builder()
+                .setModel(Build.MODEL)
+                .setOS("android")
+                .setSystemVersion(Fingerprint.getDeviceSystemVersion())
+                .setResolution(Fingerprint.getDeviceResolution(this.context))
+                .build();
+    }
+
 
     public void addTrackEvent(Event event) {
         if (eventList == null) {
@@ -44,12 +69,11 @@ public class MPTrackingProvider {
         this.eventList.add(event);
 
         //Fow now, we call the service on real time
-        MPTracker.getInstance().enableTestMode();
-
         MPTracker.getInstance().trackEventList(clientId, appInformation, deviceInfo, eventList, context);
 
 
     }
+
 
     public static class Builder {
         private Context context;

@@ -59,12 +59,12 @@ import com.mercadopago.model.PaymentMethod;
 import com.mercadopago.model.PaymentRecovery;
 import com.mercadopago.model.PaymentType;
 import com.mercadopago.model.Token;
-import com.mercadopago.mptracker.MPTracker;
 import com.mercadopago.observers.TimerObserver;
 import com.mercadopago.preferences.DecorationPreference;
 import com.mercadopago.preferences.PaymentPreference;
 import com.mercadopago.presenters.GuessingCardPresenter;
 import com.mercadopago.providers.MPTrackingProvider;
+import com.mercadopago.px_tracking.MPTracker;
 import com.mercadopago.px_tracking.model.ScreenViewEvent;
 import com.mercadopago.uicontrollers.card.CardRepresentationModes;
 import com.mercadopago.uicontrollers.card.CardView;
@@ -421,7 +421,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
         //TODO testing tracker
         MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
                 .setContext(getApplicationContext())
-                .setCheckoutVersion("3.0.0")
+                .setCheckoutVersion(BuildConfig.VERSION_NAME)
                 .setPublicKey(getPresenter().getPublicKey())
                 .build();
         ScreenViewEvent event = new ScreenViewEvent.Builder()
@@ -1147,8 +1147,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
     }
 
     private void requestCardNumberFocus() {
-        MPTracker.getInstance().trackScreen("CARD_NUMBER", "2", mPresenter.getPublicKey(),
-                BuildConfig.VERSION_NAME, this);
+        MPTracker.getInstance().trackScreen("CARD_NUMBER", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
         disableBackInputButton();
         mCurrentEditingEditText = CARD_NUMBER_INPUT;
         openKeyboard(mCardNumberEditText);
@@ -1163,8 +1162,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
         if (!mPresenter.validateCardNumber()) {
             return;
         }
-        MPTracker.getInstance().trackScreen("CARD_HOLDER_NAME", "2", mPresenter.getPublicKey(),
-                BuildConfig.VERSION_NAME, this);
+        MPTracker.getInstance().trackScreen("CARD_HOLDER_NAME", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
         enableBackInputButton();
         mCurrentEditingEditText = CARDHOLDER_NAME_INPUT;
         openKeyboard(mCardHolderNameEditText);
@@ -1177,8 +1175,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
         if (!mPresenter.validateCardName()) {
             return;
         }
-        MPTracker.getInstance().trackScreen("CARD_EXPIRY_DATE", "2", mPresenter.getPublicKey(),
-                BuildConfig.VERSION_NAME, this);
+        MPTracker.getInstance().trackScreen("CARD_EXPIRY_DATE", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
         enableBackInputButton();
         mCurrentEditingEditText = CARD_EXPIRYDATE_INPUT;
         openKeyboard(mCardExpiryDateEditText);
@@ -1198,8 +1195,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
         if (mCurrentEditingEditText.equals(CARD_EXPIRYDATE_INPUT) ||
                 mCurrentEditingEditText.equals(CARD_IDENTIFICATION_INPUT) ||
                 mCurrentEditingEditText.equals(CARD_SECURITYCODE_INPUT)) {
-            MPTracker.getInstance().trackScreen("CARD_SECURITY_CODE", "2", mPresenter.getPublicKey(),
-                    BuildConfig.VERSION_NAME, this);
+            MPTracker.getInstance().trackScreen("CARD_SECURITY_CODE", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
             enableBackInputButton();
             mCurrentEditingEditText = CARD_SECURITYCODE_INPUT;
             openKeyboard(mSecurityCodeEditText);
@@ -1217,8 +1213,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
                 (!mPresenter.isSecurityCodeRequired() && !mPresenter.validateExpiryDate())) {
             return;
         }
-        MPTracker.getInstance().trackScreen("IDENTIFICATION_NUMBER", "2", mPresenter.getPublicKey(),
-                BuildConfig.VERSION_NAME, this);
+        MPTracker.getInstance().trackScreen("IDENTIFICATION_NUMBER", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
         enableBackInputButton();
         mCurrentEditingEditText = CARD_IDENTIFICATION_INPUT;
         openKeyboard(mIdentificationNumberEditText);
@@ -1596,8 +1591,9 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
     @Override
     public void onBackPressed() {
         checkFlipCardToFront();
-        MPTracker.getInstance().trackEvent("GUESSING_CARD", "BACK_PRESSED", "2", mPresenter.getPublicKey(),
-                BuildConfig.VERSION_NAME, this);
+
+//        MPTracker.getInstance().trackEvent("GUESSING_CARD", "BACK_PRESSED", "", "2", mPresenter.getPublicKey(),
+//                "", BuildConfig.VERSION_NAME, this);
         Intent returnIntent = new Intent();
         returnIntent.putExtra("discount", JsonUtil.getInstance().toJson(mPresenter.getDiscount()));
         returnIntent.putExtra("discountEnabled", JsonUtil.getInstance().toJson(mPresenter.getDiscountEnabled()));

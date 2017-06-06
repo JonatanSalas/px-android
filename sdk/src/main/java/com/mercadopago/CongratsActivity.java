@@ -28,8 +28,8 @@ import com.mercadopago.model.PaymentResult;
 import com.mercadopago.model.ReviewSubscriber;
 import com.mercadopago.model.Reviewable;
 import com.mercadopago.model.Site;
-import com.mercadopago.mptracker.MPTracker;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
+import com.mercadopago.px_tracking.MPTracker;
 import com.mercadopago.uicontrollers.discounts.DiscountRowView;
 import com.mercadopago.util.ColorsUtil;
 import com.mercadopago.util.CurrenciesUtil;
@@ -140,7 +140,8 @@ public class CongratsActivity extends MercadoPagoBaseActivity implements ReviewS
     }
 
     protected void setContentView() {
-        MPTracker.getInstance().trackScreen("RESULT", "2", mMerchantPublicKey, BuildConfig.VERSION_NAME, this);
+        String siteId = mSite == null ? "" : mSite.getId();
+        MPTracker.getInstance().trackScreen("RESULT", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
         setContentView(R.layout.mpsdk_activity_congrats);
     }
 
@@ -640,7 +641,8 @@ public class CongratsActivity extends MercadoPagoBaseActivity implements ReviewS
 
     @Override
     public void onBackPressed() {
-        MPTracker.getInstance().trackEvent("CONGRATS", "BACK_PRESSED", "2", mMerchantPublicKey, BuildConfig.VERSION_NAME, this);
+        String siteId = mSite == null ? "" : mSite.getId();
+//        MPTracker.getInstance().trackEvent("CONGRATS", "BACK_PRESSED", "", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
 
         if (mBackPressedOnce) {
             finishWithOkResult();

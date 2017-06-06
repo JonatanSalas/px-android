@@ -31,12 +31,12 @@ import com.mercadopago.model.Issuer;
 import com.mercadopago.model.PayerCost;
 import com.mercadopago.model.PaymentMethod;
 import com.mercadopago.model.Site;
-import com.mercadopago.mptracker.MPTracker;
 import com.mercadopago.observers.TimerObserver;
 import com.mercadopago.preferences.DecorationPreference;
 import com.mercadopago.preferences.PaymentPreference;
 import com.mercadopago.presenters.InstallmentsPresenter;
 import com.mercadopago.providers.InstallmentsProviderImpl;
+import com.mercadopago.px_tracking.MPTracker;
 import com.mercadopago.uicontrollers.FontCache;
 import com.mercadopago.uicontrollers.card.CardRepresentationModes;
 import com.mercadopago.uicontrollers.card.FrontCardView;
@@ -471,8 +471,8 @@ public class InstallmentsActivity extends MercadoPagoBaseActivity implements Ins
 
             mPresenter.initializeDiscountRow();
         } else {
-            String siteId = mPresenter.getSite() == null ? "" : mPresenter.getSite().getId();
-            MPTracker.getInstance().trackEvent("CARD_INSTALLMENTS", "BACK_PRESSED", "2", mPublicKey, siteId, BuildConfig.VERSION_NAME, this);
+//            String siteId = mSite == null ? "" : mSite.getId();
+//            MPTracker.getInstance().trackEvent("CARD_INSTALLMENTS", "BACK_PRESSED", "", "2", mPublicKey, siteId, BuildConfig.VERSION_NAME, this);
             Intent returnIntent = new Intent();
             returnIntent.putExtra("backButtonPressed", true);
             returnIntent.putExtra("discount", JsonUtil.getInstance().toJson(mPresenter.getDiscount()));

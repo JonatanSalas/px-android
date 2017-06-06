@@ -36,8 +36,8 @@ import com.mercadopago.model.PaymentMethod;
 import com.mercadopago.model.SavedCardToken;
 import com.mercadopago.model.Site;
 import com.mercadopago.model.Token;
-import com.mercadopago.mptracker.MPTracker;
 import com.mercadopago.preferences.PaymentPreference;
+import com.mercadopago.px_tracking.MPTracker;
 import com.mercadopago.util.ApiUtil;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
@@ -132,7 +132,8 @@ public class VaultActivity extends AppCompatActivity {
 
             setFormGoButton(mSecurityCodeText);
 
-            MPTracker.getInstance().trackScreen("VAULT", "2", mMerchantPublicKey, BuildConfig.VERSION_NAME, this);
+            String siteId = mSite == null ? "" : mSite.getId();
+            MPTracker.getInstance().trackScreen("VAULT", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
 
             initPaymentFlow();
         } else {
@@ -243,7 +244,8 @@ public class VaultActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        MPTracker.getInstance().trackEvent("VAULT", "BACK_PRESSED", "2", mMerchantPublicKey, BuildConfig.VERSION_NAME, this);
+//        String siteId = mSite == null ? "" : mSite.getId();
+//        MPTracker.getInstance().trackEvent("VAULT", "BACK_PRESSED", "", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
 
         Intent returnIntent = new Intent();
         returnIntent.putExtra("backButtonPressed", true);

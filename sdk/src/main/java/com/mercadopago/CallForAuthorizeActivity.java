@@ -1,6 +1,7 @@
 package com.mercadopago;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -16,9 +17,9 @@ import com.mercadopago.model.PaymentMethod;
 import com.mercadopago.model.PaymentResult;
 import com.mercadopago.model.PaymentResultAction;
 import com.mercadopago.model.Site;
-import com.mercadopago.mptracker.MPTracker;
 import com.mercadopago.observers.TimerObserver;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
+import com.mercadopago.px_tracking.MPTracker;
 import com.mercadopago.util.CurrenciesUtil;
 import com.mercadopago.util.ErrorUtil;
 import com.mercadopago.util.JsonUtil;
@@ -93,7 +94,8 @@ public class CallForAuthorizeActivity extends MercadoPagoBaseActivity implements
     }
 
     protected void setContentView() {
-        MPTracker.getInstance().trackScreen("CALL_FOR_AUTHORIZE", "2", mMerchantPublicKey, BuildConfig.VERSION_NAME, this);
+        String siteId = mSite == null ? "" : mSite.getId();
+        MPTracker.getInstance().trackScreen("CALL_FOR_AUTHORIZE", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
         setContentView(R.layout.mpsdk_activity_call_for_authorize);
     }
 
@@ -103,7 +105,8 @@ public class CallForAuthorizeActivity extends MercadoPagoBaseActivity implements
         mAuthorizedPaymentMethod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MPTracker.getInstance().trackEvent("CALL_FOR_AUTHORIZE", "RECOVER_TOKEN", "2", mMerchantPublicKey, BuildConfig.VERSION_NAME, mActivity);
+//                String siteId = mSite == null ? "" : mSite.getId();
+//                MPTracker.getInstance().trackEvent("CALL_FOR_AUTHORIZE", "RECOVER_TOKEN", "", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, mActivity);
 
                 Intent returnIntent = new Intent();
                 mNextAction = PaymentResultAction.RECOVER_PAYMENT;
@@ -116,7 +119,8 @@ public class CallForAuthorizeActivity extends MercadoPagoBaseActivity implements
         mPayWithOtherPaymentMethodButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MPTracker.getInstance().trackEvent("CALL_FOR_AUTHORIZE", "SELECT_OTHER_PAYMENT_METHOD", "2", mMerchantPublicKey, BuildConfig.VERSION_NAME, mActivity);
+//                String siteId = mSite == null ? "" : mSite.getId();
+//                MPTracker.getInstance().trackEvent("CALL_FOR_AUTHORIZE", "SELECT_OTHER_PAYMENT_METHOD", "", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, mActivity);
 
                 Intent returnIntent = new Intent();
                 mNextAction = PaymentResultAction.SELECT_OTHER_PAYMENT_METHOD;
@@ -225,7 +229,7 @@ public class CallForAuthorizeActivity extends MercadoPagoBaseActivity implements
 
     @Override
     public void onBackPressed() {
-        MPTracker.getInstance().trackEvent("CALL_FOR_AUTHORIZE", "BACK_PRESSED", "2", mMerchantPublicKey, BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackEvent("CALL_FOR_AUTHORIZE", "BACK_PRESSED", "2", mMerchantPublicKey, BuildConfig.VERSION_NAME, this);
 
         if (mBackPressedOnce) {
             finishWithOkResult();

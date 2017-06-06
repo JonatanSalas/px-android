@@ -1,6 +1,7 @@
 package com.mercadopago;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,8 +18,8 @@ import com.mercadopago.core.MercadoPagoServices;
 import com.mercadopago.decorations.DividerItemDecoration;
 import com.mercadopago.model.ApiException;
 import com.mercadopago.model.BankDeal;
-import com.mercadopago.mptracker.MPTracker;
 import com.mercadopago.preferences.DecorationPreference;
+import com.mercadopago.px_tracking.MPTracker;
 import com.mercadopago.util.ApiUtil;
 import com.mercadopago.util.ErrorUtil;
 import com.mercadopago.util.JsonUtil;
@@ -175,7 +176,7 @@ public class BankDealsActivity extends MercadoPagoActivity {
     }
 
     protected void solveBankDeals(List<BankDeal> bankDeals) {
-        MPTracker.getInstance().trackScreen("BANK_DEALS", "2", mMerchantPublicKey, BuildConfig.VERSION_NAME, getActivity());
+        MPTracker.getInstance().trackScreen("BANK_DEALS", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, getActivity());
         mRecyclerView.setAdapter(new BankDealsAdapter(getActivity(), bankDeals, getDpadSelectionCallback(), new View.OnClickListener() {
             @Override
             public void onClick(View view) {
