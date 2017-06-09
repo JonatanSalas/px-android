@@ -14,10 +14,6 @@ public class EventTrackIntent {
     private DeviceInfo device;
     private List<Event> events;
 
-    public EventTrackIntent() {
-        this.events = new ArrayList<>();
-    }
-
     public EventTrackIntent(String clientId, AppInformation application, DeviceInfo device, List<Event> events) {
         this.clientId = clientId;
         this.application = application;

@@ -1,4 +1,23 @@
 apply plugin: 'com.android.library'
+apply plugin: 'jacoco-android'
+
+task jacocoFullTestReport(type: JacocoReport, dependsOn: ['jacocoTestReport', 'createDevDebugCoverageReport']) {
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+    def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug", excludes: fileFilter)
+    def mainSrc = "${project.projectDir}/src/main/java"
+
+    sourceDirectories = files([mainSrc])
+    classDirectories = files([debugTree])
+    executionData = fileTree(dir: "$buildDir", includes: [
+            "jacoco/testDevDebugUnitTest.exec", "outputs/code-coverage/connected/flavors/DEV/*coverage.ec"
+    ])
+}
 
 android {
     publishNonDefault true
@@ -20,7 +39,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
+            testCoverageEnabled true
+            multiDexEnabled true
+            versionNameSuffix " Debug"
+            debuggable true
+        }
+    }
 
+    project.gradle.taskGraph.whenReady {
+        connectedDevDebugAndroidTest {
+            ignoreFailures = true
         }
     }
 
@@ -31,6 +59,12 @@ android {
         prod {
             buildConfigField "String", "API_VERSION", "\"v1\""
         }
+    }
+}
+
+project.gradle.taskGraph.whenReady {
+    connectedDevDebugAndroidTest {
+        ignoreFailures = true
     }
 }
 

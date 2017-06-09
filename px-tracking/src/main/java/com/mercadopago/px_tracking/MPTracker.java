@@ -205,7 +205,7 @@ public class MPTracker {
      * @param events List of events to track
      * @param context Application context
      */
-    public void trackEventList(String clientId, AppInformation appInformation, DeviceInfo deviceInfo, List<Event> events, Context context) {
+    public EventTrackIntent trackEventList(String clientId, AppInformation appInformation, DeviceInfo deviceInfo, List<Event> events, Context context) {
         EventTrackIntent eventTrackIntent = new EventTrackIntent(clientId, appInformation, deviceInfo, events);
         MPTrackingService.getInstance().trackEvent(eventTrackIntent, context);
 
@@ -219,7 +219,7 @@ public class MPTracker {
                 trackScreenLaunchedListener(screenViewEvent.getScreenName());
             }
         }
-
+        return eventTrackIntent;
     }
 
     private Map<String, String> createEventMap(ActionEvent actionEvent) {

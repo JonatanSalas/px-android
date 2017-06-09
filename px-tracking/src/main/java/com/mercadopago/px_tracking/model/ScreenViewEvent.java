@@ -11,6 +11,10 @@ public class ScreenViewEvent extends Event {
     private String screenId;
     private String screenName;
 
+    protected ScreenViewEvent() {
+
+    }
+
     private ScreenViewEvent(Builder builder) {
         super();
         setType(TYPE_SCREEN_VIEW);

@@ -10,6 +10,10 @@ public class AppInformation {
     private String checkoutVersion;
     private String platform;
 
+    protected AppInformation() {
+
+    }
+
     private AppInformation(Builder builder) {
         this.publicKey = builder.publicKey;
         this.checkoutVersion = builder.checkoutVersion;
@@ -52,5 +56,26 @@ public class AppInformation {
         public AppInformation build() {
             return new AppInformation(this);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AppInformation that = (AppInformation) o;
+
+        if (!publicKey.equals(that.publicKey)) return false;
+        if (!checkoutVersion.equals(that.checkoutVersion)) return false;
+        return platform.equals(that.platform);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = publicKey.hashCode();
+        result = 31 * result + checkoutVersion.hashCode();
+        result = 31 * result + platform.hashCode();
+        return result;
     }
 }

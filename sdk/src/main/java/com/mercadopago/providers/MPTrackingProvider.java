@@ -64,6 +64,8 @@ public class MPTrackingProvider {
 
 
     public void addTrackEvent(Event event) {
+        //For now we create a list and only add one element
+        //Later we will store the events in the list and send them all at once
         if (eventList == null) {
             this.eventList = new ArrayList<>();
         }

@@ -12,6 +12,10 @@ public class DeviceInfo {
     private String resolution;
     private String screenSize;
 
+    protected DeviceInfo() {
+
+    }
+
     private DeviceInfo(Builder builder) {
         this.model = builder.model;
         this.os = builder.os;
@@ -76,5 +80,30 @@ public class DeviceInfo {
         public DeviceInfo build() {
             return new DeviceInfo(this);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DeviceInfo that = (DeviceInfo) o;
+
+        if (!model.equals(that.model)) return false;
+        if (!os.equals(that.os)) return false;
+        if (!systemVersion.equals(that.systemVersion)) return false;
+        if (!resolution.equals(that.resolution)) return false;
+        return screenSize.equals(that.screenSize);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = model.hashCode();
+        result = 31 * result + os.hashCode();
+        result = 31 * result + systemVersion.hashCode();
+        result = 31 * result + resolution.hashCode();
+        result = 31 * result + screenSize.hashCode();
+        return result;
     }
 }
