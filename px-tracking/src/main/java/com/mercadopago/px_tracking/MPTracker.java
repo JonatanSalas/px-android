@@ -103,11 +103,16 @@ public class MPTracker {
      * @param installments    The installments quantity that the payment be done.
      * @param issuerId        The bank that emit the card.
      */
-    public void trackPayment(String screenName, String action, Long paymentId, String paymentMethodId, String status, String statusDetail, String typeId, Integer installments, Integer issuerId) {
+    public PaymentIntent trackPayment(String screenName, String action, Long paymentId,
+                                      String paymentMethodId, String status, String statusDetail,
+                                      String typeId, Integer installments, Integer issuerId) {
+
+        PaymentIntent paymentIntent = null;
+
         if (trackerInitialized) {
 
             if (!isCardPaymentType(typeId)) {
-                PaymentIntent paymentIntent = new PaymentIntent(mPublicKey, paymentId.toString(), mFlavor, SDK_PLATFORM, SDK_TYPE, mSdkVersion, mSiteId);
+                paymentIntent = new PaymentIntent(mPublicKey, paymentId.toString(), mFlavor, SDK_PLATFORM, SDK_TYPE, mSdkVersion, mSiteId);
                 initializeMPTrackingService();
                 mMPTrackingService.trackPaymentId(paymentIntent, mContext);
             }
@@ -124,18 +129,21 @@ public class MPTracker {
             eventMap.put("issuer_id", "" + issuerId);
             trackEventPerformedListener(eventMap);
         }
+        return paymentIntent;
     }
 
     /**
      * @param token The card token id of a payment. Cannot be {@code null}. if it's null, the track
      *              will not be sent.
      */
-    public void trackToken(String token) {
+    public TrackingIntent trackToken(String token) {
+        TrackingIntent trackingIntent = null;
         if (trackerInitialized && !isEmpty(token)) {
-            TrackingIntent trackingIntent = new TrackingIntent(mPublicKey, token, mFlavor, SDK_PLATFORM, SDK_TYPE, mSdkVersion, mSiteId);
+            trackingIntent = new TrackingIntent(mPublicKey, token, mFlavor, SDK_PLATFORM, SDK_TYPE, mSdkVersion, mSiteId);
             initializeMPTrackingService();
             mMPTrackingService.trackToken(trackingIntent, mContext);
         }
+        return trackingIntent;
     }
 
     /**
@@ -264,7 +272,7 @@ public class MPTracker {
      *                   track will not be sent.
      * @param context    Reference to Android Context. Cannot be {@code null}.
      */
-    private void initTracker(String flavor, String publicKey, String siteId, String sdkVersion, Context context) {
+    public void initTracker(String flavor, String publicKey, String siteId, String sdkVersion, Context context) {
         if (!isTrackerInitialized()) {
             if (areInitParametersValid(flavor, publicKey, siteId, sdkVersion, context)) {
                 trackerInitialized = true;

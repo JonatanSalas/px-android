@@ -225,6 +225,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
 
         String publicKey = getIntent().getStringExtra("merchantPublicKey");
         String privateKey = getIntent().getStringExtra("payerAccessToken");
+        String siteId = getIntent().getStringExtra("siteId");
         PaymentPreference paymentPreference = JsonUtil.getInstance().fromJson(getIntent().getStringExtra("paymentPreference"), PaymentPreference.class);
         mDecorationPreference = JsonUtil.getInstance().fromJson(getIntent().getStringExtra("decorationPreference"), DecorationPreference.class);
 
@@ -255,6 +256,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
 
         mPresenter.setPrivateKey(privateKey);
         mPresenter.setPublicKey(publicKey);
+        mPresenter.setSiteId(siteId);
         mPresenter.setToken(token);
         mPresenter.setShowBankDeals(showBankDeals);
         mPresenter.setPaymentMethod(paymentMethod);
@@ -419,6 +421,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
     @Override
     public void onValidStart() {
         mPresenter.initializeMercadoPago();
+        mPresenter.initializeMPTracker();
         mPresenter.initializeCardToken();
         initializeViews();
         loadViews();

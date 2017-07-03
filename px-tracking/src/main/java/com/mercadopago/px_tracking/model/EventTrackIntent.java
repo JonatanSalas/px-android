@@ -21,39 +21,20 @@ public class EventTrackIntent {
         this.events = events;
     }
 
-    public void addEvent(Event event) {
-        this.events.add(event);
-    }
-
     public String getClientId() {
         return clientId;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
     }
 
     public AppInformation getApplication() {
         return application;
     }
 
-    public void setApplication(AppInformation application) {
-        this.application = application;
-    }
-
     public DeviceInfo getDevice() {
         return device;
-    }
-
-    public void setDevice(DeviceInfo device) {
-        this.device = device;
     }
 
     public List<Event> getEvents() {
         return events;
     }
 
-    public void setEvents(List<Event> events) {
-        this.events = events;
-    }
 }

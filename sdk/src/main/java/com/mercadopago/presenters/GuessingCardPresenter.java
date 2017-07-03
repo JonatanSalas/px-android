@@ -3,6 +3,7 @@ package com.mercadopago.presenters;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.mercadopago.BuildConfig;
 import com.mercadopago.R;
 import com.mercadopago.callbacks.Callback;
 import com.mercadopago.callbacks.FailureRecovery;
@@ -28,6 +29,7 @@ import com.mercadopago.model.SecurityCode;
 import com.mercadopago.model.Setting;
 import com.mercadopago.model.Token;
 import com.mercadopago.preferences.PaymentPreference;
+import com.mercadopago.px_tracking.MPTracker;
 import com.mercadopago.uicontrollers.card.CardView;
 import com.mercadopago.uicontrollers.card.FrontCardView;
 import com.mercadopago.util.CurrenciesUtil;
@@ -66,6 +68,7 @@ public class GuessingCardPresenter {
 
     //Activity parameters
     private String mPublicKey;
+    private String mSiteId;
     private PaymentRecovery mPaymentRecovery;
     private PaymentMethod mPaymentMethod;
     private List<PaymentMethod> mPaymentMethodList;
@@ -142,6 +145,10 @@ public class GuessingCardPresenter {
 
     public void setPublicKey(String publicKey) {
         this.mPublicKey = publicKey;
+    }
+
+    public void setSiteId(String siteId) {
+        this.mSiteId = siteId;
     }
 
     public PaymentRecovery getPaymentRecovery() {
@@ -310,6 +317,11 @@ public class GuessingCardPresenter {
                 .setPublicKey(mPublicKey)
                 .setPrivateKey(mPrivateKey)
                 .build();
+    }
+
+    public void initializeMPTracker() {
+        //Initialize tracker before creating a token
+        MPTracker.getInstance().initTracker("3", mPublicKey, mSiteId, BuildConfig.VERSION_NAME, mContext);
     }
 
     public CardInformation getCardInformation() {

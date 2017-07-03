@@ -728,6 +728,7 @@ public class MercadoPagoComponents {
         public static class GuessingCardActivityBuilder {
             private Activity activity;
             private String merchantPublicKey;
+            private String siteId;
             private Boolean showBankDeals;
             private PaymentPreference paymentPreference;
             private DecorationPreference decorationPreference;
@@ -751,6 +752,11 @@ public class MercadoPagoComponents {
 
             public GuessingCardActivityBuilder setMerchantPublicKey(String merchantPublicKey) {
                 this.merchantPublicKey = merchantPublicKey;
+                return this;
+            }
+
+            public GuessingCardActivityBuilder setSiteId(String siteId) {
+                this.siteId = siteId;
                 return this;
             }
 
@@ -854,6 +860,8 @@ public class MercadoPagoComponents {
             private void startGuessingCardActivity() {
                 Intent guessingCardIntent = new Intent(activity, GuessingCardActivity.class);
                 guessingCardIntent.putExtra("merchantPublicKey", merchantPublicKey);
+
+                guessingCardIntent.putExtra("siteId", siteId);
 
                 if (requireSecurityCode != null) {
                     guessingCardIntent.putExtra("requireSecurityCode", requireSecurityCode);
@@ -1155,6 +1163,7 @@ public class MercadoPagoComponents {
             private Activity activity;
             private CardInfo cardInformation;
             private String merchantPublicKey;
+            private String siteId;
             private String payerAccessToken;
             private PaymentMethod paymentMethod;
             private Integer congratsDisplay;
@@ -1177,6 +1186,11 @@ public class MercadoPagoComponents {
 
             public SecurityCodeActivityBuilder setMerchantPublicKey(String merchantPublicKey) {
                 this.merchantPublicKey = merchantPublicKey;
+                return this;
+            }
+
+            public SecurityCodeActivityBuilder setSiteId(String siteId) {
+                this.siteId = siteId;
                 return this;
             }
 
@@ -1232,6 +1246,7 @@ public class MercadoPagoComponents {
                 intent.putExtra("card", JsonUtil.getInstance().toJson(card));
                 intent.putExtra("merchantPublicKey", merchantPublicKey);
                 intent.putExtra("payerAccessToken", payerAccessToken);
+                intent.putExtra("siteId", siteId);
                 intent.putExtra("decorationPreference", JsonUtil.getInstance().toJson(decorationPreference));
                 intent.putExtra("cardInfo", JsonUtil.getInstance().toJson(cardInformation));
                 activity.startActivityForResult(intent, SECURITY_CODE_REQUEST_CODE);

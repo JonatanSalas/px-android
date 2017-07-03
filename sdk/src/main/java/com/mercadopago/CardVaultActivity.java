@@ -164,6 +164,7 @@ public class CardVaultActivity extends AppCompatActivity implements CardVaultVie
 
         mPublicKey = getIntent().getStringExtra("merchantPublicKey");
         mPrivateKey = getIntent().getStringExtra("payerAccessToken");
+
         PaymentPreference paymentPreference = JsonUtil.getInstance().fromJson(getIntent().getStringExtra("paymentPreference"), PaymentPreference.class);
         mDecorationPreference = JsonUtil.getInstance().fromJson(getIntent().getStringExtra("decorationPreference"), DecorationPreference.class);
 
@@ -252,6 +253,7 @@ public class CardVaultActivity extends AppCompatActivity implements CardVaultVie
         new MercadoPagoComponents.Activities.SecurityCodeActivityBuilder()
                 .setActivity(this)
                 .setMerchantPublicKey(mPublicKey)
+                .setSiteId(mCardVaultPresenter.getSite().getId())
                 .setPaymentMethod(mCardVaultPresenter.getPaymentMethod())
                 .setCardInfo(mCardVaultPresenter.getCardInfo())
                 .setToken(mCardVaultPresenter.getToken())
@@ -273,6 +275,7 @@ public class CardVaultActivity extends AppCompatActivity implements CardVaultVie
                 new MercadoPagoComponents.Activities.GuessingCardActivityBuilder()
                         .setActivity(context)
                         .setMerchantPublicKey(mPublicKey)
+                        .setSiteId(mCardVaultPresenter.getSite().getId())
                         .setAmount(mCardVaultPresenter.getAmount())
                         .setPayerEmail(mCardVaultPresenter.getPayerEmail())
                         .setPayerAccessToken(mPrivateKey)

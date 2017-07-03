@@ -84,6 +84,7 @@ public class SecurityCodeActivity extends MercadoPagoBaseActivity implements Sec
     private void getActivityParameters() {
         String publicKey = getIntent().getStringExtra("merchantPublicKey");
         String payerAccessToken = getIntent().getStringExtra("payerAccessToken");
+        String siteId = getIntent().getStringExtra("siteId");
         mDecorationPreference = JsonUtil.getInstance().fromJson(getIntent().getStringExtra("decorationPreference"), DecorationPreference.class);
 
         CardInfo cardInfo = JsonUtil.getInstance().fromJson(this.getIntent().getStringExtra("cardInfo"), CardInfo.class);
@@ -93,6 +94,7 @@ public class SecurityCodeActivity extends MercadoPagoBaseActivity implements Sec
 
         mPresenter.setPublicKey(publicKey);
         mPresenter.setPrivateKey(payerAccessToken);
+        mPresenter.setSiteId(siteId);
         mPresenter.setToken(token);
         mPresenter.setCard(card);
         mPresenter.setPaymentMethod(paymentMethod);
@@ -175,6 +177,7 @@ public class SecurityCodeActivity extends MercadoPagoBaseActivity implements Sec
     @Override
     public void onValidStart() {
         mPresenter.initializeMercadoPago();
+        mPresenter.initializeMPTracker();
         initializeViews();
         mPresenter.initializeSecurityCodeSettings();
         loadViews();

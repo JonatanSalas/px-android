@@ -2,6 +2,7 @@ package com.mercadopago.presenters;
 
 import android.content.Context;
 
+import com.mercadopago.BuildConfig;
 import com.mercadopago.callbacks.Callback;
 import com.mercadopago.callbacks.FailureRecovery;
 import com.mercadopago.controllers.PaymentMethodGuessingController;
@@ -17,6 +18,7 @@ import com.mercadopago.model.SecurityCodeIntent;
 import com.mercadopago.model.Setting;
 import com.mercadopago.model.Token;
 import com.mercadopago.preferences.PaymentPreference;
+import com.mercadopago.px_tracking.MPTracker;
 import com.mercadopago.uicontrollers.card.CardView;
 import com.mercadopago.util.TextUtils;
 import com.mercadopago.views.SecurityCodeActivityView;
@@ -52,6 +54,7 @@ public class SecurityCodePresenter {
     protected Card mCard;
     protected Token mToken;
     private String mPrivateKey;
+    private String mSiteId;
 
     public SecurityCodePresenter(Context context) {
         this.mContext = context;
@@ -67,6 +70,10 @@ public class SecurityCodePresenter {
 
     public void setPublicKey(String publicKey) {
         this.mPublicKey = publicKey;
+    }
+
+    public void setSiteId(String siteId) {
+        this.mSiteId = siteId;
     }
 
     public void setToken(Token token) {
@@ -152,6 +159,10 @@ public class SecurityCodePresenter {
                 .build();
     }
 
+    public void initializeMPTracker() {
+        //Initialize tracker before creating a token
+        MPTracker.getInstance().initTracker("3", mPublicKey, mSiteId, BuildConfig.VERSION_NAME, mContext);
+    }
 
     public void recoverFromFailure() {
         if (mFailureRecovery != null) {

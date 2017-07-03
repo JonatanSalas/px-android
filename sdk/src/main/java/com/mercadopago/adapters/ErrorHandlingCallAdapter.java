@@ -1,5 +1,6 @@
 package com.mercadopago.adapters;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -89,6 +90,7 @@ public class ErrorHandlingCallAdapter {
                                     MPTracker.getInstance().trackPayment(TrackingUtil.SCREEN_NAME_NO_SCREEN, "CREATE_PAYMENT_RESPONSE", mPayment.getId(),
                                             mPayment.getPaymentMethodId(), mPayment.getStatus(), mPayment.getStatusDetail(), mPayment.getPaymentTypeId(),
                                             mPayment.getInstallments(), mPayment.getIssuerId());
+
 
                                 } else if (body instanceof Token) {
                                     Token mToken = (Token) body;

@@ -227,6 +227,11 @@ public class CheckoutActivity extends MercadoPagoBaseActivity implements Checkou
             PayerCost payerCost = JsonUtil.getInstance().fromJson(data.getStringExtra("payerCost"), PayerCost.class);
             Token token = JsonUtil.getInstance().fromJson(data.getStringExtra("token"), Token.class);
             PaymentMethod paymentMethod = JsonUtil.getInstance().fromJson(data.getStringExtra("paymentMethod"), PaymentMethod.class);
+
+            //Initialize tracker before creating a payment
+            MPTracker.getInstance().initTracker("3", mMerchantPublicKey, mCheckoutPresenter.getCheckoutPreference().getSite().getId(),
+                    BuildConfig.VERSION_NAME, this);
+
             mCheckoutPresenter.onPaymentMethodSelectionResponse(paymentMethod, issuer, payerCost, token, discount);
         } else if (isErrorResult(data)) {
             MercadoPagoError mercadoPagoError = JsonUtil.getInstance().fromJson(data.getStringExtra("mercadoPagoError"), MercadoPagoError.class);
