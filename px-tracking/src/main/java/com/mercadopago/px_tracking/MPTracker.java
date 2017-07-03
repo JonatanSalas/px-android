@@ -14,6 +14,8 @@ import com.mercadopago.px_tracking.model.PaymentIntent;
 import com.mercadopago.px_tracking.model.ScreenViewEvent;
 import com.mercadopago.px_tracking.model.TrackingIntent;
 import com.mercadopago.px_tracking.services.MPTrackingService;
+import com.mercadopago.px_tracking.services.MPTrackingServiceImpl;
+import com.mercadopago.px_tracking.services.TrackingService;
 import com.mercadopago.px_tracking.utils.JsonConverter;
 
 import java.lang.reflect.Type;
@@ -32,6 +34,8 @@ public class MPTracker {
     private static MPTracker mMPTrackerInstance;
 
     private TracksListener mTracksListener;
+
+    private MPTrackingService mMPTrackingService;
 
     private String mFlavor;
     private String mPublicKey;
@@ -55,6 +59,16 @@ public class MPTracker {
             mMPTrackerInstance = new MPTracker();
         }
         return mMPTrackerInstance;
+    }
+
+    private void initializeMPTrackingService() {
+        if (mMPTrackingService == null) {
+            mMPTrackingService = new MPTrackingServiceImpl();
+        }
+    }
+
+    public void setMPTrackingService(MPTrackingService trackingService) {
+        mMPTrackingService = trackingService;
     }
 
     public void setTracksListener(TracksListener tracksListener) {
@@ -94,7 +108,8 @@ public class MPTracker {
 
             if (!isCardPaymentType(typeId)) {
                 PaymentIntent paymentIntent = new PaymentIntent(mPublicKey, paymentId.toString(), mFlavor, SDK_PLATFORM, SDK_TYPE, mSdkVersion, mSiteId);
-                MPTrackingService.getInstance().trackPaymentId(paymentIntent, mContext);
+                initializeMPTrackingService();
+                mMPTrackingService.trackPaymentId(paymentIntent, mContext);
             }
 
             // NEW 1.2.0: TracksListener
@@ -118,7 +133,8 @@ public class MPTracker {
     public void trackToken(String token) {
         if (trackerInitialized && !isEmpty(token)) {
             TrackingIntent trackingIntent = new TrackingIntent(mPublicKey, token, mFlavor, SDK_PLATFORM, SDK_TYPE, mSdkVersion, mSiteId);
-            MPTrackingService.getInstance().trackToken(trackingIntent, mContext);
+            initializeMPTrackingService();
+            mMPTrackingService.trackToken(trackingIntent, mContext);
         }
     }
 
@@ -207,7 +223,9 @@ public class MPTracker {
      */
     public EventTrackIntent trackEventList(String clientId, AppInformation appInformation, DeviceInfo deviceInfo, List<Event> events, Context context) {
         EventTrackIntent eventTrackIntent = new EventTrackIntent(clientId, appInformation, deviceInfo, events);
-        MPTrackingService.getInstance().trackEvent(eventTrackIntent, context);
+        initializeMPTrackingService();
+        mMPTrackingService.trackEvent(eventTrackIntent, context);
+
 
         for (Event event: eventTrackIntent.getEvents()) {
             if (event.getType().equals(Event.TYPE_ACTION)) {
