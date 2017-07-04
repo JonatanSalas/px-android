@@ -222,7 +222,7 @@ public class PaymentVaultActivity extends MercadoPagoBaseActivity implements Pay
 
     protected void initialize(boolean selectAutomatically) {
         String siteId = mPaymentVaultPresenter.getSite() == null ? "" : mPaymentVaultPresenter.getSite().getId();
-        MPTracker.getInstance().trackScreen("PAYMENT_METHOD_SEARCH", "2", mPublicKey, siteId, BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackScreen("PAYMENT_METHOD_SEARCH", "2", mPublicKey, siteId, BuildConfig.VERSION_NAME, this);
         showTimer();
         mPaymentVaultPresenter.initialize(selectAutomatically);
     }

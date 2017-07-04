@@ -57,7 +57,6 @@ public class MPTrackerTest {
     public static final String ACTION_EVENT_KEY_SCREEN_ID = "screen_id";
     public static final String ACTION_EVENT_KEY_SCREEN_NAME = "screen_name";
 
-    public static final String MOCKED_PAYMENT_ACTION = "CREATE_PAYMENT_RESPONSE";
     public static final Long MOCKED_PAYMENT_ID = 123L;
     public static final String MOCKED_PAYMENT_METHOD_ID = "pm_id";
     public static final String MOCKED_PAYMENT_STATUS = "status";
@@ -75,7 +74,6 @@ public class MPTrackerTest {
     public static final String PAYMENT_EVENT_KEY_INSTALLMENTS = "installments";
     public static final String PAYMENT_EVENT_KEY_ISSUER_ID = "issuer_id";
 
-    public static final String MOCKED_FLAVOUR = "3";
     public static final String MOCKED_SITE_ID = "site_id";
     public static final String MOCKED_PAYMENT_PLATFORM = "Android";
     public static final String MOCKED_SDK_TYPE = "native";
@@ -347,13 +345,12 @@ public class MPTrackerTest {
         });
 
         //Initialize tracker before creating a payment
-        MPTracker.getInstance().initTracker(MOCKED_FLAVOUR, MOCKED_PUBLIC_KEY, MOCKED_SITE_ID, MOCKED_CHECKOUT_VERSION, appContext);
+        MPTracker.getInstance().initTracker(MOCKED_PUBLIC_KEY, MOCKED_SITE_ID, MOCKED_CHECKOUT_VERSION, appContext);
 
-        PaymentIntent paymentIntent = MPTracker.getInstance().trackPayment(MOCKED_SCREEN_NAME_1, MOCKED_PAYMENT_ACTION, MOCKED_PAYMENT_ID,
+        PaymentIntent paymentIntent = MPTracker.getInstance().trackPayment(MOCKED_SCREEN_NAME_1, MOCKED_PAYMENT_ID,
                 MOCKED_PAYMENT_METHOD_ID, MOCKED_PAYMENT_STATUS, MOCKED_PAYMENT_STATUS_DETAIL,
                 MOCKED_PAYMENT_TYPE_ID, MOCKED_PAYMENT_INSTALLMENTS, MOCKED_PAYMENT_ISSUER);
 
-        assertEquals(paymentIntent.mFlavor, MOCKED_FLAVOUR);
         assertEquals(paymentIntent.mPaymentId, String.valueOf(MOCKED_PAYMENT_ID));
         assertEquals(paymentIntent.mPlatform, MOCKED_PAYMENT_PLATFORM);
         assertEquals(paymentIntent.mPublicKey, MOCKED_PUBLIC_KEY);
@@ -369,11 +366,10 @@ public class MPTrackerTest {
         MPTracker.getInstance().setMPTrackingService(new MPMockedTrackingService());
 
         //Initialize tracker before creating a token
-        MPTracker.getInstance().initTracker(MOCKED_FLAVOUR, MOCKED_PUBLIC_KEY, MOCKED_SITE_ID, MOCKED_CHECKOUT_VERSION, appContext);
+        MPTracker.getInstance().initTracker(MOCKED_PUBLIC_KEY, MOCKED_SITE_ID, MOCKED_CHECKOUT_VERSION, appContext);
 
         TrackingIntent trackingIntent = MPTracker.getInstance().trackToken(MOCKED_TOKEN_ID);
 
-        assertEquals(trackingIntent.mFlavor, MOCKED_FLAVOUR);
         assertEquals(trackingIntent.mPlatform, MOCKED_PAYMENT_PLATFORM);
         assertEquals(trackingIntent.mPublicKey, MOCKED_PUBLIC_KEY);
         assertEquals(trackingIntent.mSdkVersion, MOCKED_CHECKOUT_VERSION);

@@ -212,14 +212,6 @@ public class CheckoutProviderImpl implements CheckoutProvider {
         }
     }
 
-    private void trackPayment(Payment payment) {
-        if (payment != null) {
-            MPTracker.getInstance().trackPayment(TrackingUtil.SCREEN_NAME_NO_SCREEN, "CREATE_PAYMENT_RESPONSE", payment.getId(),
-                    payment.getPaymentMethodId(), payment.getStatus(), payment.getStatusDetail(), payment.getPaymentTypeId(),
-                    payment.getInstallments(), payment.getIssuerId());
-        }
-    }
-
     private void createPaymentInMerchantServer(String transactionId, PaymentData paymentData, final OnResourcesRetrievedCallback<Payment> onResourcesRetrievedCallback) {
         Map<String, Object> paymentInfoMap = new HashMap<>();
         paymentInfoMap.putAll(servicePreference.getCreatePaymentAdditionalInfo());

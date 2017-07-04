@@ -9,5 +9,7 @@ import java.util.Map;
 public interface TracksListener {
 
     void onScreenLaunched(String screenName);
+
+    @Deprecated
     void onEventPerformed(Map<String, String> event);
 }

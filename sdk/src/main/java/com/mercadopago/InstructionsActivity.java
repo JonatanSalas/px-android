@@ -245,7 +245,7 @@ public class InstructionsActivity extends MercadoPagoBaseActivity {
 
     protected void showInstructions(Instruction instruction) {
         String siteId = mSite == null ? "" : mSite.getId();
-        MPTracker.getInstance().trackScreen("INSTRUCTIONS", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackScreen("INSTRUCTIONS", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
 
         setTitle(instruction.getTitle());
         setReferencesInformation(instruction);
@@ -390,7 +390,7 @@ public class InstructionsActivity extends MercadoPagoBaseActivity {
     @Override
     public void onBackPressed() {
         String siteId = mSite == null ? "" : mSite.getId();
-        MPTracker.getInstance().trackScreen("INSTRUCTIONS", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackScreen("INSTRUCTIONS", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
 
         if (mBackPressedOnce) {
             super.onBackPressed();

@@ -37,7 +37,6 @@ public class MPTracker {
 
     private MPTrackingService mMPTrackingService;
 
-    private String mFlavor;
     private String mPublicKey;
     private String mSdkVersion;
     private String mSiteId;
@@ -46,8 +45,8 @@ public class MPTracker {
     private static final String SDK_PLATFORM = "Android";
     private static final String SDK_TYPE = "native";
 
-    private static final String NO_SCREEN = "NO_SCREEN";
-    private static final String DEFAULT_SITE = "MLA";
+    private static final String DEFAULT_SITE = "";
+    private static final String DEFAULT_FLAVOUR = "3";
 
     private Boolean trackerInitialized = false;
 
@@ -89,21 +88,15 @@ public class MPTracker {
 
     /**
      * @param screenName      The name of the screen
-     * @param action          The action that generate an event. Cannot be {@code null}. if it's
-     *                        null, the track will not be sent.
-     * @param paymentId       The payment id of a payment method off. Cannot be {@code null}. if
-     *                        it's null, the track will not be sent.
-     * @param paymentMethodId The payment method id. Cannot be {@code null}. if it's null, the track
-     *                        will not be sent.
-     * @param status          The payment status. Cannot be {@code null}. if it's null, the track
-     *                        will not be sent.
-     * @param statusDetail    The payment status detail. Cannot be {@code null}. if it's null, the
-     *                        track will not be sent.
-     * @param typeId          The payment type id. It have to be a card type.
-     * @param installments    The installments quantity that the payment be done.
-     * @param issuerId        The bank that emit the card.
+     * @param paymentId       The payment id of a payment method off. Cannot be {@code null}.
+     * @param paymentMethodId The payment method id. Cannot be {@code null}.
+     * @param status          The payment status. Cannot be {@code null}.
+     * @param statusDetail    The payment status detail. Cannot be {@code null}.
+     * @param typeId          The payment type id. It has to be a card type.
+     * @param installments    The installments quantity that the payment has.
+     * @param issuerId        The bank that issues the card.
      */
-    public PaymentIntent trackPayment(String screenName, String action, Long paymentId,
+    public PaymentIntent trackPayment(String screenName, Long paymentId,
                                       String paymentMethodId, String status, String statusDetail,
                                       String typeId, Integer installments, Integer issuerId) {
 
@@ -112,112 +105,26 @@ public class MPTracker {
         if (trackerInitialized) {
 
             if (!isCardPaymentType(typeId)) {
-                paymentIntent = new PaymentIntent(mPublicKey, paymentId.toString(), mFlavor, SDK_PLATFORM, SDK_TYPE, mSdkVersion, mSiteId);
+                paymentIntent = new PaymentIntent(mPublicKey, paymentId.toString(), DEFAULT_FLAVOUR, SDK_PLATFORM, SDK_TYPE, mSdkVersion, mSiteId);
                 initializeMPTrackingService();
                 mMPTrackingService.trackPaymentId(paymentIntent, mContext);
             }
 
-            // NEW 1.2.0: TracksListener
-            Map<String, String> eventMap = new HashMap<>();
-            eventMap.put("screen_name", screenName);
-            eventMap.put("payment_id", "" + paymentId);
-            eventMap.put("status", status);
-            eventMap.put("status_detail", statusDetail);
-            eventMap.put("type_id", typeId);
-            eventMap.put("payment_method", paymentMethodId);
-            eventMap.put("installments", "" + installments);
-            eventMap.put("issuer_id", "" + issuerId);
-            trackEventPerformedListener(eventMap);
         }
         return paymentIntent;
     }
 
     /**
-     * @param token The card token id of a payment. Cannot be {@code null}. if it's null, the track
-     *              will not be sent.
+     * @param token The card token id of a payment. Cannot be {@code null}.
      */
     public TrackingIntent trackToken(String token) {
         TrackingIntent trackingIntent = null;
         if (trackerInitialized && !isEmpty(token)) {
-            trackingIntent = new TrackingIntent(mPublicKey, token, mFlavor, SDK_PLATFORM, SDK_TYPE, mSdkVersion, mSiteId);
+            trackingIntent = new TrackingIntent(mPublicKey, token, DEFAULT_FLAVOUR, SDK_PLATFORM, SDK_TYPE, mSdkVersion, mSiteId);
             initializeMPTrackingService();
             mMPTrackingService.trackToken(trackingIntent, mContext);
         }
         return trackingIntent;
-    }
-
-    /**
-     * @param screenName The screen name where the event happens.
-     * @param action     The action that generate an event. Cannot be {@code null}. if it's null,
-     *                   the track will not be sent.
-     * @param result     The result indicates if an action is success or failure. Cannot be {@code
-     *                   null}. if it's null, the track will not be sent.
-     * @param flavor     The flavor that the merchant has integrated. Cannot be {@code null}. if
-     *                   it's null, the track will not be sent.
-     * @param publicKey  The public key of the merchant. Cannot be {@code null}. if it's null, the
-     *                   track will not be sent.
-     * @param siteId     The country where the preference come. Cannot be {@code null}. if it's
-     *                   null, the track will not be sent.
-     * @param sdkVersion The Mercado Pago sdk version. Cannot be {@code null}. if it's null, the
-     *                   track will not be sent.
-     * @param context    Reference to Android Context. Cannot be {@code null}.
-     */
-    public void trackEvent(String screenName, String action, String result, String flavor, String publicKey, String siteId, String sdkVersion, Context context) {
-        if (publicKey == null) {
-            publicKey = mPublicKey;
-        }
-        if (siteId == null) {
-            siteId = getSiteId();
-        }
-        if (sdkVersion == null) {
-            sdkVersion = mSdkVersion;
-        }
-        if (context == null) {
-            context = mContext;
-        }
-
-        initTracker(flavor, publicKey, siteId, sdkVersion, context);
-
-        if (trackerInitialized) {
-            // NEW 1.2.0: TracksListener
-            Map<String, String> eventMap = new HashMap<>();
-            if (screenName != null) {
-                eventMap.put("screen_name", screenName);
-            }
-            if (action != null) {
-                eventMap.put("action", action);
-            }
-            if (result != null) {
-                eventMap.put("result", result);
-            }
-            trackEventPerformedListener(eventMap);
-        }
-
-    }
-
-    /**
-     * @param name       The screen name where an event happens.
-     * @param flavor     The flavor that the merchant has integrated. Cannot be {@code null}. if
-     *                   it's null, the track will not be sent.
-     * @param publicKey  The public key of the merchant. Cannot be {@code null}. if it's null, the
-     *                   track will not be sent.
-     * @param siteId     The country where the preference come. Cannot be {@code null}. if it's
-     *                   null, the track will not be sent.
-     * @param sdkVersion The Mercado Pago sdk version. Cannot be {@code null}. if it's null, the
-     *                   track will not be sent.
-     * @param context    Reference to Android Context. Cannot be {@code null}.
-     */
-    public void trackScreen(String name, String flavor, String publicKey, String siteId, String sdkVersion, Context context) {
-        if (siteId == null) {
-            siteId = getSiteId();
-        }
-
-        initTracker(flavor, publicKey, siteId, sdkVersion, context);
-
-        if (trackerInitialized) {
-            // NEW 1.2.0: TracksListener
-            trackScreenLaunchedListener(name);
-        }
     }
 
     /**
@@ -262,62 +169,49 @@ public class MPTracker {
 
 
     /**
-     * @param flavor     The flavor that the merchant has integrated. Cannot be {@code null}. if
-     *                   it's null, the track will not be sent.
-     * @param publicKey  The public key of the merchant. Cannot be {@code null}. if it's null, the
-     *                   track will not be sent.
-     * @param siteId     The country where the preference come. Cannot be {@code null}. if it's
-     *                   null, the track will not be sent.
-     * @param sdkVersion The Mercado Pago sdk version. Cannot be {@code null}. if it's null, the
-     *                   track will not be sent.
+     * @param publicKey  The public key of the merchant. Cannot be {@code null}.
+     * @param siteId     The site that comes in the preference. Cannot be {@code null}.
+     * @param sdkVersion The Mercado Pago sdk version. Cannot be {@code null}.
      * @param context    Reference to Android Context. Cannot be {@code null}.
      */
-    public void initTracker(String flavor, String publicKey, String siteId, String sdkVersion, Context context) {
+    public void initTracker(String publicKey, String siteId, String sdkVersion, Context context) {
         if (!isTrackerInitialized()) {
-            if (areInitParametersValid(flavor, publicKey, siteId, sdkVersion, context)) {
+            if (areInitParametersValid(publicKey, siteId, sdkVersion, context)) {
                 trackerInitialized = true;
 
-                this.mFlavor = flavor;
                 this.mPublicKey = publicKey;
                 this.mSiteId = siteId;
                 this.mSdkVersion = sdkVersion;
                 this.mContext = context;
-
             }
         }
     }
 
     /**
-     * Validate all init parameters
      *
-     * @param flavor     The flavor that the merchant has integrated. Cannot be {@code null}. if
-     *                   it's null, the track will not be sent.
-     * @param publicKey  The public key of the merchant. Cannot be {@code null}. if it's null, the
-     *                   track will not be sent.
-     * @param siteId     The country where the preference come. Cannot be {@code null}. if it's
-     *                   null, the track will not be sent.
-     * @param sdkVersion The Mercado Pago sdk version. Cannot be {@code null}. if it's null, the
-     *                   track will not be sent.
+     * @param publicKey  The public key of the merchant. Cannot be {@code null}.
+     * @param siteId     The site that comes in the preference. Cannot be {@code null}.
+     * @param sdkVersion The Mercado Pago sdk version. Cannot be {@code null}.
      * @param context    Reference to Android Context. Cannot be {@code null}.
      * @return True if all parameters are valid. False if any parameter is invalid
      */
-    private boolean areInitParametersValid(String flavor, String publicKey, String siteId, String sdkVersion, Context context) {
-        return !isEmpty(flavor) && !isEmpty(publicKey) && !isEmpty(sdkVersion) && !isEmpty(siteId) && context != null;
+    private boolean areInitParametersValid(String publicKey, String siteId, String sdkVersion, Context context) {
+        return !isEmpty(publicKey) && !isEmpty(sdkVersion) && !isEmpty(siteId) && context != null;
     }
 
     /**
      * Check if MPTracker is initialized
      *
-     * @return True if is initialized. False if is not initialize.
+     * @return True if is initialized. False if is not initialized.
      */
     private boolean isTrackerInitialized() {
-        return this.mFlavor != null && this.mPublicKey != null && this.mSdkVersion != null && this.mSiteId != null && this.mContext != null;
+        return this.mPublicKey != null && this.mSdkVersion != null && this.mSiteId != null && this.mContext != null;
     }
 
     /**
      * Get the set site
      *
-     * @return The site that set the first track. if it is null return a site by default
+     * @return The site that is set in the first track. if it is null returns an empty string
      */
     private String getSiteId() {
         return mSiteId == null ? DEFAULT_SITE : mSiteId;

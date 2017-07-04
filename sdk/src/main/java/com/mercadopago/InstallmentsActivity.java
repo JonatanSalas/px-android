@@ -189,7 +189,7 @@ public class InstallmentsActivity extends MercadoPagoBaseActivity implements Ins
 
     public void setContentView() {
         String siteId = mPresenter.getSite() == null ? "" : mPresenter.getSite().getId();
-        MPTracker.getInstance().trackScreen("CARD_INSTALLMENTS", "2", mPublicKey, siteId, BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackScreen("CARD_INSTALLMENTS", "2", mPublicKey, siteId, BuildConfig.VERSION_NAME, this);
 
         if (mLowResActive) {
             setContentViewLowRes();
