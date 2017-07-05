@@ -31,59 +31,45 @@ import static org.junit.Assert.*;
 @LargeTest
 public class MPTrackerTest {
 
-    public static final String MOCKED_CLIENT_ID = "12345";
-    public static final String MOCKED_CHECKOUT_VERSION = "3.0.0";
-    public static final String MOCKED_PLATFORM = "native/android";
-    public static final String MOCKED_PUBLIC_KEY = "public_key";
-    public static final String MOCKED_MODEL = "model";
-    public static final String MOCKED_OS = "android";
-    public static final String MOCKED_RESOLUTION = "resolution";
-    public static final String MOCKED_SCREEN_SIZE = "size";
-    public static final String MOCKED_SYSTEM_VERSION = "system_version";
-    public static final String MOCKED_ACTION = "action";
-    public static final String MOCKED_CATEGORY = "category";
-    public static final String MOCKED_LABEL = "label";
-    public static final String MOCKED_VALUE = "value";
+    private static final String MOCKED_CLIENT_ID = "12345";
+    private static final String MOCKED_CHECKOUT_VERSION = "3.0.0";
+    private static final String MOCKED_PLATFORM = "native/android";
+    private static final String MOCKED_PUBLIC_KEY = "public_key";
+    private static final String MOCKED_MODEL = "model";
+    private static final String MOCKED_OS = "android";
+    private static final String MOCKED_RESOLUTION = "resolution";
+    private static final String MOCKED_SCREEN_SIZE = "size";
+    private static final String MOCKED_SYSTEM_VERSION = "system_version";
+    private static final String MOCKED_ACTION = "action";
+    private static final String MOCKED_CATEGORY = "category";
+    private static final String MOCKED_LABEL = "label";
+    private static final String MOCKED_VALUE = "value";
 
-    public static final String MOCKED_SCREEN_ID_1 = "id_1";
-    public static final String MOCKED_SCREEN_NAME_1 = "name_1";
-    public static final String MOCKED_ERROR_CLASS_1 = "class_1";
-    public static final String MOCKED_ERROR_MESSAGE_1 = "message_1";
+    private static final String MOCKED_SCREEN_ID_1 = "id_1";
+    private static final String MOCKED_SCREEN_NAME_1 = "name_1";
+    private static final String MOCKED_ERROR_CLASS_1 = "class_1";
+    private static final String MOCKED_ERROR_MESSAGE_1 = "message_1";
 
-    public static final String ACTION_EVENT_KEY_ACTION = "action";
-    public static final String ACTION_EVENT_KEY_CATEGORY = "category";
-    public static final String ACTION_EVENT_KEY_LABEL = "label";
-    public static final String ACTION_EVENT_KEY_VALUE = "value";
-    public static final String ACTION_EVENT_KEY_SCREEN_ID = "screen_id";
-    public static final String ACTION_EVENT_KEY_SCREEN_NAME = "screen_name";
+    private static final String ACTION_EVENT_KEY_ACTION = "action";
+    private static final String ACTION_EVENT_KEY_CATEGORY = "category";
+    private static final String ACTION_EVENT_KEY_LABEL = "label";
+    private static final String ACTION_EVENT_KEY_VALUE = "value";
+    private static final String ACTION_EVENT_KEY_SCREEN_ID = "screen_id";
+    private static final String ACTION_EVENT_KEY_SCREEN_NAME = "screen_name";
 
-    public static final Long MOCKED_PAYMENT_ID = 123L;
-    public static final String MOCKED_PAYMENT_METHOD_ID = "pm_id";
-    public static final String MOCKED_PAYMENT_STATUS = "status";
-    public static final String MOCKED_PAYMENT_STATUS_DETAIL = "status_detail";
-    public static final String MOCKED_PAYMENT_TYPE_ID = "pm_type_id";
-    public static final Integer MOCKED_PAYMENT_INSTALLMENTS = 1;
-    public static final Integer MOCKED_PAYMENT_ISSUER = 100;
+    private static final Long MOCKED_PAYMENT_ID = 123L;
+    private static final String MOCKED_PAYMENT_TYPE_ID = "pm_type_id";
 
-    public static final String PAYMENT_EVENT_KEY_SCREEN_NAME = "screen_name";
-    public static final String PAYMENT_EVENT_KEY_PAYMENT_ID = "payment_id";
-    public static final String PAYMENT_EVENT_KEY_STATUS = "status";
-    public static final String PAYMENT_EVENT_KEY_STATUS_DETAIL = "status_detail";
-    public static final String PAYMENT_EVENT_KEY_PAYMENT_TYPE_ID = "type_id";
-    public static final String PAYMENT_EVENT_KEY_PAYMENT_METHOD_ID = "payment_method";
-    public static final String PAYMENT_EVENT_KEY_INSTALLMENTS = "installments";
-    public static final String PAYMENT_EVENT_KEY_ISSUER_ID = "issuer_id";
+    private static final String MOCKED_SITE_ID = "site_id";
+    private static final String MOCKED_PAYMENT_PLATFORM = "Android";
+    private static final String MOCKED_SDK_TYPE = "native";
 
-    public static final String MOCKED_SITE_ID = "site_id";
-    public static final String MOCKED_PAYMENT_PLATFORM = "Android";
-    public static final String MOCKED_SDK_TYPE = "native";
+    private static final String MOCKED_TOKEN_ID = "1234";
 
-    public static final String MOCKED_TOKEN_ID = "1234";
-
-    public static final String MOCKED_STACK_STRACE_FILE = "file_name";
-    public static final Integer MOCKED_STACK_TRACE_LINE = 123;
-    public static final Integer MOCKED_STACK_TRACE_COLUMN = 3;
-    public static final String MOCKED_STACK_TRACE_METHOD = "method_name";
+    private static final String MOCKED_STACK_TRACE_FILE = "file_name";
+    private static final Integer MOCKED_STACK_TRACE_LINE = 123;
+    private static final Integer MOCKED_STACK_TRACE_COLUMN = 3;
+    private static final String MOCKED_STACK_TRACE_METHOD = "method_name";
 
     @Test
     public void sendScreenViewEventTrack() {
@@ -333,23 +319,14 @@ public class MPTrackerTest {
 
             @Override
             public void onEventPerformed(Map<String, String> event) {
-                assertEquals(event.get(PAYMENT_EVENT_KEY_SCREEN_NAME), MOCKED_SCREEN_NAME_1);
-                assertEquals(event.get(PAYMENT_EVENT_KEY_PAYMENT_ID), String.valueOf(MOCKED_PAYMENT_ID));
-                assertEquals(event.get(PAYMENT_EVENT_KEY_STATUS), MOCKED_PAYMENT_STATUS);
-                assertEquals(event.get(PAYMENT_EVENT_KEY_STATUS_DETAIL), MOCKED_PAYMENT_STATUS_DETAIL);
-                assertEquals(event.get(PAYMENT_EVENT_KEY_PAYMENT_TYPE_ID), MOCKED_PAYMENT_TYPE_ID);
-                assertEquals(event.get(PAYMENT_EVENT_KEY_PAYMENT_METHOD_ID), MOCKED_PAYMENT_METHOD_ID);
-                assertEquals(event.get(PAYMENT_EVENT_KEY_INSTALLMENTS), String.valueOf(MOCKED_PAYMENT_INSTALLMENTS));
-                assertEquals(event.get(PAYMENT_EVENT_KEY_ISSUER_ID), String.valueOf(MOCKED_PAYMENT_ISSUER));
+
             }
         });
 
         //Initialize tracker before creating a payment
         MPTracker.getInstance().initTracker(MOCKED_PUBLIC_KEY, MOCKED_SITE_ID, MOCKED_CHECKOUT_VERSION, appContext);
 
-        PaymentIntent paymentIntent = MPTracker.getInstance().trackPayment(MOCKED_SCREEN_NAME_1, MOCKED_PAYMENT_ID,
-                MOCKED_PAYMENT_METHOD_ID, MOCKED_PAYMENT_STATUS, MOCKED_PAYMENT_STATUS_DETAIL,
-                MOCKED_PAYMENT_TYPE_ID, MOCKED_PAYMENT_INSTALLMENTS, MOCKED_PAYMENT_ISSUER);
+        PaymentIntent paymentIntent = MPTracker.getInstance().trackPayment(MOCKED_PAYMENT_ID, MOCKED_PAYMENT_TYPE_ID);
 
         assertEquals(paymentIntent.mPaymentId, String.valueOf(MOCKED_PAYMENT_ID));
         assertEquals(paymentIntent.mPlatform, MOCKED_PAYMENT_PLATFORM);
@@ -364,6 +341,18 @@ public class MPTrackerTest {
         Context appContext = InstrumentationRegistry.getTargetContext();
 
         MPTracker.getInstance().setMPTrackingService(new MPMockedTrackingService());
+
+        MPTracker.getInstance().setTracksListener(new TracksListener() {
+            @Override
+            public void onScreenLaunched(String screenName) {
+
+            }
+
+            @Override
+            public void onEventPerformed(Map<String, String> event) {
+
+            }
+        });
 
         //Initialize tracker before creating a token
         MPTracker.getInstance().initTracker(MOCKED_PUBLIC_KEY, MOCKED_SITE_ID, MOCKED_CHECKOUT_VERSION, appContext);
@@ -401,7 +390,7 @@ public class MPTrackerTest {
         List<Event> events = new ArrayList<>();
 
         List<StackTraceInfo> stackTraceInfoList = new ArrayList<>();
-        StackTraceInfo stackTraceInfo = new StackTraceInfo(MOCKED_STACK_STRACE_FILE, MOCKED_STACK_TRACE_LINE,
+        StackTraceInfo stackTraceInfo = new StackTraceInfo(MOCKED_STACK_TRACE_FILE, MOCKED_STACK_TRACE_LINE,
                 MOCKED_STACK_TRACE_COLUMN, MOCKED_STACK_TRACE_METHOD);
         stackTraceInfoList.add(stackTraceInfo);
 
@@ -439,7 +428,7 @@ public class MPTrackerTest {
         List<StackTraceInfo> sentStackTraceList = sentEvent.getStackTraceList();
         assertTrue(sentStackTraceList.size() == 1);
         StackTraceInfo sentStackTrace = sentStackTraceList.get(0);
-        assertEquals(sentStackTrace.getFile(), MOCKED_STACK_STRACE_FILE);
+        assertEquals(sentStackTrace.getFile(), MOCKED_STACK_TRACE_FILE);
         assertEquals(sentStackTrace.getLineNumber(), MOCKED_STACK_TRACE_LINE);
         assertEquals(sentStackTrace.getColumnNumber(), MOCKED_STACK_TRACE_COLUMN);
         assertEquals(sentStackTrace.getMethod(), MOCKED_STACK_TRACE_METHOD);

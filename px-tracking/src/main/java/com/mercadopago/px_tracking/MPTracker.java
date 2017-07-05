@@ -87,18 +87,10 @@ public class MPTracker {
     }
 
     /**
-     * @param screenName      The name of the screen
      * @param paymentId       The payment id of a payment method off. Cannot be {@code null}.
-     * @param paymentMethodId The payment method id. Cannot be {@code null}.
-     * @param status          The payment status. Cannot be {@code null}.
-     * @param statusDetail    The payment status detail. Cannot be {@code null}.
      * @param typeId          The payment type id. It has to be a card type.
-     * @param installments    The installments quantity that the payment has.
-     * @param issuerId        The bank that issues the card.
      */
-    public PaymentIntent trackPayment(String screenName, Long paymentId,
-                                      String paymentMethodId, String status, String statusDetail,
-                                      String typeId, Integer installments, Integer issuerId) {
+    public PaymentIntent trackPayment(Long paymentId, String typeId) {
 
         PaymentIntent paymentIntent = null;
 
@@ -140,7 +132,6 @@ public class MPTracker {
         EventTrackIntent eventTrackIntent = new EventTrackIntent(clientId, appInformation, deviceInfo, events);
         initializeMPTrackingService();
         mMPTrackingService.trackEvent(eventTrackIntent, context);
-
 
         for (Event event: eventTrackIntent.getEvents()) {
             if (event.getType().equals(Event.TYPE_ACTION)) {

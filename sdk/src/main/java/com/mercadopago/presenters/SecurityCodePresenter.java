@@ -161,7 +161,7 @@ public class SecurityCodePresenter {
 
     public void initializeMPTracker() {
         //Initialize tracker before creating a token
-        MPTracker.getInstance().initTracker("3", mPublicKey, mSiteId, BuildConfig.VERSION_NAME, mContext);
+        MPTracker.getInstance().initTracker(mPublicKey, mSiteId, BuildConfig.VERSION_NAME, mContext);
     }
 
     public void recoverFromFailure() {

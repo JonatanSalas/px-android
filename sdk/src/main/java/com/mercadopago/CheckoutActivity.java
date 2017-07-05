@@ -125,6 +125,12 @@ public class CheckoutActivity extends MercadoPagoBaseActivity implements Checkou
     }
 
     @Override
+    public void initializeMPTracker() {
+        //Initialize tracker before creating a token
+        MPTracker.getInstance().initTracker(mMerchantPublicKey, mCheckoutPresenter.getCheckoutPreference().getSite().getId(), BuildConfig.VERSION_NAME, this);
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -229,7 +235,7 @@ public class CheckoutActivity extends MercadoPagoBaseActivity implements Checkou
             PaymentMethod paymentMethod = JsonUtil.getInstance().fromJson(data.getStringExtra("paymentMethod"), PaymentMethod.class);
 
             //Initialize tracker before creating a payment
-            MPTracker.getInstance().initTracker("3", mMerchantPublicKey, mCheckoutPresenter.getCheckoutPreference().getSite().getId(),
+            MPTracker.getInstance().initTracker(mMerchantPublicKey, mCheckoutPresenter.getCheckoutPreference().getSite().getId(),
                     BuildConfig.VERSION_NAME, this);
 
             mCheckoutPresenter.onPaymentMethodSelectionResponse(paymentMethod, issuer, payerCost, token, discount);
