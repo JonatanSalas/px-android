@@ -421,7 +421,6 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
     @Override
     public void onValidStart() {
         mPresenter.initializeMercadoPago();
-        mPresenter.initializeMPTracker();
         mPresenter.initializeCardToken();
         initializeViews();
         loadViews();
@@ -1137,7 +1136,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
     }
 
     private void requestCardNumberFocus() {
-//        MPTracker.getInstance().trackScreen("CARD_NUMBER", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackInitialScreen("CARD_NUMBER", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
         disableBackInputButton();
         mCurrentEditingEditText = CARD_NUMBER_INPUT;
         openKeyboard(mCardNumberEditText);
@@ -1152,7 +1151,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
         if (!mPresenter.validateCardNumber()) {
             return;
         }
-//        MPTracker.getInstance().trackScreen("CARD_HOLDER_NAME", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackInitialScreen("CARD_HOLDER_NAME", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
         enableBackInputButton();
         mCurrentEditingEditText = CARDHOLDER_NAME_INPUT;
         openKeyboard(mCardHolderNameEditText);
@@ -1165,7 +1164,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
         if (!mPresenter.validateCardName()) {
             return;
         }
-//        MPTracker.getInstance().trackScreen("CARD_EXPIRY_DATE", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackInitialScreen("CARD_EXPIRY_DATE", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
         enableBackInputButton();
         mCurrentEditingEditText = CARD_EXPIRYDATE_INPUT;
         openKeyboard(mCardExpiryDateEditText);
@@ -1185,7 +1184,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
         if (mCurrentEditingEditText.equals(CARD_EXPIRYDATE_INPUT) ||
                 mCurrentEditingEditText.equals(CARD_IDENTIFICATION_INPUT) ||
                 mCurrentEditingEditText.equals(CARD_SECURITYCODE_INPUT)) {
-//            MPTracker.getInstance().trackScreen("CARD_SECURITY_CODE", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
+//            MPTracker.getInstance().trackInitialScreen("CARD_SECURITY_CODE", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
             enableBackInputButton();
             mCurrentEditingEditText = CARD_SECURITYCODE_INPUT;
             openKeyboard(mSecurityCodeEditText);
@@ -1203,7 +1202,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
                 (!mPresenter.isSecurityCodeRequired() && !mPresenter.validateExpiryDate())) {
             return;
         }
-//        MPTracker.getInstance().trackScreen("IDENTIFICATION_NUMBER", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackInitialScreen("IDENTIFICATION_NUMBER", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
         enableBackInputButton();
         mCurrentEditingEditText = CARD_IDENTIFICATION_INPUT;
         openKeyboard(mIdentificationNumberEditText);

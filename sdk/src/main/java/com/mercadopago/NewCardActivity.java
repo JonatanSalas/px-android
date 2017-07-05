@@ -98,7 +98,7 @@ public class NewCardActivity extends AppCompatActivity {
             }
         });
 
-//        MPTracker.getInstance().trackScreen("NEW_CARD", "2", mKey, "", BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackInitialScreen("NEW_CARD", "2", mKey, "", BuildConfig.VERSION_NAME, this);
 
         // Set security code visibility
         setSecurityCodeLayout();

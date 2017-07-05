@@ -255,16 +255,16 @@ public class MercadoPagoComponents {
                     throw new IllegalStateException("key is null");
 
                 //TODO sacar: testing tracker
-                MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
-                        .setContext(activity.getApplicationContext())
-                        .setCheckoutVersion(BuildConfig.VERSION_NAME)
-                        .setPublicKey(merchantPublicKey)
-                        .build();
-                ScreenViewEvent event = new ScreenViewEvent.Builder()
-                        .setScreenId(TrackingUtil.SCREEN_ID_PAYMENT_METHODS)
-                        .setScreenName(TrackingUtil.SCREEN_NAME_PAYMENT_METHODS)
-                        .build();
-                mpTrackingProvider.addTrackEvent(event);
+//                MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
+//                        .setContext(activity.getApplicationContext())
+//                        .setCheckoutVersion(BuildConfig.VERSION_NAME)
+//                        .setPublicKey(merchantPublicKey)
+//                        .build();
+//                ScreenViewEvent event = new ScreenViewEvent.Builder()
+//                        .setScreenId(TrackingUtil.SCREEN_ID_PAYMENT_METHODS)
+//                        .setScreenName(TrackingUtil.SCREEN_NAME_PAYMENT_METHODS)
+//                        .build();
+//                mpTrackingProvider.addTrackEvent(event);
 
                 startPaymentVaultActivity();
             }

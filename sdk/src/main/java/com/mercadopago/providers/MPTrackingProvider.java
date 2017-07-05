@@ -74,7 +74,6 @@ public class MPTrackingProvider {
         //Fow now, we call the service on real time
         MPTracker.getInstance().trackEventList(clientId, appInformation, deviceInfo, eventList, context);
 
-
     }
 
 

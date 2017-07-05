@@ -141,7 +141,7 @@ public class CongratsActivity extends MercadoPagoBaseActivity implements ReviewS
 
     protected void setContentView() {
         String siteId = mSite == null ? "" : mSite.getId();
-//        MPTracker.getInstance().trackScreen("RESULT", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackInitialScreen("RESULT", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
         setContentView(R.layout.mpsdk_activity_congrats);
     }
 

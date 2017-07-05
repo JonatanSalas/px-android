@@ -102,7 +102,7 @@ public class RejectionActivity extends MercadoPagoBaseActivity implements TimerO
     }
 
     protected void setContentView() {
-//        MPTracker.getInstance().trackScreen("RESULT", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackInitialScreen("RESULT", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, this);
         setContentView(R.layout.mpsdk_activity_rejection);
     }
 

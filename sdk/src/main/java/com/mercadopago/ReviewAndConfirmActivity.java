@@ -420,7 +420,7 @@ public class ReviewAndConfirmActivity extends MercadoPagoBaseActivity implements
     private void trackScreen() {
         if(mSite != null && !TextUtil.isEmpty(mPublicKey)) {
             String siteId = mSite == null ?  "" : mSite.getId();
-//            MPTracker.getInstance().trackScreen("REVIEW_AND_CONFIRM", "2", mPublicKey, siteId, BuildConfig.VERSION_NAME, this);
+//            MPTracker.getInstance().trackInitialScreen("REVIEW_AND_CONFIRM", "2", mPublicKey, siteId, BuildConfig.VERSION_NAME, this);
         }
     }
 }

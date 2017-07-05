@@ -106,7 +106,7 @@ public class SecurityCodeActivity extends MercadoPagoBaseActivity implements Sec
     }
 
     public void setContentView() {
-//        MPTracker.getInstance().trackScreen("SECURITY_CODE_CARD", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackInitialScreen("SECURITY_CODE_CARD", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
         setContentViewNormal();
     }
 
@@ -177,7 +177,6 @@ public class SecurityCodeActivity extends MercadoPagoBaseActivity implements Sec
     @Override
     public void onValidStart() {
         mPresenter.initializeMercadoPago();
-        mPresenter.initializeMPTracker();
         initializeViews();
         mPresenter.initializeSecurityCodeSettings();
         loadViews();

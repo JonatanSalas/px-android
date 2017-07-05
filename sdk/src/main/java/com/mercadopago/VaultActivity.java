@@ -133,7 +133,7 @@ public class VaultActivity extends AppCompatActivity {
             setFormGoButton(mSecurityCodeText);
 
             String siteId = mSite == null ? "" : mSite.getId();
-//            MPTracker.getInstance().trackScreen("VAULT", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
+//            MPTracker.getInstance().trackInitialScreen("VAULT", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
 
             initPaymentFlow();
         } else {

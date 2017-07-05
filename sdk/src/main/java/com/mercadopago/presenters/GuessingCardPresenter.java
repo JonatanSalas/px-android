@@ -319,11 +319,6 @@ public class GuessingCardPresenter {
                 .build();
     }
 
-    public void initializeMPTracker() {
-        //Initialize tracker before creating a token
-        MPTracker.getInstance().initTracker(mPublicKey, mSiteId, BuildConfig.VERSION_NAME, mContext);
-    }
-
     public CardInformation getCardInformation() {
         return mCardInfo;
     }

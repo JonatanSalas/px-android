@@ -28,7 +28,9 @@ import com.mercadopago.preferences.ServicePreference;
 import com.mercadopago.presenters.CheckoutPresenter;
 import com.mercadopago.providers.CheckoutProvider;
 import com.mercadopago.providers.CheckoutProviderImpl;
+import com.mercadopago.providers.MPTrackingProvider;
 import com.mercadopago.px_tracking.MPTracker;
+import com.mercadopago.px_tracking.model.ScreenViewEvent;
 import com.mercadopago.util.ApiUtil;
 import com.mercadopago.util.CurrenciesUtil;
 import com.mercadopago.util.ErrorUtil;
@@ -36,6 +38,7 @@ import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
 import com.mercadopago.util.MercadoPagoUtil;
 import com.mercadopago.util.TextUtil;
+import com.mercadopago.util.TrackingUtil;
 import com.mercadopago.views.CheckoutView;
 
 import java.math.BigDecimal;
@@ -127,7 +130,21 @@ public class CheckoutActivity extends MercadoPagoBaseActivity implements Checkou
     @Override
     public void initializeMPTracker() {
         //Initialize tracker before creating a token
-        MPTracker.getInstance().initTracker(mMerchantPublicKey, mCheckoutPresenter.getCheckoutPreference().getSite().getId(), BuildConfig.VERSION_NAME, this);
+        MPTracker.getInstance().initTracker(mMerchantPublicKey, mCheckoutPresenter.getCheckoutPreference().getSite().getId(), BuildConfig.VERSION_NAME, getApplicationContext());
+    }
+
+    @Override
+    public void trackScreen() {
+        MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
+                .setContext(this)
+                .setCheckoutVersion(BuildConfig.VERSION_NAME)
+                .setPublicKey(mMerchantPublicKey)
+                .build();
+        ScreenViewEvent event = new ScreenViewEvent.Builder()
+                .setScreenId(TrackingUtil.SCREEN_ID_CHECKOUT)
+                .setScreenName(TrackingUtil.SCREEN_NAME_CHECKOUT)
+                .build();
+        mpTrackingProvider.addTrackEvent(event);
     }
 
     @Override
@@ -235,8 +252,8 @@ public class CheckoutActivity extends MercadoPagoBaseActivity implements Checkou
             PaymentMethod paymentMethod = JsonUtil.getInstance().fromJson(data.getStringExtra("paymentMethod"), PaymentMethod.class);
 
             //Initialize tracker before creating a payment
-            MPTracker.getInstance().initTracker(mMerchantPublicKey, mCheckoutPresenter.getCheckoutPreference().getSite().getId(),
-                    BuildConfig.VERSION_NAME, this);
+//            MPTracker.getInstance().initTracker(mMerchantPublicKey, mCheckoutPresenter.getCheckoutPreference().getSite().getId(),
+//                    BuildConfig.VERSION_NAME, this);
 
             mCheckoutPresenter.onPaymentMethodSelectionResponse(paymentMethod, issuer, payerCost, token, discount);
         } else if (isErrorResult(data)) {

@@ -176,7 +176,7 @@ public class BankDealsActivity extends MercadoPagoActivity {
     }
 
     protected void solveBankDeals(List<BankDeal> bankDeals) {
-//        MPTracker.getInstance().trackScreen("BANK_DEALS", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, getActivity());
+//        MPTracker.getInstance().trackInitialScreen("BANK_DEALS", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, getActivity());
         mRecyclerView.setAdapter(new BankDealsAdapter(getActivity(), bankDeals, getDpadSelectionCallback(), new View.OnClickListener() {
             @Override
             public void onClick(View view) {

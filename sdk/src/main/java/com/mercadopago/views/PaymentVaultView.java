@@ -44,4 +44,8 @@ public interface PaymentVaultView extends MvpView {
     void startDiscountFlow(BigDecimal transactionAmount);
 
     void cleanPaymentMethodOptions();
+
+    void trackInitialScreen();
+
+    void trackChildrenScreen();
 }

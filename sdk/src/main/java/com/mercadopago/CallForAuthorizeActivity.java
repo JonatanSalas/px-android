@@ -95,7 +95,7 @@ public class CallForAuthorizeActivity extends MercadoPagoBaseActivity implements
 
     protected void setContentView() {
         String siteId = mSite == null ? "" : mSite.getId();
-//        MPTracker.getInstance().trackScreen("CALL_FOR_AUTHORIZE", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackInitialScreen("CALL_FOR_AUTHORIZE", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
         setContentView(R.layout.mpsdk_activity_call_for_authorize);
     }
 

@@ -176,6 +176,8 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
     }
 
     private void initPaymentMethodSearch() {
+        getView().trackInitialScreen();
+
         getView().setTitle(getResourcesProvider().getTitle());
 
         if (mPaymentMethodSearch == null) {
@@ -221,6 +223,8 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
     }
 
     private void showSelectedItemChildren() {
+        getView().trackChildrenScreen();
+
         getView().setTitle(mSelectedSearchItem.getChildrenHeader());
         getView().showSearchItems(mSelectedSearchItem.getChildren(), getPaymentMethodSearchItemSelectionCallback());
     }
