@@ -86,7 +86,7 @@ public class PaymentMethodsActivity extends MercadoPagoBaseActivity implements P
     }
 
     protected void setContentView() {
-//        MPTracker.getInstance().trackInitialScreen("PAYMENT_METHODS", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackScreen("PAYMENT_METHODS", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, this);
         setContentView(R.layout.mpsdk_activity_payment_methods);
     }
 

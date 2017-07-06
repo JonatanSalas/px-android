@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.mercadopago.controllers.CheckoutErrorHandler;
 import com.mercadopago.exceptions.MercadoPagoError;
+import com.mercadopago.providers.MPTrackingProvider;
 import com.mercadopago.util.ApiUtil;
 import com.mercadopago.util.ErrorUtil;
 import com.mercadopago.util.JsonUtil;
@@ -32,6 +33,7 @@ public class ErrorActivity extends MercadoPagoBaseActivity {
         getActivityParameters();
         if (validParameters()) {
             initializeControls();
+            trackScreen();
             fillData();
         } else {
             Intent intent = new Intent();
@@ -50,6 +52,15 @@ public class ErrorActivity extends MercadoPagoBaseActivity {
 
     private void getActivityParameters() {
         this.mMercadoPagoError = JsonUtil.getInstance().fromJson(getIntent().getStringExtra(ErrorUtil.ERROR_EXTRA_KEY), MercadoPagoError.class);
+    }
+
+    private void trackScreen() {
+//        MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
+//                .setContext(this)
+//                .setCheckoutVersion(BuildConfig.VERSION_NAME)
+//                .setPublicKey(mMerchantPublicKey)
+//                .build();
+
     }
 
     private void initializeControls() {

@@ -19,11 +19,14 @@ import com.mercadopago.decorations.DividerItemDecoration;
 import com.mercadopago.model.ApiException;
 import com.mercadopago.model.BankDeal;
 import com.mercadopago.preferences.DecorationPreference;
+import com.mercadopago.providers.MPTrackingProvider;
 import com.mercadopago.px_tracking.MPTracker;
+import com.mercadopago.px_tracking.model.ScreenViewEvent;
 import com.mercadopago.util.ApiUtil;
 import com.mercadopago.util.ErrorUtil;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
+import com.mercadopago.util.TrackingUtil;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -45,6 +48,7 @@ public class BankDealsActivity extends MercadoPagoActivity {
 
     @Override
     protected void onValidStart() {
+        trackInitialScreen();
 
         mMercadoPago = new MercadoPagoServices.Builder()
                 .setContext(getActivity())
@@ -53,6 +57,19 @@ public class BankDealsActivity extends MercadoPagoActivity {
                 .build();
 
         getBankDeals();
+    }
+
+    protected void trackInitialScreen() {
+        MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
+                .setContext(this)
+                .setCheckoutVersion(BuildConfig.VERSION_NAME)
+                .setPublicKey(mMerchantPublicKey)
+                .build();
+        ScreenViewEvent event = new ScreenViewEvent.Builder()
+                .setScreenId(TrackingUtil.SCREEN_ID_BANK_DEALS)
+                .setScreenName(TrackingUtil.SCREEN_NAME_BANK_DEALS)
+                .build();
+        mpTrackingProvider.addTrackEvent(event);
     }
 
     @Override
@@ -176,7 +193,7 @@ public class BankDealsActivity extends MercadoPagoActivity {
     }
 
     protected void solveBankDeals(List<BankDeal> bankDeals) {
-//        MPTracker.getInstance().trackInitialScreen("BANK_DEALS", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, getActivity());
+//        MPTracker.getInstance().trackScreen("BANK_DEALS", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, getActivity());
         mRecyclerView.setAdapter(new BankDealsAdapter(getActivity(), bankDeals, getDpadSelectionCallback(), new View.OnClickListener() {
             @Override
             public void onClick(View view) {

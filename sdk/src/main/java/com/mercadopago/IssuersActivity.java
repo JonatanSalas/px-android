@@ -138,7 +138,7 @@ public class IssuersActivity extends MercadoPagoBaseActivity implements IssuersA
     }
 
     public void setContentView() {
-//        MPTracker.getInstance().trackInitialScreen("CARD_ISSUERS", "2", mPublicKey, "", BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackScreen("CARD_ISSUERS", "2", mPublicKey, "", BuildConfig.VERSION_NAME, this);
 
         if (mLowResActive) {
             setContentViewLowRes();

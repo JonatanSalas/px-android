@@ -420,6 +420,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
 
     @Override
     public void onValidStart() {
+        trackScreen();
         mPresenter.initializeMercadoPago();
         mPresenter.initializeCardToken();
         initializeViews();
@@ -436,6 +437,98 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
 
         mErrorState = NORMAL_STATE;
         mPresenter.initialize();
+    }
+
+    protected void trackScreen() {
+        String paymentTypeId = mPresenter.getPaymentTypeId();
+
+        MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
+                .setContext(this)
+                .setCheckoutVersion(BuildConfig.VERSION_NAME)
+                .setPublicKey(mPresenter.getPublicKey())
+                .build();
+
+        ScreenViewEvent event = new ScreenViewEvent.Builder()
+                .setScreenId(TrackingUtil.SCREEN_ID_CARD_FORM + paymentTypeId)
+                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM + " " + paymentTypeId)
+                .build();
+
+        mpTrackingProvider.addTrackEvent(event);
+    }
+
+    protected void trackCardNumber() {
+        String paymentTypeId = mPresenter.getPaymentTypeId();
+
+        MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
+                .setContext(this)
+                .setCheckoutVersion(BuildConfig.VERSION_NAME)
+                .setPublicKey(mPresenter.getPublicKey())
+                .build();
+        ScreenViewEvent event = new ScreenViewEvent.Builder()
+                .setScreenId(TrackingUtil.SCREEN_ID_CARD_FORM + paymentTypeId + TrackingUtil.CARD_NUMBER)
+                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM + " " + paymentTypeId + " " + TrackingUtil.CARD_NUMBER_NAME)
+                .build();
+        mpTrackingProvider.addTrackEvent(event);
+    }
+
+    protected void trackCardHolderName() {
+        String paymentTypeId = mPresenter.getPaymentTypeId();
+
+        MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
+                .setContext(this)
+                .setCheckoutVersion(BuildConfig.VERSION_NAME)
+                .setPublicKey(mPresenter.getPublicKey())
+                .build();
+        ScreenViewEvent event = new ScreenViewEvent.Builder()
+                .setScreenId(TrackingUtil.SCREEN_ID_CARD_FORM + paymentTypeId + TrackingUtil.CARD_HOLDER_NAME)
+                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM + " " + paymentTypeId + " " + TrackingUtil.CARD_HOLDER_NAME_NAME)
+                .build();
+        mpTrackingProvider.addTrackEvent(event);
+    }
+
+    protected void trackCardExpiryDate() {
+        String paymentTypeId = mPresenter.getPaymentTypeId();
+
+        MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
+                .setContext(this)
+                .setCheckoutVersion(BuildConfig.VERSION_NAME)
+                .setPublicKey(mPresenter.getPublicKey())
+                .build();
+        ScreenViewEvent event = new ScreenViewEvent.Builder()
+                .setScreenId(TrackingUtil.SCREEN_ID_CARD_FORM + paymentTypeId + TrackingUtil.CARD_EXPIRATION_DATE)
+                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM + " " + paymentTypeId + " " + TrackingUtil.CARD_EXPIRATION_DATE_NAME)
+                .build();
+        mpTrackingProvider.addTrackEvent(event);
+    }
+
+    protected void trackCardSecurityCode() {
+        String paymentTypeId = mPresenter.getPaymentTypeId();
+
+        MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
+                .setContext(this)
+                .setCheckoutVersion(BuildConfig.VERSION_NAME)
+                .setPublicKey(mPresenter.getPublicKey())
+                .build();
+        ScreenViewEvent event = new ScreenViewEvent.Builder()
+                .setScreenId(TrackingUtil.SCREEN_ID_CARD_FORM + paymentTypeId + TrackingUtil.CARD_SECURITY_CODE)
+                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM + " " + paymentTypeId + " " + TrackingUtil.CARD_SECURITY_CODE_NAME)
+                .build();
+        mpTrackingProvider.addTrackEvent(event);
+    }
+
+    protected void trackCardIdentification() {
+        String paymentTypeId = mPresenter.getPaymentTypeId();
+
+        MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
+                .setContext(this)
+                .setCheckoutVersion(BuildConfig.VERSION_NAME)
+                .setPublicKey(mPresenter.getPublicKey())
+                .build();
+        ScreenViewEvent event = new ScreenViewEvent.Builder()
+                .setScreenId(TrackingUtil.SCREEN_ID_CARD_FORM + paymentTypeId + TrackingUtil.CARD_IDENTIFICATION)
+                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM + " " + paymentTypeId + " " + TrackingUtil.CARD_IDENTIFICATION_NAME)
+                .build();
+        mpTrackingProvider.addTrackEvent(event);
     }
 
     private void initializeViews() {
@@ -1136,7 +1229,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
     }
 
     private void requestCardNumberFocus() {
-//        MPTracker.getInstance().trackInitialScreen("CARD_NUMBER", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
+        trackCardNumber();
         disableBackInputButton();
         mCurrentEditingEditText = CARD_NUMBER_INPUT;
         openKeyboard(mCardNumberEditText);
@@ -1151,7 +1244,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
         if (!mPresenter.validateCardNumber()) {
             return;
         }
-//        MPTracker.getInstance().trackInitialScreen("CARD_HOLDER_NAME", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
+        trackCardHolderName();
         enableBackInputButton();
         mCurrentEditingEditText = CARDHOLDER_NAME_INPUT;
         openKeyboard(mCardHolderNameEditText);
@@ -1164,7 +1257,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
         if (!mPresenter.validateCardName()) {
             return;
         }
-//        MPTracker.getInstance().trackInitialScreen("CARD_EXPIRY_DATE", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
+        trackCardExpiryDate();
         enableBackInputButton();
         mCurrentEditingEditText = CARD_EXPIRYDATE_INPUT;
         openKeyboard(mCardExpiryDateEditText);
@@ -1184,7 +1277,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
         if (mCurrentEditingEditText.equals(CARD_EXPIRYDATE_INPUT) ||
                 mCurrentEditingEditText.equals(CARD_IDENTIFICATION_INPUT) ||
                 mCurrentEditingEditText.equals(CARD_SECURITYCODE_INPUT)) {
-//            MPTracker.getInstance().trackInitialScreen("CARD_SECURITY_CODE", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
+            trackCardSecurityCode();
             enableBackInputButton();
             mCurrentEditingEditText = CARD_SECURITYCODE_INPUT;
             openKeyboard(mSecurityCodeEditText);
@@ -1202,7 +1295,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
                 (!mPresenter.isSecurityCodeRequired() && !mPresenter.validateExpiryDate())) {
             return;
         }
-//        MPTracker.getInstance().trackInitialScreen("IDENTIFICATION_NUMBER", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
+        trackCardIdentification();
         enableBackInputButton();
         mCurrentEditingEditText = CARD_IDENTIFICATION_INPUT;
         openKeyboard(mIdentificationNumberEditText);

@@ -30,7 +30,8 @@ import com.mercadopago.model.PaymentData;
 import com.mercadopago.model.PaymentResult;
 import com.mercadopago.model.Site;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
-import com.mercadopago.px_tracking.MPTracker;
+import com.mercadopago.providers.MPTrackingProvider;
+import com.mercadopago.px_tracking.model.ScreenViewEvent;
 import com.mercadopago.util.ApiUtil;
 import com.mercadopago.util.CurrenciesUtil;
 import com.mercadopago.util.ErrorUtil;
@@ -39,6 +40,7 @@ import com.mercadopago.util.LayoutUtil;
 import com.mercadopago.util.MercadoPagoUtil;
 import com.mercadopago.util.ScaleUtil;
 import com.mercadopago.util.TextUtil;
+import com.mercadopago.util.TrackingUtil;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -154,6 +156,7 @@ public class InstructionsActivity extends MercadoPagoBaseActivity {
 
     protected void onValidStart() {
         initializePaymentData();
+        trackScreen();
         mBackPressedOnce = false;
         mMercadoPagoServices = new MercadoPagoServices.Builder()
                 .setContext(this)
@@ -174,6 +177,33 @@ public class InstructionsActivity extends MercadoPagoBaseActivity {
         if (mSite != null) {
             mCurrencyId = mSite.getCurrencyId();
         }
+    }
+
+    protected void trackScreen() {
+        MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
+                .setContext(this)
+                .setCheckoutVersion(BuildConfig.VERSION_NAME)
+                .setPublicKey(mMerchantPublicKey)
+                .build();
+
+
+        ScreenViewEvent.Builder builder = new ScreenViewEvent.Builder()
+                .setScreenId(TrackingUtil.SCREEN_ID_PAYMENT_RESULT_INSTRUCTIONS)
+                .setScreenName(TrackingUtil.SCREEN_NAME_PAYMENT_RESULT_INSTRUCTIONS)
+                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_IS_EXPRESS, TrackingUtil.IS_EXPRESS_DEFAULT_VALUE)
+                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_STATUS, mPaymentResult.getPaymentStatus())
+                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_STATUS_DETAIL, mPaymentResult.getPaymentStatusDetail())
+                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_ID, String.valueOf(mPaymentResult.getPaymentId()));
+
+        if (mPaymentMethodId != null) {
+            builder.addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_METHOD_ID, mPaymentMethodId);
+        }
+        if (mPaymentTypeId != null) {
+            builder.addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_TYPE_ID, mPaymentTypeId);
+        }
+
+        ScreenViewEvent event = builder.build();
+        mpTrackingProvider.addTrackEvent(event);
     }
 
     protected void getInstructionsAsync() {
@@ -245,7 +275,7 @@ public class InstructionsActivity extends MercadoPagoBaseActivity {
 
     protected void showInstructions(Instruction instruction) {
         String siteId = mSite == null ? "" : mSite.getId();
-//        MPTracker.getInstance().trackInitialScreen("INSTRUCTIONS", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackScreen("INSTRUCTIONS", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
 
         setTitle(instruction.getTitle());
         setReferencesInformation(instruction);
@@ -390,7 +420,7 @@ public class InstructionsActivity extends MercadoPagoBaseActivity {
     @Override
     public void onBackPressed() {
         String siteId = mSite == null ? "" : mSite.getId();
-//        MPTracker.getInstance().trackInitialScreen("INSTRUCTIONS", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackScreen("INSTRUCTIONS", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
 
         if (mBackPressedOnce) {
             super.onBackPressed();

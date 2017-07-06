@@ -1,7 +1,6 @@
 package com.mercadopago;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -11,19 +10,20 @@ import android.widget.FrameLayout;
 import com.mercadopago.controllers.CheckoutTimer;
 import com.mercadopago.core.MercadoPagoCheckout;
 import com.mercadopago.customviews.MPTextView;
-import com.mercadopago.model.Payment;
+import com.mercadopago.model.Issuer;
 import com.mercadopago.model.PaymentData;
-import com.mercadopago.model.PaymentMethod;
 import com.mercadopago.model.PaymentResult;
 import com.mercadopago.model.PaymentResultAction;
 import com.mercadopago.model.Site;
 import com.mercadopago.observers.TimerObserver;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
-import com.mercadopago.px_tracking.MPTracker;
+import com.mercadopago.providers.MPTrackingProvider;
+import com.mercadopago.px_tracking.model.ScreenViewEvent;
 import com.mercadopago.util.CurrenciesUtil;
 import com.mercadopago.util.ErrorUtil;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.TextUtils;
+import com.mercadopago.util.TrackingUtil;
 
 import java.math.BigDecimal;
 
@@ -52,6 +52,7 @@ public class CallForAuthorizeActivity extends MercadoPagoBaseActivity implements
     private BigDecimal mTotalAmount;
     private String mPaymentTypeId;
     private String mPaymentMethodId;
+    private Issuer mIssuer;
     private PaymentResultScreenPreference mPaymentResultScreenPreference;
 
 
@@ -95,7 +96,7 @@ public class CallForAuthorizeActivity extends MercadoPagoBaseActivity implements
 
     protected void setContentView() {
         String siteId = mSite == null ? "" : mSite.getId();
-//        MPTracker.getInstance().trackInitialScreen("CALL_FOR_AUTHORIZE", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackScreen("CALL_FOR_AUTHORIZE", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
         setContentView(R.layout.mpsdk_activity_call_for_authorize);
     }
 
@@ -142,6 +143,7 @@ public class CallForAuthorizeActivity extends MercadoPagoBaseActivity implements
 
     protected void onValidStart() {
         initializePaymentData();
+        trackScreen();
         showTimer();
         setDescription();
         setAuthorized();
@@ -150,6 +152,7 @@ public class CallForAuthorizeActivity extends MercadoPagoBaseActivity implements
     private void initializePaymentData() {
         PaymentData paymentData = mPaymentResult.getPaymentData();
         if (paymentData != null) {
+            mIssuer = paymentData.getIssuer();
             if (paymentData.getPaymentMethod() != null) {
                 mPaymentMethodName = paymentData.getPaymentMethod().getName();
                 mPaymentTypeId = paymentData.getPaymentMethod().getPaymentTypeId();
@@ -162,6 +165,36 @@ public class CallForAuthorizeActivity extends MercadoPagoBaseActivity implements
         if (mSite != null) {
             mCurrencyId = mSite.getCurrencyId();
         }
+    }
+
+    protected void trackScreen() {
+        MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
+                .setContext(this)
+                .setCheckoutVersion(BuildConfig.VERSION_NAME)
+                .setPublicKey(mMerchantPublicKey)
+                .build();
+
+
+        ScreenViewEvent.Builder builder = new ScreenViewEvent.Builder()
+                .setScreenId(TrackingUtil.SCREEN_ID_PAYMENT_RESULT_REJECTED)
+                .setScreenName(TrackingUtil.SCREEN_NAME_PAYMENT_RESULT_REJECTED)
+                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_IS_EXPRESS, TrackingUtil.IS_EXPRESS_DEFAULT_VALUE)
+                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_STATUS, mPaymentResult.getPaymentStatus())
+                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_STATUS_DETAIL, mPaymentResult.getPaymentStatusDetail())
+                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_ID, String.valueOf(mPaymentResult.getPaymentId()));
+
+        if (mPaymentMethodId != null) {
+            builder.addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_METHOD_ID, mPaymentMethodId);
+        }
+        if (mPaymentTypeId != null) {
+            builder.addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_TYPE_ID, mPaymentTypeId);
+        }
+        if (mIssuer != null) {
+            builder.addAditionalInfo(TrackingUtil.ADDITIONAL_ISSUER_ID, String.valueOf(mIssuer.getId()));
+        }
+
+        ScreenViewEvent event = builder.build();
+        mpTrackingProvider.addTrackEvent(event);
     }
 
     private void showTimer() {

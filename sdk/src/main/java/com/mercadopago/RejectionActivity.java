@@ -14,15 +14,18 @@ import com.mercadopago.callbacks.CallbackHolder;
 import com.mercadopago.controllers.CheckoutTimer;
 import com.mercadopago.core.MercadoPagoCheckout;
 import com.mercadopago.customviews.MPTextView;
+import com.mercadopago.model.Issuer;
 import com.mercadopago.model.Payment;
 import com.mercadopago.model.PaymentData;
 import com.mercadopago.model.PaymentResult;
 import com.mercadopago.model.PaymentResultAction;
 import com.mercadopago.observers.TimerObserver;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
-import com.mercadopago.px_tracking.MPTracker;
+import com.mercadopago.providers.MPTrackingProvider;
+import com.mercadopago.px_tracking.model.ScreenViewEvent;
 import com.mercadopago.util.ErrorUtil;
 import com.mercadopago.util.JsonUtil;
+import com.mercadopago.util.TrackingUtil;
 
 import static android.text.TextUtils.isEmpty;
 
@@ -49,6 +52,7 @@ public class RejectionActivity extends MercadoPagoBaseActivity implements TimerO
     protected String mPaymentTypeId;
     protected Long mPaymentId;
     protected String mPaymentMethodId;
+    protected Issuer mIssuer;
     protected Activity mActivity;
     protected PaymentResultScreenPreference mPaymentResultScreenPreference;
 
@@ -62,12 +66,6 @@ public class RejectionActivity extends MercadoPagoBaseActivity implements TimerO
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivityParameters();
-//        if (mDecorationPreference != null) {
-//            mDecorationPreference.activateFont(this);
-//            if (mDecorationPreference.hasColors()) {
-//                setTheme(R.style.Theme_MercadoPagoTheme_NoActionBar);
-//            }
-//        }
         setContentView();
         initializeControls();
         mActivity = this;
@@ -102,7 +100,7 @@ public class RejectionActivity extends MercadoPagoBaseActivity implements TimerO
     }
 
     protected void setContentView() {
-//        MPTracker.getInstance().trackInitialScreen("RESULT", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackScreen("RESULT", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, this);
         setContentView(R.layout.mpsdk_activity_rejection);
     }
 
@@ -136,6 +134,7 @@ public class RejectionActivity extends MercadoPagoBaseActivity implements TimerO
 
     protected void onValidStart() {
         initializePaymentData();
+        trackScreen();
         setPaymentResultScreenPreferenceData();
         setPaymentResultScreenWithoutPreferenceData();
         showTimer();
@@ -151,7 +150,38 @@ public class RejectionActivity extends MercadoPagoBaseActivity implements TimerO
                 mPaymentTypeId = paymentData.getPaymentMethod().getPaymentTypeId();
                 mPaymentMethodId = paymentData.getPaymentMethod().getId();
             }
+            mIssuer = paymentData.getIssuer();
         }
+    }
+
+    protected void trackScreen() {
+        MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
+                .setContext(this)
+                .setCheckoutVersion(BuildConfig.VERSION_NAME)
+                .setPublicKey(mMerchantPublicKey)
+                .build();
+
+
+        ScreenViewEvent.Builder builder = new ScreenViewEvent.Builder()
+                .setScreenId(TrackingUtil.SCREEN_ID_PAYMENT_RESULT_REJECTED)
+                .setScreenName(TrackingUtil.SCREEN_NAME_PAYMENT_RESULT_REJECTED)
+                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_IS_EXPRESS, TrackingUtil.IS_EXPRESS_DEFAULT_VALUE)
+                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_STATUS, mPaymentResult.getPaymentStatus())
+                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_STATUS_DETAIL, mPaymentStatusDetail)
+                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_ID, String.valueOf(mPaymentResult.getPaymentId()));
+
+        if (mPaymentMethodId != null) {
+            builder.addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_METHOD_ID, mPaymentMethodId);
+        }
+        if (mPaymentTypeId != null) {
+            builder.addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_TYPE_ID, mPaymentTypeId);
+        }
+        if (mIssuer != null) {
+            builder.addAditionalInfo(TrackingUtil.ADDITIONAL_ISSUER_ID, String.valueOf(mIssuer.getId()));
+        }
+
+        ScreenViewEvent event = builder.build();
+        mpTrackingProvider.addTrackEvent(event);
     }
 
     private void setPaymentResultScreenPreferenceData() {

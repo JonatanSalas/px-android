@@ -221,8 +221,6 @@ public class CardVaultActivity extends AppCompatActivity implements CardVaultVie
     }
 
     protected void initialize() {
-        String siteId = mCardVaultPresenter.getSite() == null ? "" : mCardVaultPresenter.getSite().getId();
-//        MPTracker.getInstance().trackInitialScreen("CARD_VAULT", "2", mPublicKey, siteId, BuildConfig.VERSION_NAME, this);
         mCardVaultPresenter.initialize();
     }
 

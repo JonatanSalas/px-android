@@ -21,6 +21,7 @@ import com.mercadopago.model.PaymentData;
 import com.mercadopago.model.PaymentResult;
 import com.mercadopago.preferences.CheckoutPreference;
 import com.mercadopago.model.Payment;
+import com.mercadopago.preferences.DecorationPreference;
 import com.mercadopago.preferences.FlowPreference;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
 import com.mercadopago.preferences.ReviewScreenPreference;

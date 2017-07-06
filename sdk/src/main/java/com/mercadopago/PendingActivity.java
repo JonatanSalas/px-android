@@ -22,16 +22,19 @@ import com.mercadopago.controllers.CustomReviewablesHandler;
 import com.mercadopago.core.MercadoPagoCheckout;
 import com.mercadopago.customviews.MPTextView;
 import com.mercadopago.model.Payment;
+import com.mercadopago.model.PaymentData;
 import com.mercadopago.model.PaymentResult;
 import com.mercadopago.model.PaymentResultAction;
 import com.mercadopago.model.ReviewSubscriber;
 import com.mercadopago.model.Reviewable;
 import com.mercadopago.observers.TimerObserver;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
-import com.mercadopago.px_tracking.MPTracker;
+import com.mercadopago.providers.MPTrackingProvider;
+import com.mercadopago.px_tracking.model.ScreenViewEvent;
 import com.mercadopago.util.ColorsUtil;
 import com.mercadopago.util.ErrorUtil;
 import com.mercadopago.util.JsonUtil;
+import com.mercadopago.util.TrackingUtil;
 
 import java.util.List;
 
@@ -56,6 +59,7 @@ public class PendingActivity extends MercadoPagoBaseActivity implements TimerObs
     //Params
     protected String mMerchantPublicKey;
     protected PaymentResult mPaymentResult;
+    protected PaymentData mPaymentData;
     protected PaymentResultScreenPreference mPaymentResultScreenPreference;
 
     protected String mPaymentStatus;
@@ -97,7 +101,7 @@ public class PendingActivity extends MercadoPagoBaseActivity implements TimerObs
     }
 
     protected void setContentView() {
-//        MPTracker.getInstance().trackInitialScreen("RESULT", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackScreen("RESULT", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, this);
         setContentView(R.layout.mpsdk_activity_pending);
     }
 
@@ -136,6 +140,7 @@ public class PendingActivity extends MercadoPagoBaseActivity implements TimerObs
 
     protected void onValidStart() {
         initializePaymentData();
+        trackScreen();
         setPaymentResultScreenPreferenceData();
         setPaymentResultScreenWithoutPreferenceData();
         showTimer();
@@ -145,6 +150,35 @@ public class PendingActivity extends MercadoPagoBaseActivity implements TimerObs
     private void initializePaymentData() {
         mPaymentStatus = mPaymentResult.getPaymentStatus();
         mPaymentStatusDetail = mPaymentResult.getPaymentStatusDetail();
+        mPaymentData = mPaymentResult.getPaymentData();
+    }
+
+    protected void trackScreen() {
+        MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
+                .setContext(this)
+                .setCheckoutVersion(BuildConfig.VERSION_NAME)
+                .setPublicKey(mMerchantPublicKey)
+                .build();
+
+
+        ScreenViewEvent.Builder builder = new ScreenViewEvent.Builder()
+                .setScreenId(TrackingUtil.SCREEN_ID_PAYMENT_RESULT_PENDING)
+                .setScreenName(TrackingUtil.SCREEN_NAME_PAYMENT_RESULT_PENDING)
+                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_IS_EXPRESS, TrackingUtil.IS_EXPRESS_DEFAULT_VALUE)
+                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_STATUS, mPaymentStatus)
+                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_STATUS_DETAIL, mPaymentStatusDetail)
+                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_ID, String.valueOf(mPaymentResult.getPaymentId()));
+
+        if (mPaymentData != null && mPaymentData.getPaymentMethod() != null) {
+            builder.addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_TYPE_ID, mPaymentData.getPaymentMethod().getPaymentTypeId());
+            builder.addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_METHOD_ID, mPaymentData.getPaymentMethod().getId());
+        }
+        if (mPaymentData != null && mPaymentData.getIssuer() != null) {
+            builder.addAditionalInfo(TrackingUtil.ADDITIONAL_ISSUER_ID, String.valueOf(mPaymentData.getIssuer().getId()));
+        }
+
+        ScreenViewEvent event = builder.build();
+        mpTrackingProvider.addTrackEvent(event);
     }
 
     private void setPaymentResultScreenPreferenceData() {

@@ -5,6 +5,8 @@ import android.support.annotation.StringDef;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by vaserber on 6/5/17.
@@ -24,7 +26,7 @@ public abstract class Event {
 
     private Timestamp timestamp;
     private @EventType String type;
-
+    private Map<String, String> additionalInfo;
 
     public Timestamp getTimestamp() {
         return timestamp;
@@ -40,5 +42,16 @@ public abstract class Event {
 
     protected void setType(@EventType String type) {
         this.type = type;
+    }
+
+    public Map<String, String> getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(Map<String, String> additionalInfo) {
+        if (this.additionalInfo == null) {
+            this.additionalInfo = new HashMap<>();
+        }
+        this.additionalInfo.putAll(additionalInfo);
     }
 }

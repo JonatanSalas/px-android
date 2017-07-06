@@ -126,7 +126,7 @@ public class PaymentTypesActivity extends MercadoPagoBaseActivity implements Pay
     }
 
     public void setContentView() {
-//        MPTracker.getInstance().trackInitialScreen("CARD_PAYMENT_TYPES", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
+//        MPTracker.getInstance().trackScreen("CARD_PAYMENT_TYPES", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
         if (mLowResActive) {
             setContentViewLowRes();
         } else {
