@@ -13,9 +13,10 @@ import com.mercadopago.px_tracking.model.EventTrackIntent;
 import com.mercadopago.px_tracking.model.PaymentIntent;
 import com.mercadopago.px_tracking.model.ScreenViewEvent;
 import com.mercadopago.px_tracking.model.TrackingIntent;
+import com.mercadopago.px_tracking.strategies.RealTimeTrackingStrategy;
+import com.mercadopago.px_tracking.strategies.TrackingStrategy;
 import com.mercadopago.px_tracking.services.MPTrackingService;
 import com.mercadopago.px_tracking.services.MPTrackingServiceImpl;
-import com.mercadopago.px_tracking.services.TrackingService;
 import com.mercadopago.px_tracking.utils.JsonConverter;
 
 import java.lang.reflect.Type;
@@ -50,8 +51,9 @@ public class MPTracker {
 
     private Boolean trackerInitialized = false;
 
-    protected MPTracker() {
-    }
+    private TrackingStrategy trackingStrategy;
+
+    protected MPTracker() {}
 
     synchronized public static MPTracker getInstance() {
         if (mMPTrackerInstance == null) {
@@ -122,18 +124,21 @@ public class MPTracker {
     /**
      * This method tracks a list of events in one request
      *
-     * @param clientId Id that identifies the client that is using the SDK
+     * @param clientId       Id that identifies the client that is using the SDK
      * @param appInformation Info about this application and SDK integration
-     * @param deviceInfo Info about the device that is using the app
-     * @param events List of events to track
-     * @param context Application context
+     * @param deviceInfo     Info about the device that is using the app
+     * @param events         List of events to track
+     * @param context        Application context
      */
-    public EventTrackIntent trackEventList(String clientId, AppInformation appInformation, DeviceInfo deviceInfo, List<Event> events, Context context) {
+    public EventTrackIntent trackEvents(String clientId, AppInformation appInformation, DeviceInfo deviceInfo, List<Event> events, Context context) {
         EventTrackIntent eventTrackIntent = new EventTrackIntent(clientId, appInformation, deviceInfo, events);
         initializeMPTrackingService();
-        mMPTrackingService.trackEvent(eventTrackIntent, context);
 
-        for (Event event: eventTrackIntent.getEvents()) {
+        getTrackingStrategy().trackEvents(eventTrackIntent, context);
+
+
+        //Notify external listeners
+        for (Event event : eventTrackIntent.getEvents()) {
             if (event.getType().equals(Event.TYPE_ACTION)) {
                 ActionEvent actionEvent = (ActionEvent) event;
                 Map<String, String> eventMap = createEventMap(actionEvent);
@@ -216,5 +221,12 @@ public class MPTracker {
      */
     private Boolean isCardPaymentType(String paymentTypeId) {
         return paymentTypeId.equals("credit_card") || paymentTypeId.equals("debit_card") || paymentTypeId.equals("prepaid_card");
+    }
+
+    private TrackingStrategy getTrackingStrategy() {
+        if (trackingStrategy == null) {
+            trackingStrategy = new RealTimeTrackingStrategy(mMPTrackingService);
+        }
+        return trackingStrategy;
     }
 }

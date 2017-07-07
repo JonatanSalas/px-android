@@ -12,7 +12,7 @@ import com.mercadopago.px_tracking.model.TrackingIntent;
 
 public interface MPTrackingService {
 
-    public void trackToken(TrackingIntent trackingIntent, Context context);
-    public void trackPaymentId(PaymentIntent paymentIntent, Context context);
-    public void trackEvent(EventTrackIntent eventTrackIntent, Context context);
+    void trackToken(TrackingIntent trackingIntent, Context context);
+    void trackPaymentId(PaymentIntent paymentIntent, Context context);
+    void trackEvent(EventTrackIntent eventTrackIntent, Context context);
 }

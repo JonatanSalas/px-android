@@ -2,7 +2,6 @@ package com.mercadopago.providers;
 
 import android.content.Context;
 import android.os.Build;
-import android.provider.Settings;
 
 import com.mercadopago.model.Fingerprint;
 import com.mercadopago.px_tracking.MPTracker;
@@ -71,8 +70,7 @@ public class MPTrackingProvider {
         }
         this.eventList.add(event);
 
-        //Fow now, we call the service on real time
-        MPTracker.getInstance().trackEventList(clientId, appInformation, deviceInfo, eventList, context);
+        MPTracker.getInstance().trackEvents(clientId, appInformation, deviceInfo, eventList, context);
 
     }
 
