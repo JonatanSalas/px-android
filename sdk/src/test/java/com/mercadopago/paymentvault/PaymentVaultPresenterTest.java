@@ -1241,6 +1241,16 @@ public class PaymentVaultPresenterTest {
             //Not yet tested
         }
 
+        @Override
+        public void trackChildrenScreen() {
+
+        }
+
+        @Override
+        public void trackInitialScreen() {
+
+        }
+
         public void simulateItemSelection(int index) {
             itemSelectionCallback.onSelected(searchItemsShown.get(index));
         }
