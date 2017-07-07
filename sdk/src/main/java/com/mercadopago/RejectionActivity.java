@@ -410,8 +410,6 @@ public class RejectionActivity extends MercadoPagoBaseActivity implements TimerO
 
     @Override
     public void onBackPressed() {
-//        MPTracker.getInstance().trackEvent("REJECTION", "BACK_PRESSED", "", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, this);
-
         if (mBackPressedOnce) {
             finishWithOkResult();
         } else {
@@ -442,16 +440,12 @@ public class RejectionActivity extends MercadoPagoBaseActivity implements TimerO
 
     public void onClickRejectionOptionButton() {
         if (isPaymentStatusDetailRecoverable()) {
-//            MPTracker.getInstance().trackEvent("REJECTION", "RECOVER_PAYMENT", "", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, this);
-
             Intent returnIntent = new Intent();
             mNextAction = PaymentResultAction.RECOVER_PAYMENT;
             returnIntent.putExtra("nextAction", mNextAction);
             setResult(RESULT_CANCELED, returnIntent);
             finish();
         } else {
-//            MPTracker.getInstance().trackEvent("REJECTION", "SELECT_OTHER_PAYMENT_METHOD", "", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, this);
-
             Intent returnIntent = new Intent();
             mNextAction = PaymentResultAction.SELECT_OTHER_PAYMENT_METHOD;
             returnIntent.putExtra("nextAction", mNextAction);

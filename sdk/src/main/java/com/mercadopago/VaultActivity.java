@@ -132,9 +132,6 @@ public class VaultActivity extends AppCompatActivity {
 
             setFormGoButton(mSecurityCodeText);
 
-            String siteId = mSite == null ? "" : mSite.getId();
-//            MPTracker.getInstance().trackScreen("VAULT", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
-
             initPaymentFlow();
         } else {
             Intent returnIntent = new Intent();
@@ -244,9 +241,6 @@ public class VaultActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-//        String siteId = mSite == null ? "" : mSite.getId();
-//        MPTracker.getInstance().trackEvent("VAULT", "BACK_PRESSED", "", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
-
         Intent returnIntent = new Intent();
         returnIntent.putExtra("backButtonPressed", true);
         setResult(RESULT_CANCELED, returnIntent);

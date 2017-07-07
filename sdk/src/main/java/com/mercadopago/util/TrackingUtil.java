@@ -13,7 +13,7 @@ public class TrackingUtil {
     public static final String SCREEN_ID_PAYMENT_VAULT = "/checkout_off/payment_option";
     public static final String SCREEN_ID_REVIEW_AND_CONFIRM = "/checkout_off/review";
     public static final String SCREEN_ID_PAYMENT_RESULT_APPROVED = "/checkout_off/congrats/approved";
-    public static final String SCREEN_ID_PAYMENT_RESULT_PENDING = "/checkout_off/congrats/pending";
+    public static final String SCREEN_ID_PAYMENT_RESULT_PENDING = "/checkout_off/congrats/in_process";
     public static final String SCREEN_ID_PAYMENT_RESULT_REJECTED = "/checkout_off/congrats/rejected";
     public static final String SCREEN_ID_PAYMENT_RESULT_INSTRUCTIONS = "/checkout_off/congrats/instructions";
     public static final String SCREEN_ID_BANK_DEALS = "/checkout_off/bank_deals";
@@ -22,7 +22,7 @@ public class TrackingUtil {
     public static final String SCREEN_ID_PAYMENT_TYPES = "/checkout_off/card/payment_types";
 
     //Screen Names
-    public static final String SCREEN_NAME_CHECKOUT = "Init checkout";
+    public static final String SCREEN_NAME_CHECKOUT = "INIT_CHECKOUT";
     public static final String SCREEN_NAME_PAYMENT_VAULT = "PAYMENT_METHOD_SEARCH";
     public static final String SCREEN_NAME_REVIEW_AND_CONFIRM = "REVIEW_AND_CONFIRM";
     public static final String SCREEN_NAME_PAYMENT_RESULT_APPROVED = "RESULT";
@@ -39,7 +39,7 @@ public class TrackingUtil {
     public static final String SCREEN_NAME_CARD_FORM_IDENTIFICATION_NUMBER = "IDENTIFICATION_NUMBER";
     public static final String SCREEN_NAME_CARD_FORM_ISSUERS = "CARD_ISSUERS";
     public static final String SCREEN_NAME_CARD_FORM_INSTALLMENTS = "CARD_INSTALLMENTS";
-    public static final String SCREEN_NAME_ERROR = "Error View";
+    public static final String SCREEN_NAME_ERROR = "ERROR_VIEW";
     public static final String SCREEN_NAME_PAYMENT_TYPES = "CARD_PAYMENT_TYPES";
     public static final String SCREEN_NAME_SECURITY_CODE = "SECURITY_CODE_CARD";
 

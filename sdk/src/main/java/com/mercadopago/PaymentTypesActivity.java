@@ -356,8 +356,6 @@ public class PaymentTypesActivity extends MercadoPagoBaseActivity implements Pay
 
     @Override
     public void onBackPressed() {
-//        MPTracker.getInstance().trackEvent("CARD_PAYMENT_TYPES", "BACK_PRESSED", "", "2", mPresenter.getPublicKey(),
-//                "", BuildConfig.VERSION_NAME, this);
         Intent returnIntent = new Intent();
         returnIntent.putExtra("backButtonPressed", true);
         setResult(RESULT_CANCELED, returnIntent);

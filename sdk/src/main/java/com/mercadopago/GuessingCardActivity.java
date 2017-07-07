@@ -1674,8 +1674,6 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
     public void onBackPressed() {
         checkFlipCardToFront();
 
-//        MPTracker.getInstance().trackEvent("GUESSING_CARD", "BACK_PRESSED", "", "2", mPresenter.getPublicKey(),
-//                "", BuildConfig.VERSION_NAME, this);
         Intent returnIntent = new Intent();
         returnIntent.putExtra("discount", JsonUtil.getInstance().toJson(mPresenter.getDiscount()));
         returnIntent.putExtra("discountEnabled", JsonUtil.getInstance().toJson(mPresenter.getDiscountEnabled()));

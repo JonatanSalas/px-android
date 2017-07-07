@@ -286,7 +286,6 @@ public class DiscountsActivity extends AppCompatActivity implements DiscountsAct
 
     @Override
     public void drawSummary() {
-//        MPTracker.getInstance().trackScreen("DISCOUNT_SUMMARY", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
 
         mDiscountCodeContainer.setVisibility(View.GONE);
         mReviewDiscountSummaryContainer.setVisibility(View.VISIBLE);
@@ -372,7 +371,6 @@ public class DiscountsActivity extends AppCompatActivity implements DiscountsAct
 
     @Override
     public void requestDiscountCode() {
-//        MPTracker.getInstance().trackScreen("DISCOUNT_INPUT_CODE", "2", mPresenter.getPublicKey(), "", BuildConfig.VERSION_NAME, this);
 
         mReviewDiscountSummaryContainer.setVisibility(View.GONE);
         mDiscountCodeContainer.setVisibility(View.VISIBLE);

@@ -384,8 +384,6 @@ public class PendingActivity extends MercadoPagoBaseActivity implements TimerObs
     }
 
     public void onClickPendingOptionButton() {
-//        MPTracker.getInstance().trackEvent("PENDING", "SELECT_OTHER_PAYMENT_METHOD", "", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, this);
-
         Intent returnIntent = new Intent();
         returnIntent.putExtra("nextAction", PaymentResultAction.SELECT_OTHER_PAYMENT_METHOD);
         setResult(RESULT_CANCELED, returnIntent);

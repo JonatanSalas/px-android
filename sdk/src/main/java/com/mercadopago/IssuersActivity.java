@@ -416,7 +416,6 @@ public class IssuersActivity extends MercadoPagoBaseActivity implements IssuersA
 
     @Override
     public void onBackPressed() {
-//        MPTracker.getInstance().trackEvent("CARD_ISSUERS", "BACK_PRESSED", "", "2", mPublicKey, "", BuildConfig.VERSION_NAME, this);
         Intent returnIntent = new Intent();
         returnIntent.putExtra("backButtonPressed", true);
         setResult(RESULT_CANCELED, returnIntent);
