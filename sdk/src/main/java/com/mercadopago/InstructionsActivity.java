@@ -151,7 +151,7 @@ public class InstructionsActivity extends MercadoPagoBaseActivity {
     }
 
     protected void onInvalidStart(String message) {
-        ErrorUtil.startErrorActivity(this, message, false);
+        ErrorUtil.startErrorActivity(this, message, false, mMerchantPublicKey);
     }
 
     protected void onValidStart() {
@@ -215,7 +215,7 @@ public class InstructionsActivity extends MercadoPagoBaseActivity {
                 List<Instruction> instructionsList
                         = instructions.getInstructions() == null ? new ArrayList<Instruction>() : instructions.getInstructions();
                 if (instructionsList.isEmpty()) {
-                    ErrorUtil.startErrorActivity(mActivity, mActivity.getString(R.string.mpsdk_standard_error_message), INSTRUCTIONS_NOT_FOUND_FOR_TYPE + mPaymentTypeId, false);
+                    ErrorUtil.startErrorActivity(mActivity, mActivity.getString(R.string.mpsdk_standard_error_message), INSTRUCTIONS_NOT_FOUND_FOR_TYPE + mPaymentTypeId, false, mMerchantPublicKey);
                 } else {
                     resolveInstructionsFound(instructionsList);
                 }
@@ -223,7 +223,7 @@ public class InstructionsActivity extends MercadoPagoBaseActivity {
 
             @Override
             public void failure(ApiException apiException) {
-                ApiUtil.showApiExceptionError(mActivity, apiException);
+                ApiUtil.showApiExceptionError(mActivity, apiException, mMerchantPublicKey);
                 setFailureRecovery(new FailureRecovery() {
                     @Override
                     public void recover() {
@@ -237,7 +237,7 @@ public class InstructionsActivity extends MercadoPagoBaseActivity {
     private void resolveInstructionsFound(List<Instruction> instructionsList) {
         Instruction instruction = getInstruction(instructionsList);
         if (instruction == null) {
-            ErrorUtil.startErrorActivity(this, this.getString(R.string.mpsdk_standard_error_message), "instruction not found for type " + mPaymentTypeId, false);
+            ErrorUtil.startErrorActivity(this, this.getString(R.string.mpsdk_standard_error_message), "instruction not found for type " + mPaymentTypeId, false, mMerchantPublicKey);
         } else {
             showInstructions(instruction);
         }

@@ -38,7 +38,7 @@ public class ScreenViewEvent extends Event {
 
         private String screenId;
         private String screenName;
-        private Map<String, String> additionalInfo = new HashMap<>();
+        private Map<String, Object> additionalInfo = new HashMap<>();
 
         public Builder setScreenId(String screenId) {
             this.screenId = screenId;
@@ -50,7 +50,7 @@ public class ScreenViewEvent extends Event {
             return this;
         }
 
-        public Builder addAditionalInfo(String key, String value) {
+        public Builder addAditionalInfo(String key, Object value) {
             additionalInfo.put(key, value);
             return this;
         }

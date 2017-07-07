@@ -260,7 +260,7 @@ public class CongratsActivity extends MercadoPagoBaseActivity implements ReviewS
     }
 
     protected void onInvalidStart(String errorMessage) {
-        ErrorUtil.startErrorActivity(this, getString(R.string.mpsdk_standard_error_message), errorMessage, false);
+        ErrorUtil.startErrorActivity(this, getString(R.string.mpsdk_standard_error_message), errorMessage, false, mMerchantPublicKey);
     }
 
     private void setPaymentResultScreenPreferenceData() {

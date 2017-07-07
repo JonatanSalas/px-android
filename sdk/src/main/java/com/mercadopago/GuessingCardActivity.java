@@ -439,7 +439,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
         mPresenter.initialize();
     }
 
-    protected void trackScreen() {
+    public void trackScreen() {
         String paymentTypeId = mPresenter.getPaymentTypeId();
 
         MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
@@ -1187,12 +1187,12 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
 
     @Override
     public void showApiExceptionError(ApiException exception) {
-        ApiUtil.showApiExceptionError(mActivity, exception);
+        ApiUtil.showApiExceptionError(mActivity, exception, mPresenter.getPublicKey());
     }
 
     @Override
     public void startErrorView(String message, String errorDetail) {
-        ErrorUtil.startErrorActivity(mActivity, message, errorDetail, false);
+        ErrorUtil.startErrorActivity(mActivity, message, errorDetail, false, mPresenter.getPublicKey());
     }
 
     @Override

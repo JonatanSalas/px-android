@@ -117,7 +117,7 @@ public class PaymentMethodsActivity extends MercadoPagoBaseActivity implements P
     }
 
     protected void onInvalidStart(String message) {
-        ErrorUtil.startErrorActivity(this, message, false);
+        ErrorUtil.startErrorActivity(this, message, false, mMerchantPublicKey);
     }
 
     private void initializeToolbar() {
@@ -216,7 +216,7 @@ public class PaymentMethodsActivity extends MercadoPagoBaseActivity implements P
 
     @Override
     public void showError(MercadoPagoError exception) {
-        ErrorUtil.startErrorActivity(this, exception);
+        ErrorUtil.startErrorActivity(this, exception, mMerchantPublicKey);
     }
 
     @Override

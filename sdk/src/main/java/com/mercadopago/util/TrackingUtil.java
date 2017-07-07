@@ -21,7 +21,6 @@ public class TrackingUtil {
     public static final String SCREEN_ID_PAYMENT_RESULT_INSTRUCTIONS = "/checkout_off/congrats/instructions";
     public static final String SCREEN_ID_BANK_DEALS = "/checkout_off/bank_deals";
     public static final String SCREEN_ID_CARD_FORM = "/checkout_off/card/";
-
     public static final String SCREEN_ID_ERROR = "/checkout_off/failure";
 
     //Screen Names
@@ -37,8 +36,6 @@ public class TrackingUtil {
     public static final String SCREEN_NAME_PAYMENT_RESULT_INSTRUCTIONS = "Payment Instructions";
     public static final String SCREEN_NAME_BANK_DEALS = "Bank Deals";
     public static final String SCREEN_NAME_CARD_FORM = "Card Form";
-
-
     public static final String SCREEN_NAME_ERROR = "Error View";
 
     //Sufix
@@ -47,13 +44,16 @@ public class TrackingUtil {
     public static final String CARD_EXPIRATION_DATE = "/expiration";
     public static final String CARD_SECURITY_CODE = "/cvv";
     public static final String CARD_IDENTIFICATION = "/identification";
+    public static final String CARD_ISSUER = "/issuer";
+    public static final String CARD_INSTALLMENTS = "/installments";
 
     public static final String CARD_NUMBER_NAME = "Number";
     public static final String CARD_HOLDER_NAME_NAME = "CardholderName";
     public static final String CARD_EXPIRATION_DATE_NAME = "Expiration date";
     public static final String CARD_SECURITY_CODE_NAME = "Cvv";
     public static final String CARD_IDENTIFICATION_NAME = "Identification number";
-
+    public static final String CARD_ISSUER_NAME = "Issuer";
+    public static final String CARD_INSTALLMENTS_NAME = "Installments";
 
     //Payment Vault Group Ids
     public static final String GROUP_TICKET = "ticket";
@@ -69,6 +69,8 @@ public class TrackingUtil {
     public static final String ADDITIONAL_PAYMENT_ID = "payment_id";
     public static final String ADDITIONAL_PAYMENT_STATUS_DETAIL = "payment_status_detail";
     public static final String ADDITIONAL_PAYMENT_IS_EXPRESS = "is_express";
+    public static final String ADDITIONAL_MERCADO_PAGO_ERROR = "mercado_pago_error";
+
 
     //Default values
     public static final String HAS_SHIPPING_DEFAULT_VALUE = "false";

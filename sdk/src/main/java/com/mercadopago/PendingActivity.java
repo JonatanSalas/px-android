@@ -360,7 +360,7 @@ public class PendingActivity extends MercadoPagoBaseActivity implements TimerObs
     }
 
     protected void onInvalidStart(String errorMessage) {
-        ErrorUtil.startErrorActivity(this, getString(R.string.mpsdk_standard_error_message), errorMessage, false);
+        ErrorUtil.startErrorActivity(this, getString(R.string.mpsdk_standard_error_message), errorMessage, false, mMerchantPublicKey);
     }
 
     private Boolean isStatusDetailValid() {

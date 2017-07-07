@@ -8,13 +8,16 @@ import android.widget.TextView;
 import com.mercadopago.controllers.CheckoutErrorHandler;
 import com.mercadopago.exceptions.MercadoPagoError;
 import com.mercadopago.providers.MPTrackingProvider;
+import com.mercadopago.px_tracking.model.ScreenViewEvent;
 import com.mercadopago.util.ApiUtil;
 import com.mercadopago.util.ErrorUtil;
 import com.mercadopago.util.JsonUtil;
+import com.mercadopago.util.TrackingUtil;
 
 public class ErrorActivity extends MercadoPagoBaseActivity {
 
     private MercadoPagoError mMercadoPagoError;
+    private String mPublicKey;
     private TextView mErrorMessageTextView;
     private View mRetryView;
     private View mExit;
@@ -52,15 +55,23 @@ public class ErrorActivity extends MercadoPagoBaseActivity {
 
     private void getActivityParameters() {
         this.mMercadoPagoError = JsonUtil.getInstance().fromJson(getIntent().getStringExtra(ErrorUtil.ERROR_EXTRA_KEY), MercadoPagoError.class);
+        this.mPublicKey = getIntent().getStringExtra(ErrorUtil.PUBLIC_KEY_EXTRA);
     }
 
     private void trackScreen() {
-//        MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
-//                .setContext(this)
-//                .setCheckoutVersion(BuildConfig.VERSION_NAME)
-//                .setPublicKey(mMerchantPublicKey)
-//                .build();
+        MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
+                .setContext(this)
+                .setCheckoutVersion(BuildConfig.VERSION_NAME)
+                .setPublicKey(mPublicKey)
+                .build();
+        
+        ScreenViewEvent event = new ScreenViewEvent.Builder()
+                .setScreenId(TrackingUtil.SCREEN_ID_ERROR)
+                .setScreenName(TrackingUtil.SCREEN_NAME_ERROR)
+                .addAditionalInfo(TrackingUtil.ADDITIONAL_MERCADO_PAGO_ERROR, mMercadoPagoError)
+                .build();
 
+        mpTrackingProvider.addTrackEvent(event);
     }
 
     private void initializeControls() {

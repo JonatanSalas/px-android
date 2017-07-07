@@ -391,7 +391,7 @@ public class ReviewAndConfirmActivity extends MercadoPagoBaseActivity implements
 
     @Override
     public void showError(String message) {
-        ErrorUtil.startErrorActivity(this, getString(R.string.mpsdk_standard_error_message), message, false);
+        ErrorUtil.startErrorActivity(this, getString(R.string.mpsdk_standard_error_message), message, false, mPublicKey);
     }
 
     @Override

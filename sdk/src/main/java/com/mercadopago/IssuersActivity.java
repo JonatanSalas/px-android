@@ -30,7 +30,9 @@ import com.mercadopago.preferences.DecorationPreference;
 import com.mercadopago.preferences.PaymentPreference;
 import com.mercadopago.presenters.IssuersPresenter;
 import com.mercadopago.providers.IssuersProviderImpl;
+import com.mercadopago.providers.MPTrackingProvider;
 import com.mercadopago.px_tracking.MPTracker;
+import com.mercadopago.px_tracking.model.ScreenViewEvent;
 import com.mercadopago.uicontrollers.FontCache;
 import com.mercadopago.uicontrollers.card.CardRepresentationModes;
 import com.mercadopago.uicontrollers.card.FrontCardView;
@@ -39,6 +41,7 @@ import com.mercadopago.util.ColorsUtil;
 import com.mercadopago.util.ErrorUtil;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.ScaleUtil;
+import com.mercadopago.util.TrackingUtil;
 import com.mercadopago.views.IssuersActivityView;
 
 import java.lang.reflect.Type;
@@ -57,7 +60,6 @@ public class IssuersActivity extends MercadoPagoBaseActivity implements IssuersA
     protected DecorationPreference mDecorationPreference;
     protected String mPublicKey;
     protected String mPrivateKey;
-    protected PaymentPreference mPaymentPreference;
 
     protected IssuersAdapter mIssuersAdapter;
     protected RecyclerView mIssuersRecyclerView;
@@ -109,7 +111,6 @@ public class IssuersActivity extends MercadoPagoBaseActivity implements IssuersA
         mDecorationPreference = JsonUtil.getInstance().fromJson(getIntent().getStringExtra("decorationPreference"), DecorationPreference.class);
         mPublicKey = getIntent().getStringExtra("merchantPublicKey");
         mPrivateKey = getIntent().getStringExtra("payerAccessToken");
-        mPaymentPreference = JsonUtil.getInstance().fromJson(getIntent().getStringExtra("paymentPreference"), PaymentPreference.class);
 
         List<Issuer> issuers;
         try {
@@ -138,8 +139,6 @@ public class IssuersActivity extends MercadoPagoBaseActivity implements IssuersA
     }
 
     public void setContentView() {
-//        MPTracker.getInstance().trackScreen("CARD_ISSUERS", "2", mPublicKey, "", BuildConfig.VERSION_NAME, this);
-
         if (mLowResActive) {
             setContentViewLowRes();
         } else {
@@ -196,6 +195,23 @@ public class IssuersActivity extends MercadoPagoBaseActivity implements IssuersA
         hideHeader();
         decorate();
         showTimer();
+        trackScreen();
+    }
+
+
+    protected void trackScreen() {
+        MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
+                .setContext(this)
+                .setCheckoutVersion(BuildConfig.VERSION_NAME)
+                .setPublicKey(mPublicKey)
+                .build();
+
+        ScreenViewEvent event = new ScreenViewEvent.Builder()
+                .setScreenId(TrackingUtil.SCREEN_ID_CARD_FORM + mPresenter.getPaymentMethod().getPaymentTypeId() + TrackingUtil.CARD_ISSUER)
+                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM + " " + mPresenter.getPaymentMethod().getPaymentTypeId() + " " + TrackingUtil.CARD_ISSUER_NAME)
+                .build();
+
+        mpTrackingProvider.addTrackEvent(event);
     }
 
     private void loadViews() {
@@ -336,13 +352,13 @@ public class IssuersActivity extends MercadoPagoBaseActivity implements IssuersA
         if (error.isApiException()) {
             showApiException(error.getApiException());
         } else {
-            ErrorUtil.startErrorActivity(this, error);
+            ErrorUtil.startErrorActivity(this, error, mPublicKey);
         }
     }
 
     public void showApiException(ApiException apiException) {
         if (mActivityActive) {
-            ApiUtil.showApiExceptionError(this, apiException);
+            ApiUtil.showApiExceptionError(this, apiException, mPublicKey);
         }
     }
 

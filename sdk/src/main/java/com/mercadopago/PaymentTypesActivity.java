@@ -227,12 +227,12 @@ public class PaymentTypesActivity extends MercadoPagoBaseActivity implements Pay
 
     @Override
     public void showApiExceptionError(ApiException exception) {
-        ApiUtil.showApiExceptionError(mActivity, exception);
+        ApiUtil.showApiExceptionError(mActivity, exception, mPresenter.getPublicKey());
     }
 
     @Override
     public void startErrorView(String message, String errorDetail) {
-        ErrorUtil.startErrorActivity(mActivity, message, errorDetail, false);
+        ErrorUtil.startErrorActivity(mActivity, message, errorDetail, false, mPresenter.getPublicKey());
     }
 
     private void loadLowResViews() {

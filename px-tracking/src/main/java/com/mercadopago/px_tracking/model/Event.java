@@ -26,7 +26,7 @@ public abstract class Event {
 
     private Timestamp timestamp;
     private @EventType String type;
-    private Map<String, String> additionalInfo;
+    private Map<String, Object> additionalInfo;
 
     public Timestamp getTimestamp() {
         return timestamp;
@@ -44,11 +44,11 @@ public abstract class Event {
         this.type = type;
     }
 
-    public Map<String, String> getAdditionalInfo() {
+    public Map<String, Object> getAdditionalInfo() {
         return additionalInfo;
     }
 
-    public void setAdditionalInfo(Map<String, String> additionalInfo) {
+    public void setAdditionalInfo(Map<String, Object> additionalInfo) {
         if (this.additionalInfo == null) {
             this.additionalInfo = new HashMap<>();
         }

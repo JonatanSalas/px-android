@@ -74,7 +74,7 @@ public class BankDealsActivity extends MercadoPagoActivity {
 
     @Override
     protected void onInvalidStart(String message) {
-        ErrorUtil.startErrorActivity(this, message, false);
+        ErrorUtil.startErrorActivity(this, message, false, mMerchantPublicKey);
     }
 
     @Override
@@ -151,7 +151,7 @@ public class BankDealsActivity extends MercadoPagoActivity {
                                 getBankDeals();
                             }
                         });
-                        ApiUtil.showApiExceptionError(getActivity(), apiException);
+                        ApiUtil.showApiExceptionError(getActivity(), apiException, mMerchantPublicKey);
                     } else {
                         finishWithCancelResult();
                     }

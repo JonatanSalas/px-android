@@ -307,7 +307,7 @@ public class RejectionActivity extends MercadoPagoBaseActivity implements TimerO
                 mRejectionTitle.setText(R.string.mpsdk_title_bad_filled_other);
             }
         } else {
-            ErrorUtil.startErrorActivity(this, getString(R.string.mpsdk_standard_error_message), false);
+            ErrorUtil.startErrorActivity(this, getString(R.string.mpsdk_standard_error_message), false, mMerchantPublicKey);
         }
     }
 
@@ -376,7 +376,7 @@ public class RejectionActivity extends MercadoPagoBaseActivity implements TimerO
     }
 
     protected void onInvalidStart(String errorMessage) {
-        ErrorUtil.startErrorActivity(this, getString(R.string.mpsdk_standard_error_message), errorMessage, false);
+        ErrorUtil.startErrorActivity(this, getString(R.string.mpsdk_standard_error_message), errorMessage, false, mMerchantPublicKey);
     }
 
     private Boolean isStatusDetailValid() {

@@ -31,8 +31,6 @@ import com.mercadopago.providers.CheckoutProviderImpl;
 import com.mercadopago.providers.MPTrackingProvider;
 import com.mercadopago.px_tracking.MPTracker;
 import com.mercadopago.px_tracking.model.ScreenViewEvent;
-import com.mercadopago.util.ApiUtil;
-import com.mercadopago.util.CurrenciesUtil;
 import com.mercadopago.util.ErrorUtil;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
@@ -235,8 +233,6 @@ public class CheckoutActivity extends MercadoPagoBaseActivity implements Checkou
                     JsonUtil.getInstance().fromJson(data.getStringExtra("mercadoPagoError"), MercadoPagoError.class);
             if (mercadoPagoError == null) {
                 mCheckoutPresenter.onCardFlowCancel();
-//                String siteId = mCheckoutPreference.getSite() == null ? "" : mCheckoutPreference.getSite().getId();
-//                MPTracker.getInstance().trackEvent("CARD_VAULT", "CANCELED", "", "3", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
             } else {
                 mCheckoutPresenter.onCardFlowError(mercadoPagoError);
             }
@@ -250,10 +246,6 @@ public class CheckoutActivity extends MercadoPagoBaseActivity implements Checkou
             PayerCost payerCost = JsonUtil.getInstance().fromJson(data.getStringExtra("payerCost"), PayerCost.class);
             Token token = JsonUtil.getInstance().fromJson(data.getStringExtra("token"), Token.class);
             PaymentMethod paymentMethod = JsonUtil.getInstance().fromJson(data.getStringExtra("paymentMethod"), PaymentMethod.class);
-
-            //Initialize tracker before creating a payment
-//            MPTracker.getInstance().initTracker(mMerchantPublicKey, mCheckoutPresenter.getCheckoutPreference().getSite().getId(),
-//                    BuildConfig.VERSION_NAME, this);
 
             mCheckoutPresenter.onPaymentMethodSelectionResponse(paymentMethod, issuer, payerCost, token, discount);
         } else if (isErrorResult(data)) {
@@ -504,7 +496,7 @@ public class CheckoutActivity extends MercadoPagoBaseActivity implements Checkou
 
     @Override
     public void showError(MercadoPagoError error) {
-        ErrorUtil.startErrorActivity(this, error);
+        ErrorUtil.startErrorActivity(this, error, mMerchantPublicKey);
     }
 
     @Override

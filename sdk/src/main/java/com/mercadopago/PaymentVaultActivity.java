@@ -641,7 +641,7 @@ public class PaymentVaultActivity extends MercadoPagoBaseActivity implements Pay
 
     public void showApiException(ApiException apiException) {
         if (mActivityActive) {
-            ApiUtil.showApiExceptionError(this, apiException);
+            ApiUtil.showApiExceptionError(this, apiException, mPublicKey);
         }
     }
 
@@ -660,7 +660,7 @@ public class PaymentVaultActivity extends MercadoPagoBaseActivity implements Pay
         if (error.isApiException()) {
             showApiException(error.getApiException());
         } else {
-            ErrorUtil.startErrorActivity(this, error);
+            ErrorUtil.startErrorActivity(this, error, mPublicKey);
         }
     }
 

@@ -64,7 +64,7 @@ public class ApiUtil {
         }
     }
 
-    public static void showApiExceptionError(Activity activity, ApiException apiException) {
+    public static void showApiExceptionError(Activity activity, ApiException apiException, String publicKey) {
         MercadoPagoError mercadoPagoError;
         String errorMessage;
 
@@ -74,7 +74,7 @@ public class ApiUtil {
         } else {
             mercadoPagoError = new MercadoPagoError(apiException);
         }
-        ErrorUtil.startErrorActivity(activity, mercadoPagoError);
+        ErrorUtil.startErrorActivity(activity, mercadoPagoError, publicKey);
     }
 
     public static boolean checkConnection(Context context) {

@@ -1,5 +1,6 @@
 package com.mercadopago.presenters;
 
+import com.mercadopago.BuildConfig;
 import com.mercadopago.callbacks.FailureRecovery;
 import com.mercadopago.callbacks.OnSelectedCallback;
 import com.mercadopago.exceptions.MercadoPagoError;
@@ -9,6 +10,9 @@ import com.mercadopago.model.PaymentMethod;
 import com.mercadopago.mvp.MvpPresenter;
 import com.mercadopago.mvp.OnResourcesRetrievedCallback;
 import com.mercadopago.providers.IssuersProvider;
+import com.mercadopago.providers.MPTrackingProvider;
+import com.mercadopago.px_tracking.model.ScreenViewEvent;
+import com.mercadopago.util.TrackingUtil;
 import com.mercadopago.views.IssuersActivityView;
 
 import java.util.ArrayList;

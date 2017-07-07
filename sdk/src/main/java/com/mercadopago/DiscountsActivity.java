@@ -277,7 +277,7 @@ public class DiscountsActivity extends AppCompatActivity implements DiscountsAct
     }
 
     protected void onInvalidStart(String message) {
-        ErrorUtil.startErrorActivity(this, message, false);
+        ErrorUtil.startErrorActivity(this, message, false, mPresenter.getPublicKey());
     }
 
     private boolean isCustomColorSet() {

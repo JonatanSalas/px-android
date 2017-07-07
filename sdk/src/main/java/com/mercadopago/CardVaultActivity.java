@@ -550,7 +550,7 @@ public class CardVaultActivity extends AppCompatActivity implements CardVaultVie
 
     @Override
     public void showApiExceptionError(ApiException exception) {
-        ApiUtil.showApiExceptionError(this, exception);
+        ApiUtil.showApiExceptionError(this, exception, mPublicKey);
     }
 
     @Override
@@ -558,7 +558,7 @@ public class CardVaultActivity extends AppCompatActivity implements CardVaultVie
         if (error.isApiException()) {
             showApiExceptionError(error.getApiException());
         } else {
-            ErrorUtil.startErrorActivity(this, error);
+            ErrorUtil.startErrorActivity(this, error, mPublicKey);
         }
     }
 

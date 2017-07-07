@@ -298,7 +298,7 @@ public class SecurityCodeActivity extends MercadoPagoBaseActivity implements Sec
 
     @Override
     public void showApiExceptionError(ApiException exception) {
-        ApiUtil.showApiExceptionError(mActivity, exception);
+        ApiUtil.showApiExceptionError(mActivity, exception, mPresenter.getPublicKey());
     }
 
     @Override

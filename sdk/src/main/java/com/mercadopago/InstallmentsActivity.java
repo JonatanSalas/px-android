@@ -36,7 +36,9 @@ import com.mercadopago.preferences.DecorationPreference;
 import com.mercadopago.preferences.PaymentPreference;
 import com.mercadopago.presenters.InstallmentsPresenter;
 import com.mercadopago.providers.InstallmentsProviderImpl;
+import com.mercadopago.providers.MPTrackingProvider;
 import com.mercadopago.px_tracking.MPTracker;
+import com.mercadopago.px_tracking.model.ScreenViewEvent;
 import com.mercadopago.uicontrollers.FontCache;
 import com.mercadopago.uicontrollers.card.CardRepresentationModes;
 import com.mercadopago.uicontrollers.card.FrontCardView;
@@ -50,6 +52,7 @@ import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
 import com.mercadopago.util.InstallmentsUtil;
 import com.mercadopago.util.ScaleUtil;
+import com.mercadopago.util.TrackingUtil;
 import com.mercadopago.views.InstallmentsActivityView;
 
 import java.lang.reflect.Type;
@@ -124,6 +127,7 @@ public class InstallmentsActivity extends MercadoPagoBaseActivity implements Ins
         initializeControls();
         initializeView();
 
+        trackScreen();
         mPresenter.initialize();
     }
 
@@ -188,9 +192,6 @@ public class InstallmentsActivity extends MercadoPagoBaseActivity implements Ins
     }
 
     public void setContentView() {
-        String siteId = mPresenter.getSite() == null ? "" : mPresenter.getSite().getId();
-//        MPTracker.getInstance().trackScreen("CARD_INSTALLMENTS", "2", mPublicKey, siteId, BuildConfig.VERSION_NAME, this);
-
         if (mLowResActive) {
             setContentViewLowRes();
         } else {
@@ -249,6 +250,21 @@ public class InstallmentsActivity extends MercadoPagoBaseActivity implements Ins
         hideHeader();
         decorate();
         showTimer();
+    }
+
+    protected void trackScreen() {
+        MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
+                .setContext(this)
+                .setCheckoutVersion(BuildConfig.VERSION_NAME)
+                .setPublicKey(mPublicKey)
+                .build();
+
+        ScreenViewEvent event = new ScreenViewEvent.Builder()
+                .setScreenId(TrackingUtil.SCREEN_ID_CARD_FORM + mPresenter.getPaymentMethod().getPaymentTypeId() + TrackingUtil.CARD_INSTALLMENTS)
+                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM + " " + mPresenter.getPaymentMethod().getPaymentTypeId() + " " + TrackingUtil.CARD_INSTALLMENTS_NAME)
+                .build();
+
+        mpTrackingProvider.addTrackEvent(event);
     }
 
     public void loadViews() {
@@ -404,13 +420,13 @@ public class InstallmentsActivity extends MercadoPagoBaseActivity implements Ins
         if (error.isApiException()) {
             showApiException(error.getApiException());
         } else {
-            ErrorUtil.startErrorActivity(this, error);
+            ErrorUtil.startErrorActivity(this, error, mPublicKey);
         }
     }
 
     public void showApiException(ApiException apiException) {
         if (mActivityActive) {
-            ApiUtil.showApiExceptionError(this, apiException);
+            ApiUtil.showApiExceptionError(this, apiException, mPublicKey);
         }
     }
 

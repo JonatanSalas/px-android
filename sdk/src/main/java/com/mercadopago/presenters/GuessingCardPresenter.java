@@ -3,7 +3,6 @@ package com.mercadopago.presenters;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.mercadopago.BuildConfig;
 import com.mercadopago.R;
 import com.mercadopago.callbacks.Callback;
 import com.mercadopago.callbacks.FailureRecovery;
@@ -29,7 +28,6 @@ import com.mercadopago.model.SecurityCode;
 import com.mercadopago.model.Setting;
 import com.mercadopago.model.Token;
 import com.mercadopago.preferences.PaymentPreference;
-import com.mercadopago.px_tracking.MPTracker;
 import com.mercadopago.uicontrollers.card.CardView;
 import com.mercadopago.uicontrollers.card.FrontCardView;
 import com.mercadopago.util.CurrenciesUtil;
@@ -354,7 +352,11 @@ public class GuessingCardPresenter {
 
     public String getPaymentTypeId() {
         if (mPaymentMethodGuessingController == null) {
-            return null;
+            if (mPaymentPreference == null) {
+                return null;
+            } else {
+                return mPaymentPreference.getDefaultPaymentTypeId();
+            }
         } else {
             return mPaymentMethodGuessingController.getPaymentTypeId();
         }

@@ -235,7 +235,7 @@ public class CustomerCardsActivity extends MercadoPagoBaseActivity implements Cu
         if (error.isApiException()) {
             showApiException(error.getApiException());
         } else {
-            ErrorUtil.startErrorActivity(this, error);
+            ErrorUtil.startErrorActivity(this, error, "");
         }
     }
 
@@ -263,7 +263,7 @@ public class CustomerCardsActivity extends MercadoPagoBaseActivity implements Cu
 
     public void showApiException(ApiException apiException) {
         if (mActivityActive) {
-            ApiUtil.showApiExceptionError(this, apiException);
+            ApiUtil.showApiExceptionError(this, apiException, "");
         }
     }
 
