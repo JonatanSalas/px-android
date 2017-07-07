@@ -71,6 +71,7 @@ public class CheckoutExampleActivity extends AppCompatActivity {
                 .setActivity(this)
                 .setPublicKey(mPublicKey)
                 .setCheckoutPreference(new CheckoutPreference("243966003-d64b4270-10c8-43b2-9600-3009cdfe4fa9"))
+//                .setCheckoutPreference(getCheckoutPreference())
 //                .setFlowPreference(flowPreference)
                 .startForPayment();
 //                .startForPaymentData();
@@ -114,14 +115,15 @@ public class CheckoutExampleActivity extends AppCompatActivity {
 
     private CheckoutPreference getCheckoutPreference() {
         return new CheckoutPreference.Builder()
-                .addItem(new Item("Item", BigDecimal.TEN.multiply(BigDecimal.TEN)))
+                .addItem(new Item("Item", new BigDecimal(10)))
                 .setSite(Sites.ARGENTINA)
+                .setPayerAccessToken("APP_USR-1094487241196549-081708-4bc39f94fd147e7ce839c230c93261cb__LA_LC__-145698489")
 //                .addExcludedPaymentType(PaymentTypes.ATM)
 //                .addExcludedPaymentType(PaymentTypes.BANK_TRANSFER)
 //                .addExcludedPaymentType(PaymentTypes.DEBIT_CARD)
 //                .addExcludedPaymentType(PaymentTypes.DEBIT_CARD)
 //                .addExcludedPaymentType(PaymentTypes.TICKET)
-//                .enableAccountMoney()
+                .enableAccountMoney()
 //                .setPayerAccessToken("APP_USR-6077407713835188-120612-9c010367e2aba8808865b227526f4ccc__LB_LD__-232134231")
                 .build();
     }

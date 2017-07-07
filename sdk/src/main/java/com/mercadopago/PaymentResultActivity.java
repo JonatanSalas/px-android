@@ -19,7 +19,6 @@ import com.mercadopago.util.MercadoPagoUtil;
 import java.math.BigDecimal;
 
 import static android.text.TextUtils.isEmpty;
-import static com.mercadopago.core.MercadoPagoComponents.Activities.CONGRATS_REQUEST_CODE;
 
 public class PaymentResultActivity extends Activity {
 

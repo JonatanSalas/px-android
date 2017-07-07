@@ -64,7 +64,7 @@ public class ErrorActivity extends MercadoPagoBaseActivity {
                 .setCheckoutVersion(BuildConfig.VERSION_NAME)
                 .setPublicKey(mPublicKey)
                 .build();
-        
+
         ScreenViewEvent event = new ScreenViewEvent.Builder()
                 .setScreenId(TrackingUtil.SCREEN_ID_ERROR)
                 .setScreenName(TrackingUtil.SCREEN_NAME_ERROR)

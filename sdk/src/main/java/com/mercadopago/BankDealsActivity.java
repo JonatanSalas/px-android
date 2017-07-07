@@ -1,7 +1,6 @@
 package com.mercadopago;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +19,6 @@ import com.mercadopago.model.ApiException;
 import com.mercadopago.model.BankDeal;
 import com.mercadopago.preferences.DecorationPreference;
 import com.mercadopago.providers.MPTrackingProvider;
-import com.mercadopago.px_tracking.MPTracker;
 import com.mercadopago.px_tracking.model.ScreenViewEvent;
 import com.mercadopago.util.ApiUtil;
 import com.mercadopago.util.ErrorUtil;
@@ -48,7 +46,7 @@ public class BankDealsActivity extends MercadoPagoActivity {
 
     @Override
     protected void onValidStart() {
-        trackInitialScreen();
+        trackScreen();
 
         mMercadoPago = new MercadoPagoServices.Builder()
                 .setContext(getActivity())
@@ -59,7 +57,7 @@ public class BankDealsActivity extends MercadoPagoActivity {
         getBankDeals();
     }
 
-    protected void trackInitialScreen() {
+    protected void trackScreen() {
         MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
                 .setContext(this)
                 .setCheckoutVersion(BuildConfig.VERSION_NAME)
@@ -193,7 +191,6 @@ public class BankDealsActivity extends MercadoPagoActivity {
     }
 
     protected void solveBankDeals(List<BankDeal> bankDeals) {
-//        MPTracker.getInstance().trackScreen("BANK_DEALS", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, getActivity());
         mRecyclerView.setAdapter(new BankDealsAdapter(getActivity(), bankDeals, getDpadSelectionCallback(), new View.OnClickListener() {
             @Override
             public void onClick(View view) {

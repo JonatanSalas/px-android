@@ -257,28 +257,12 @@ public class PaymentVaultActivity extends MercadoPagoBaseActivity implements Pay
 
         ScreenViewEvent event = null;
 
-        if (TrackingUtil.GROUP_TICKET.equals(selectedItemId)) {
+        if (selectedItemId != null) {
             event = new ScreenViewEvent.Builder()
-                    .setScreenId(TrackingUtil.SCREEN_ID_PAYMENT_VAULT_TICKET)
-                    .setScreenName(TrackingUtil.SCREEN_NAME_PAYMENT_VAULT_TICKET)
-                    .build();
-        } else if (TrackingUtil.GROUP_BANK_TRANSFER.equals(selectedItemId)) {
-            event = new ScreenViewEvent.Builder()
-                    .setScreenId(TrackingUtil.SCREEN_ID_PAYMENT_VAULT_BANK_TRANSFER)
-                    .setScreenName(TrackingUtil.SCREEN_NAME_PAYMENT_VAULT_BANK_TRANSFER)
-                    .build();
-        } else if (TrackingUtil.GROUP_CARDS.equals(selectedItemId)) {
-            event = new ScreenViewEvent.Builder()
-                    .setScreenId(TrackingUtil.SCREEN_ID_PAYMENT_VAULT_CARDS)
-                    .setScreenName(TrackingUtil.SCREEN_NAME_PAYMENT_VAULT_CARDS)
-                    .build();
-        } else {
-            event = new ScreenViewEvent.Builder()
-                    .setScreenId(TrackingUtil.SCREEN_ID_PAYMENT_VAULT)
+                    .setScreenId(TrackingUtil.SCREEN_ID_PAYMENT_VAULT + "/" + selectedItemId)
                     .setScreenName(TrackingUtil.SCREEN_NAME_PAYMENT_VAULT)
                     .build();
         }
-
         mpTrackingProvider.addTrackEvent(event);
     }
 

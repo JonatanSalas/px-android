@@ -450,7 +450,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
 
         ScreenViewEvent event = new ScreenViewEvent.Builder()
                 .setScreenId(TrackingUtil.SCREEN_ID_CARD_FORM + paymentTypeId)
-                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM + " " + paymentTypeId)
+                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM)
                 .build();
 
         mpTrackingProvider.addTrackEvent(event);
@@ -466,7 +466,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
                 .build();
         ScreenViewEvent event = new ScreenViewEvent.Builder()
                 .setScreenId(TrackingUtil.SCREEN_ID_CARD_FORM + paymentTypeId + TrackingUtil.CARD_NUMBER)
-                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM + " " + paymentTypeId + " " + TrackingUtil.CARD_NUMBER_NAME)
+                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM_NUMBER)
                 .build();
         mpTrackingProvider.addTrackEvent(event);
     }
@@ -481,7 +481,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
                 .build();
         ScreenViewEvent event = new ScreenViewEvent.Builder()
                 .setScreenId(TrackingUtil.SCREEN_ID_CARD_FORM + paymentTypeId + TrackingUtil.CARD_HOLDER_NAME)
-                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM + " " + paymentTypeId + " " + TrackingUtil.CARD_HOLDER_NAME_NAME)
+                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM_NAME)
                 .build();
         mpTrackingProvider.addTrackEvent(event);
     }
@@ -496,7 +496,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
                 .build();
         ScreenViewEvent event = new ScreenViewEvent.Builder()
                 .setScreenId(TrackingUtil.SCREEN_ID_CARD_FORM + paymentTypeId + TrackingUtil.CARD_EXPIRATION_DATE)
-                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM + " " + paymentTypeId + " " + TrackingUtil.CARD_EXPIRATION_DATE_NAME)
+                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM_EXPIRY)
                 .build();
         mpTrackingProvider.addTrackEvent(event);
     }
@@ -511,7 +511,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
                 .build();
         ScreenViewEvent event = new ScreenViewEvent.Builder()
                 .setScreenId(TrackingUtil.SCREEN_ID_CARD_FORM + paymentTypeId + TrackingUtil.CARD_SECURITY_CODE)
-                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM + " " + paymentTypeId + " " + TrackingUtil.CARD_SECURITY_CODE_NAME)
+                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM_CVV)
                 .build();
         mpTrackingProvider.addTrackEvent(event);
     }
@@ -526,7 +526,7 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
                 .build();
         ScreenViewEvent event = new ScreenViewEvent.Builder()
                 .setScreenId(TrackingUtil.SCREEN_ID_CARD_FORM + paymentTypeId + TrackingUtil.CARD_IDENTIFICATION)
-                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM + " " + paymentTypeId + " " + TrackingUtil.CARD_IDENTIFICATION_NAME)
+                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM_IDENTIFICATION_NUMBER)
                 .build();
         mpTrackingProvider.addTrackEvent(event);
     }

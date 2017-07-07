@@ -101,7 +101,6 @@ public class PendingActivity extends MercadoPagoBaseActivity implements TimerObs
     }
 
     protected void setContentView() {
-//        MPTracker.getInstance().trackScreen("RESULT", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, this);
         setContentView(R.layout.mpsdk_activity_pending);
     }
 
@@ -375,8 +374,6 @@ public class PendingActivity extends MercadoPagoBaseActivity implements TimerObs
 
     @Override
     public void onBackPressed() {
-//        MPTracker.getInstance().trackEvent("PENDING", "BACK_PRESSED", "", "2", mMerchantPublicKey, "", BuildConfig.VERSION_NAME, this);
-
         if (mBackPressedOnce) {
             finishWithOkResult();
         } else {

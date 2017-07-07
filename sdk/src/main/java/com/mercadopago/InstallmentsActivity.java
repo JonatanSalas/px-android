@@ -261,7 +261,7 @@ public class InstallmentsActivity extends MercadoPagoBaseActivity implements Ins
 
         ScreenViewEvent event = new ScreenViewEvent.Builder()
                 .setScreenId(TrackingUtil.SCREEN_ID_CARD_FORM + mPresenter.getPaymentMethod().getPaymentTypeId() + TrackingUtil.CARD_INSTALLMENTS)
-                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM + " " + mPresenter.getPaymentMethod().getPaymentTypeId() + " " + TrackingUtil.CARD_INSTALLMENTS_NAME)
+                .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM_INSTALLMENTS)
                 .build();
 
         mpTrackingProvider.addTrackEvent(event);

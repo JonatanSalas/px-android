@@ -95,8 +95,6 @@ public class CallForAuthorizeActivity extends MercadoPagoBaseActivity implements
     }
 
     protected void setContentView() {
-        String siteId = mSite == null ? "" : mSite.getId();
-//        MPTracker.getInstance().trackScreen("CALL_FOR_AUTHORIZE", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, this);
         setContentView(R.layout.mpsdk_activity_call_for_authorize);
     }
 
@@ -106,9 +104,6 @@ public class CallForAuthorizeActivity extends MercadoPagoBaseActivity implements
         mAuthorizedPaymentMethod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                String siteId = mSite == null ? "" : mSite.getId();
-//                MPTracker.getInstance().trackEvent("CALL_FOR_AUTHORIZE", "RECOVER_TOKEN", "", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, mActivity);
-
                 Intent returnIntent = new Intent();
                 mNextAction = PaymentResultAction.RECOVER_PAYMENT;
                 returnIntent.putExtra("nextAction", mNextAction);
@@ -120,9 +115,6 @@ public class CallForAuthorizeActivity extends MercadoPagoBaseActivity implements
         mPayWithOtherPaymentMethodButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                String siteId = mSite == null ? "" : mSite.getId();
-//                MPTracker.getInstance().trackEvent("CALL_FOR_AUTHORIZE", "SELECT_OTHER_PAYMENT_METHOD", "", "2", mMerchantPublicKey, siteId, BuildConfig.VERSION_NAME, mActivity);
-
                 Intent returnIntent = new Intent();
                 mNextAction = PaymentResultAction.SELECT_OTHER_PAYMENT_METHOD;
                 returnIntent.putExtra("nextAction", mNextAction);
@@ -177,7 +169,7 @@ public class CallForAuthorizeActivity extends MercadoPagoBaseActivity implements
 
         ScreenViewEvent.Builder builder = new ScreenViewEvent.Builder()
                 .setScreenId(TrackingUtil.SCREEN_ID_PAYMENT_RESULT_REJECTED)
-                .setScreenName(TrackingUtil.SCREEN_NAME_PAYMENT_RESULT_REJECTED)
+                .setScreenName(TrackingUtil.SCREEN_NAME_PAYMENT_RESULT_CALL_FOR_AUTH)
                 .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_IS_EXPRESS, TrackingUtil.IS_EXPRESS_DEFAULT_VALUE)
                 .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_STATUS, mPaymentResult.getPaymentStatus())
                 .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_STATUS_DETAIL, mPaymentResult.getPaymentStatusDetail())
@@ -262,8 +254,6 @@ public class CallForAuthorizeActivity extends MercadoPagoBaseActivity implements
 
     @Override
     public void onBackPressed() {
-//        MPTracker.getInstance().trackEvent("CALL_FOR_AUTHORIZE", "BACK_PRESSED", "2", mMerchantPublicKey, BuildConfig.VERSION_NAME, this);
-
         if (mBackPressedOnce) {
             finishWithOkResult();
         } else {
