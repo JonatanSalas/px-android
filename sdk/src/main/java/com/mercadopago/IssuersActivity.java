@@ -207,8 +207,10 @@ public class IssuersActivity extends MercadoPagoBaseActivity implements IssuersA
                 .build();
 
         ScreenViewEvent event = new ScreenViewEvent.Builder()
-                .setScreenId(TrackingUtil.SCREEN_ID_CARD_FORM + mPresenter.getPaymentMethod().getPaymentTypeId() + TrackingUtil.CARD_ISSUER)
+                .setScreenId(TrackingUtil.SCREEN_ID_ISSUERS)
                 .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM_ISSUERS)
+                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_TYPE_ID, mPresenter.getPaymentMethod().getPaymentTypeId())
+                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_METHOD_ID, mPresenter.getPaymentMethod().getId())
                 .build();
 
         mpTrackingProvider.addTrackEvent(event);

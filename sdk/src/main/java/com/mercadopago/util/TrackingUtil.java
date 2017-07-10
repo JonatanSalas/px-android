@@ -20,6 +20,9 @@ public class TrackingUtil {
     public static final String SCREEN_ID_CARD_FORM = "/checkout_off/card/";
     public static final String SCREEN_ID_ERROR = "/checkout_off/failure";
     public static final String SCREEN_ID_PAYMENT_TYPES = "/checkout_off/card/payment_types";
+    public static final String SCREEN_ID_IDENTIFICATION = "/checkout_off/identification";
+    public static final String SCREEN_ID_ISSUERS = "/checkout_off/card/issuer";
+    public static final String SCREEN_ID_INSTALLMENTS = "/checkout_off/card/installments";
 
     //Screen Names
     public static final String SCREEN_NAME_CHECKOUT = "INIT_CHECKOUT";
@@ -48,9 +51,6 @@ public class TrackingUtil {
     public static final String CARD_HOLDER_NAME = "/name";
     public static final String CARD_EXPIRATION_DATE = "/expiration";
     public static final String CARD_SECURITY_CODE = "/cvv";
-    public static final String CARD_IDENTIFICATION = "/identification";
-    public static final String CARD_ISSUER = "/issuer";
-    public static final String CARD_INSTALLMENTS = "/installments";
     public static final String CARD_SECURITY_CODE_VIEW = "/security_code";
 
     //Additional Info Keys
