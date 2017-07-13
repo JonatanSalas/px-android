@@ -66,7 +66,6 @@ public class TrackingUtil {
     public static final String METADATA_ERROR_CODE = "error_code";
     public static final String METADATA_ERROR_REQUEST = "error_request_origin";
 
-
     //Default values
     public static final String HAS_SHIPPING_DEFAULT_VALUE = "false";
     public static final String IS_EXPRESS_DEFAULT_VALUE = "false";

@@ -23,10 +23,13 @@ public class MPTrackingProvider {
     private String clientId;
     private AppInformation appInformation;
     private DeviceInfo deviceInfo;
+    private Boolean trackingEnabled;
 
     private MPTrackingProvider(Builder builder) {
         this.context = builder.context;
         this.eventList = new ArrayList<>();
+        this.trackingEnabled = builder.trackingEnabled;
+
         if (builder.eventList != null && !builder.eventList.isEmpty()) {
             this.eventList = builder.eventList;
         }
@@ -70,8 +73,7 @@ public class MPTrackingProvider {
         }
         this.eventList.add(event);
 
-        MPTracker.getInstance().trackEvents(clientId, appInformation, deviceInfo, eventList, context);
-
+        MPTracker.getInstance().trackEvents(clientId, appInformation, deviceInfo, eventList, trackingEnabled, context);
     }
 
 
@@ -80,6 +82,7 @@ public class MPTrackingProvider {
         private String publicKey;
         private String checkoutVersion;
         private List<Event> eventList;
+        private Boolean trackingEnabled;
 
         public Builder setContext(Context context) {
             this.context = context;
@@ -98,6 +101,11 @@ public class MPTrackingProvider {
 
         public Builder setEventList(List<Event> eventList) {
             this.eventList = eventList;
+            return this;
+        }
+
+        public Builder setTrackingEnabled(Boolean trackingEnabled) {
+            this.trackingEnabled = trackingEnabled;
             return this;
         }
 

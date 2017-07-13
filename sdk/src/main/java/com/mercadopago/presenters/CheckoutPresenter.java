@@ -97,7 +97,6 @@ public class CheckoutPresenter extends MvpPresenter<CheckoutView, CheckoutProvid
             validatePreference();
 
             getView().initializeMPTracker();
-            getView().trackScreen();
 
             startCheckout();
         } catch (CheckoutPreferenceException e) {

@@ -50,10 +50,12 @@ public class MPTracker {
     private static final String DEFAULT_FLAVOUR = "3";
 
     private Boolean trackerInitialized = false;
+    private Boolean mTrackingEnabled = false;
 
     private TrackingStrategy trackingStrategy;
 
-    protected MPTracker() {}
+    protected MPTracker() {
+    }
 
     synchronized public static MPTracker getInstance() {
         if (mMPTrackerInstance == null) {
@@ -89,8 +91,8 @@ public class MPTracker {
     }
 
     /**
-     * @param paymentId       The payment id of a payment method off. Cannot be {@code null}.
-     * @param typeId          The payment type id. It has to be a card type.
+     * @param paymentId The payment id of a payment method off. Cannot be {@code null}.
+     * @param typeId    The payment type id. It has to be a card type.
      */
     public PaymentIntent trackPayment(Long paymentId, String typeId) {
 
@@ -130,12 +132,13 @@ public class MPTracker {
      * @param events         List of events to track
      * @param context        Application context
      */
-    public EventTrackIntent trackEvents(String clientId, AppInformation appInformation, DeviceInfo deviceInfo, List<Event> events, Context context) {
+    public EventTrackIntent trackEvents(String clientId, AppInformation appInformation, DeviceInfo deviceInfo, List<Event> events, Boolean trackingEnabled, Context context) {
         EventTrackIntent eventTrackIntent = new EventTrackIntent(clientId, appInformation, deviceInfo, events);
         initializeMPTrackingService();
 
-        getTrackingStrategy().trackEvents(eventTrackIntent, context);
-
+        if (trackingEnabled != null && trackingEnabled) {
+            getTrackingStrategy().trackEvents(eventTrackIntent, context);
+        }
 
         //Notify external listeners
         for (Event event : eventTrackIntent.getEvents()) {
@@ -155,7 +158,8 @@ public class MPTracker {
         Map<String, String> eventMap = new HashMap<>();
 
         String eventJson = JsonConverter.getInstance().toJson(actionEvent);
-        Type type = new TypeToken<Map<String, String>>() {}.getType();
+        Type type = new TypeToken<Map<String, String>>() {
+        }.getType();
         Map<String, String> actionEventDataMap = new Gson().fromJson(eventJson, type);
 
         eventMap.putAll(actionEventDataMap);
@@ -184,7 +188,6 @@ public class MPTracker {
     }
 
     /**
-     *
      * @param publicKey  The public key of the merchant. Cannot be {@code null}.
      * @param siteId     The site that comes in the preference. Cannot be {@code null}.
      * @param sdkVersion The Mercado Pago sdk version. Cannot be {@code null}.
@@ -229,4 +232,9 @@ public class MPTracker {
         }
         return trackingStrategy;
     }
+
+    public void setTrackingEnabled(Boolean trackingEnabled) {
+        this.mTrackingEnabled = trackingEnabled;
+    }
+
 }

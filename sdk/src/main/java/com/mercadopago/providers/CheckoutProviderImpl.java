@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 
 import android.content.Context;
 
+import com.mercadopago.BuildConfig;
 import com.mercadopago.R;
 import com.mercadopago.callbacks.Callback;
 import com.mercadopago.constants.PaymentTypes;

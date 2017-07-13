@@ -132,20 +132,6 @@ public class CheckoutActivity extends MercadoPagoBaseActivity implements Checkou
     }
 
     @Override
-    public void trackScreen() {
-        MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
-                .setContext(this)
-                .setCheckoutVersion(BuildConfig.VERSION_NAME)
-                .setPublicKey(mMerchantPublicKey)
-                .build();
-        ScreenViewEvent event = new ScreenViewEvent.Builder()
-                .setScreenId(TrackingUtil.SCREEN_ID_CHECKOUT)
-                .setScreenName(TrackingUtil.SCREEN_NAME_CHECKOUT)
-                .build();
-        mpTrackingProvider.addTrackEvent(event);
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
