@@ -149,7 +149,7 @@ public class BankDealsActivity extends MercadoPagoActivity {
                                 getBankDeals();
                             }
                         });
-                        ApiUtil.showApiExceptionError(getActivity(), apiException, mMerchantPublicKey);
+                        ApiUtil.showApiExceptionError(getActivity(), apiException, mMerchantPublicKey, ApiUtil.RequestOrigin.GET_BANK_DEALS);
                     } else {
                         finishWithCancelResult();
                     }

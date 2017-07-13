@@ -21,7 +21,7 @@ public class ScreenViewEvent extends Event {
         super();
         setType(TYPE_SCREEN_VIEW);
         setTimestamp(new Timestamp(System.currentTimeMillis()));
-        setAdditionalInfo(builder.additionalInfo);
+        setMetadata(builder.metadata);
         this.screenId = builder.screenId;
         this.screenName = builder.screenName;
     }
@@ -38,7 +38,7 @@ public class ScreenViewEvent extends Event {
 
         private String screenId;
         private String screenName;
-        private Map<String, Object> additionalInfo = new HashMap<>();
+        private Map<String, String> metadata = new HashMap<>();
 
         public Builder setScreenId(String screenId) {
             this.screenId = screenId;
@@ -50,8 +50,8 @@ public class ScreenViewEvent extends Event {
             return this;
         }
 
-        public Builder addAditionalInfo(String key, Object value) {
-            additionalInfo.put(key, value);
+        public Builder addMetaData(String key, String value) {
+            metadata.put(key, value);
             return this;
         }
 

@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -27,11 +26,9 @@ import com.mercadopago.model.Issuer;
 import com.mercadopago.model.PaymentMethod;
 import com.mercadopago.observers.TimerObserver;
 import com.mercadopago.preferences.DecorationPreference;
-import com.mercadopago.preferences.PaymentPreference;
 import com.mercadopago.presenters.IssuersPresenter;
 import com.mercadopago.providers.IssuersProviderImpl;
 import com.mercadopago.providers.MPTrackingProvider;
-import com.mercadopago.px_tracking.MPTracker;
 import com.mercadopago.px_tracking.model.ScreenViewEvent;
 import com.mercadopago.uicontrollers.FontCache;
 import com.mercadopago.uicontrollers.card.CardRepresentationModes;
@@ -209,8 +206,8 @@ public class IssuersActivity extends MercadoPagoBaseActivity implements IssuersA
         ScreenViewEvent event = new ScreenViewEvent.Builder()
                 .setScreenId(TrackingUtil.SCREEN_ID_ISSUERS)
                 .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM_ISSUERS)
-                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_TYPE_ID, mPresenter.getPaymentMethod().getPaymentTypeId())
-                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_METHOD_ID, mPresenter.getPaymentMethod().getId())
+                .addMetaData(TrackingUtil.METADATA_PAYMENT_TYPE_ID, mPresenter.getPaymentMethod().getPaymentTypeId())
+                .addMetaData(TrackingUtil.METADATA_PAYMENT_METHOD_ID, mPresenter.getPaymentMethod().getId())
                 .build();
 
         mpTrackingProvider.addTrackEvent(event);
@@ -350,17 +347,17 @@ public class IssuersActivity extends MercadoPagoBaseActivity implements IssuersA
     }
 
     @Override
-    public void showError(MercadoPagoError error) {
+    public void showError(MercadoPagoError error, String requestOrigin) {
         if (error.isApiException()) {
-            showApiException(error.getApiException());
+            showApiException(error.getApiException(), requestOrigin);
         } else {
             ErrorUtil.startErrorActivity(this, error, mPublicKey);
         }
     }
 
-    public void showApiException(ApiException apiException) {
+    public void showApiException(ApiException apiException, String requestOrigin) {
         if (mActivityActive) {
-            ApiUtil.showApiExceptionError(this, apiException, mPublicKey);
+            ApiUtil.showApiExceptionError(this, apiException, mPublicKey, requestOrigin);
         }
     }
 

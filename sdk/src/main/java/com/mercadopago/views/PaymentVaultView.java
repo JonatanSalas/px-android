@@ -29,7 +29,7 @@ public interface PaymentVaultView extends MvpView {
 
     void showSearchItems(List<PaymentMethodSearchItem> searchItems, OnSelectedCallback<PaymentMethodSearchItem> paymentMethodSearchItemSelectionCallback);
 
-    void showError(MercadoPagoError mercadoPagoError);
+    void showError(MercadoPagoError mercadoPagoError, String requestOrigin);
 
     void setTitle(String title);
 

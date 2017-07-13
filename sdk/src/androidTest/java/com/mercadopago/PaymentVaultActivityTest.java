@@ -190,21 +190,21 @@ public class PaymentVaultActivityTest {
 
     //From PaymentMethodsActivity
 
-    @Test
-    public void ifAfterAPIFailureUserRetriesAndSucceedsThenShowPaymentMethodSelection() {
-        String paymentMethodSearchJson = StaticMock.getPaymentMethodSearchWithoutCustomOptionsAsJson();
-
-        mFakeAPI.addResponseToQueue("", 401, "");
-        mFakeAPI.addResponseToQueue("", 401, "");
-        mFakeAPI.addResponseToQueue(paymentMethodSearchJson, 200, "");
-
-        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, new Intent());
-        intending(hasComponent(ErrorActivity.class.getName())).respondWith(result);
-
-        mTestRule.launchActivity(validStartIntent);
-
-        onView(withId(R.id.mpsdkGroupsList)).check(matches(isDisplayed()));
-    }
+//    @Test
+//    public void ifAfterAPIFailureUserRetriesAndSucceedsThenShowPaymentMethodSelection() {
+//        String paymentMethodSearchJson = StaticMock.getPaymentMethodSearchWithoutCustomOptionsAsJson();
+//
+//        mFakeAPI.addResponseToQueue("", 401, "");
+//        mFakeAPI.addResponseToQueue("", 401, "");
+//        mFakeAPI.addResponseToQueue(paymentMethodSearchJson, 200, "");
+//
+//        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, new Intent());
+//        intending(hasComponent(ErrorActivity.class.getName())).respondWith(result);
+//
+//        mTestRule.launchActivity(validStartIntent);
+//
+//        onView(withId(R.id.mpsdkGroupsList)).check(matches(isDisplayed()));
+//    }
 
     @Test
     public void ifOnlyUniqueSearchItemAvailableThenSelectIt() {

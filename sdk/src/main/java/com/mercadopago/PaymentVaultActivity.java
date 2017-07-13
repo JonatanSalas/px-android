@@ -623,9 +623,9 @@ public class PaymentVaultActivity extends MercadoPagoBaseActivity implements Pay
                 .startActivity();
     }
 
-    public void showApiException(ApiException apiException) {
+    public void showApiException(ApiException apiException, String requestOrigin) {
         if (mActivityActive) {
-            ApiUtil.showApiExceptionError(this, apiException, mPublicKey);
+            ApiUtil.showApiExceptionError(this, apiException, mPublicKey, requestOrigin);
         }
     }
 
@@ -640,9 +640,9 @@ public class PaymentVaultActivity extends MercadoPagoBaseActivity implements Pay
     }
 
     @Override
-    public void showError(MercadoPagoError error) {
+    public void showError(MercadoPagoError error, String requestOrigin) {
         if (error.isApiException()) {
-            showApiException(error.getApiException());
+            showApiException(error.getApiException(), requestOrigin);
         } else {
             ErrorUtil.startErrorActivity(this, error, mPublicKey);
         }

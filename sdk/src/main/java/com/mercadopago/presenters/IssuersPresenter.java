@@ -12,6 +12,7 @@ import com.mercadopago.mvp.OnResourcesRetrievedCallback;
 import com.mercadopago.providers.IssuersProvider;
 import com.mercadopago.providers.MPTrackingProvider;
 import com.mercadopago.px_tracking.model.ScreenViewEvent;
+import com.mercadopago.util.ApiUtil;
 import com.mercadopago.util.TrackingUtil;
 import com.mercadopago.views.IssuersActivityView;
 
@@ -53,7 +54,7 @@ public class IssuersPresenter extends MvpPresenter<IssuersActivityView, IssuersP
         mIssuers = issuers;
 
         if (mIssuers.isEmpty()) {
-            getView().showError(getResourcesProvider().getEmptyIssuersError());
+            getView().showError(getResourcesProvider().getEmptyIssuersError(), "");
         } else if (mIssuers.size() == 1) {
             getView().finishWithResult(issuers.get(0));
         } else {
@@ -83,7 +84,7 @@ public class IssuersPresenter extends MvpPresenter<IssuersActivityView, IssuersP
                     }
                 });
 
-                getView().showError(error);
+                getView().showError(error, ApiUtil.RequestOrigin.GET_ISSUERS);
             }
         });
     }

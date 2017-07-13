@@ -50,6 +50,9 @@ public class MPTrackerTest {
     private static final String MOCKED_ERROR_CLASS_1 = "class_1";
     private static final String MOCKED_ERROR_MESSAGE_1 = "message_1";
 
+    private static final String MOCKED_METADATA_KEY_1 = "metadata_key_1";
+    private static final String MOCKED_METADATA_VALUE_1 = "metadata_value_1";
+
     private static final String ACTION_EVENT_KEY_ACTION = "action";
     private static final String ACTION_EVENT_KEY_CATEGORY = "category";
     private static final String ACTION_EVENT_KEY_LABEL = "label";
@@ -432,6 +435,62 @@ public class MPTrackerTest {
         assertEquals(sentStackTrace.getLineNumber(), MOCKED_STACK_TRACE_LINE);
         assertEquals(sentStackTrace.getColumnNumber(), MOCKED_STACK_TRACE_COLUMN);
         assertEquals(sentStackTrace.getMethod(), MOCKED_STACK_TRACE_METHOD);
+    }
+
+    @Test
+    public void sendScreenViewEventWithMetadataTrack() {
+        Context appContext = InstrumentationRegistry.getTargetContext();
+
+        String clientId = MOCKED_CLIENT_ID;
+
+        AppInformation appInformation = new AppInformation.Builder()
+                .setCheckoutVersion(MOCKED_CHECKOUT_VERSION)
+                .setPlatform(MOCKED_PLATFORM)
+                .setPublicKey(MOCKED_PUBLIC_KEY)
+                .build();
+
+        DeviceInfo deviceInfo = new DeviceInfo.Builder()
+                .setModel(MOCKED_MODEL)
+                .setOS(MOCKED_OS)
+                .setResolution(MOCKED_RESOLUTION)
+                .setScreenSize(MOCKED_SCREEN_SIZE)
+                .setSystemVersion(MOCKED_SYSTEM_VERSION)
+                .build();
+
+        List<Event> events = new ArrayList<>();
+
+        final ScreenViewEvent screenViewEvent = new ScreenViewEvent.Builder()
+                .setScreenId(MOCKED_SCREEN_ID_1)
+                .setScreenName(MOCKED_SCREEN_NAME_1)
+                .addMetaData(MOCKED_METADATA_KEY_1, MOCKED_METADATA_VALUE_1)
+                .build();
+
+        events.add(screenViewEvent);
+
+        MPTracker.getInstance().setMPTrackingService(new MPMockedTrackingService());
+
+        MPTracker.getInstance().setTracksListener(new TracksListener() {
+            @Override
+            public void onScreenLaunched(String screenName) {
+                assertEquals(screenViewEvent.getScreenName(), screenName);
+            }
+
+            @Override
+            public void onEventPerformed(Map<String, String> event) {
+
+            }
+        });
+        EventTrackIntent eventTrackIntent = MPTracker.getInstance().trackEvents(MOCKED_CLIENT_ID, appInformation, deviceInfo, events, appContext);
+
+        assertEquals(eventTrackIntent.getApplication(), appInformation);
+        assertEquals(eventTrackIntent.getDevice(), deviceInfo);
+        assertEquals(eventTrackIntent.getClientId(), clientId);
+        List<Event> sentList = eventTrackIntent.getEvents();
+        assertTrue(sentList.size() == 1);
+
+        ScreenViewEvent sentEvent = (ScreenViewEvent) sentList.get(0);
+        assertTrue(sentEvent.getMetadata().containsKey(MOCKED_METADATA_KEY_1));
+        assertEquals(sentEvent.getMetadata().get(MOCKED_METADATA_KEY_1), MOCKED_METADATA_VALUE_1);
     }
 
 }

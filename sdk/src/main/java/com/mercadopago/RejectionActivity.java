@@ -164,19 +164,19 @@ public class RejectionActivity extends MercadoPagoBaseActivity implements TimerO
         ScreenViewEvent.Builder builder = new ScreenViewEvent.Builder()
                 .setScreenId(TrackingUtil.SCREEN_ID_PAYMENT_RESULT_REJECTED)
                 .setScreenName(TrackingUtil.SCREEN_NAME_PAYMENT_RESULT_REJECTED)
-                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_IS_EXPRESS, TrackingUtil.IS_EXPRESS_DEFAULT_VALUE)
-                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_STATUS, mPaymentResult.getPaymentStatus())
-                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_STATUS_DETAIL, mPaymentStatusDetail)
-                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_ID, String.valueOf(mPaymentResult.getPaymentId()));
+                .addMetaData(TrackingUtil.METADATA_PAYMENT_IS_EXPRESS, TrackingUtil.IS_EXPRESS_DEFAULT_VALUE)
+                .addMetaData(TrackingUtil.METADATA_PAYMENT_STATUS, mPaymentResult.getPaymentStatus())
+                .addMetaData(TrackingUtil.METADATA_PAYMENT_STATUS_DETAIL, mPaymentStatusDetail)
+                .addMetaData(TrackingUtil.METADATA_PAYMENT_ID, String.valueOf(mPaymentResult.getPaymentId()));
 
         if (mPaymentMethodId != null) {
-            builder.addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_METHOD_ID, mPaymentMethodId);
+            builder.addMetaData(TrackingUtil.METADATA_PAYMENT_METHOD_ID, mPaymentMethodId);
         }
         if (mPaymentTypeId != null) {
-            builder.addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_TYPE_ID, mPaymentTypeId);
+            builder.addMetaData(TrackingUtil.METADATA_PAYMENT_TYPE_ID, mPaymentTypeId);
         }
-        if (mIssuer != null) {
-            builder.addAditionalInfo(TrackingUtil.ADDITIONAL_ISSUER_ID, String.valueOf(mIssuer.getId()));
+        if (mIssuer != null && mIssuer.getId() != null) {
+            builder.addMetaData(TrackingUtil.METADATA_ISSUER_ID, String.valueOf(mIssuer.getId()));
         }
 
         ScreenViewEvent event = builder.build();

@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.mercadopago.controllers.CheckoutErrorHandler;
 import com.mercadopago.exceptions.MercadoPagoError;
+import com.mercadopago.model.ApiException;
 import com.mercadopago.providers.MPTrackingProvider;
 import com.mercadopago.px_tracking.model.ScreenViewEvent;
 import com.mercadopago.util.ApiUtil;
@@ -65,11 +66,29 @@ public class ErrorActivity extends MercadoPagoBaseActivity {
                 .setPublicKey(mPublicKey)
                 .build();
 
-        ScreenViewEvent event = new ScreenViewEvent.Builder()
+        ScreenViewEvent.Builder builder = new ScreenViewEvent.Builder()
                 .setScreenId(TrackingUtil.SCREEN_ID_ERROR)
-                .setScreenName(TrackingUtil.SCREEN_NAME_ERROR)
-                .addAditionalInfo(TrackingUtil.ADDITIONAL_MERCADO_PAGO_ERROR, mMercadoPagoError)
-                .build();
+                .setScreenName(TrackingUtil.SCREEN_NAME_ERROR);
+
+        if (mMercadoPagoError != null) {
+
+            if (mMercadoPagoError.getApiException() != null) {
+                ApiException apiException = mMercadoPagoError.getApiException();
+
+                if (apiException.getStatus() != null) {
+                    builder.addMetaData(TrackingUtil.METADATA_ERROR_STATUS, String.valueOf(apiException.getStatus()));
+                }
+                if (apiException.getCause() != null && !apiException.getCause().isEmpty() && apiException.getCause().get(0).getCode() != null) {
+                    builder.addMetaData(TrackingUtil.METADATA_ERROR_CODE, String.valueOf(apiException.getCause().get(0).getCode()));
+                }
+            }
+
+            if (mMercadoPagoError.getRequestOrigin() != null && !mMercadoPagoError.getRequestOrigin().isEmpty()) {
+                builder.addMetaData(TrackingUtil.METADATA_ERROR_REQUEST, mMercadoPagoError.getRequestOrigin());
+            }
+        }
+
+        ScreenViewEvent event = builder.build();
 
         mpTrackingProvider.addTrackEvent(event);
     }

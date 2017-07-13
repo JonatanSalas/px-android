@@ -64,7 +64,6 @@ import com.mercadopago.preferences.DecorationPreference;
 import com.mercadopago.preferences.PaymentPreference;
 import com.mercadopago.presenters.GuessingCardPresenter;
 import com.mercadopago.providers.MPTrackingProvider;
-import com.mercadopago.px_tracking.MPTracker;
 import com.mercadopago.px_tracking.model.ScreenViewEvent;
 import com.mercadopago.uicontrollers.card.CardRepresentationModes;
 import com.mercadopago.uicontrollers.card.CardView;
@@ -527,8 +526,8 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
         ScreenViewEvent event = new ScreenViewEvent.Builder()
                 .setScreenId(TrackingUtil.SCREEN_ID_IDENTIFICATION)
                 .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM_IDENTIFICATION_NUMBER)
-                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_TYPE_ID, paymentTypeId)
-                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_METHOD_ID, mPresenter.getPaymentMethod().getId())
+                .addMetaData(TrackingUtil.METADATA_PAYMENT_TYPE_ID, paymentTypeId)
+                .addMetaData(TrackingUtil.METADATA_PAYMENT_METHOD_ID, mPresenter.getPaymentMethod().getId())
                 .build();
         mpTrackingProvider.addTrackEvent(event);
     }
@@ -1188,8 +1187,8 @@ public class GuessingCardActivity extends MercadoPagoBaseActivity implements Gue
     }
 
     @Override
-    public void showApiExceptionError(ApiException exception) {
-        ApiUtil.showApiExceptionError(mActivity, exception, mPresenter.getPublicKey());
+    public void showApiExceptionError(ApiException exception, String requestOrigin) {
+        ApiUtil.showApiExceptionError(mActivity, exception, mPresenter.getPublicKey(), requestOrigin);
     }
 
     @Override

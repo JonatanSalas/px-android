@@ -37,7 +37,6 @@ import com.mercadopago.preferences.PaymentPreference;
 import com.mercadopago.presenters.InstallmentsPresenter;
 import com.mercadopago.providers.InstallmentsProviderImpl;
 import com.mercadopago.providers.MPTrackingProvider;
-import com.mercadopago.px_tracking.MPTracker;
 import com.mercadopago.px_tracking.model.ScreenViewEvent;
 import com.mercadopago.uicontrollers.FontCache;
 import com.mercadopago.uicontrollers.card.CardRepresentationModes;
@@ -50,7 +49,6 @@ import com.mercadopago.util.ColorsUtil;
 import com.mercadopago.util.ErrorUtil;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
-import com.mercadopago.util.InstallmentsUtil;
 import com.mercadopago.util.ScaleUtil;
 import com.mercadopago.util.TrackingUtil;
 import com.mercadopago.views.InstallmentsActivityView;
@@ -262,7 +260,7 @@ public class InstallmentsActivity extends MercadoPagoBaseActivity implements Ins
         ScreenViewEvent event = new ScreenViewEvent.Builder()
                 .setScreenId(TrackingUtil.SCREEN_ID_INSTALLMENTS)
                 .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM_INSTALLMENTS)
-                .addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_METHOD_ID, mPresenter.getPaymentMethod().getId())
+                .addMetaData(TrackingUtil.METADATA_PAYMENT_METHOD_ID, mPresenter.getPaymentMethod().getId())
                 .build();
 
         mpTrackingProvider.addTrackEvent(event);
@@ -417,17 +415,17 @@ public class InstallmentsActivity extends MercadoPagoBaseActivity implements Ins
     }
 
     @Override
-    public void showError(MercadoPagoError error) {
+    public void showError(MercadoPagoError error, String requestOrigin) {
         if (error.isApiException()) {
-            showApiException(error.getApiException());
+            showApiException(error.getApiException(), requestOrigin);
         } else {
             ErrorUtil.startErrorActivity(this, error, mPublicKey);
         }
     }
 
-    public void showApiException(ApiException apiException) {
+    public void showApiException(ApiException apiException, String requestOrigin) {
         if (mActivityActive) {
-            ApiUtil.showApiExceptionError(this, apiException, mPublicKey);
+            ApiUtil.showApiExceptionError(this, apiException, mPublicKey, requestOrigin);
         }
     }
 

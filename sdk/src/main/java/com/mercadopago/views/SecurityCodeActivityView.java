@@ -14,6 +14,6 @@ public interface SecurityCodeActivityView {
     void clearErrorView();
     void showLoadingView();
     void stopLoadingView();
-    void showApiExceptionError(ApiException exception);
+    void showApiExceptionError(ApiException exception, String requestOrigin);
     void finishWithResult();
 }

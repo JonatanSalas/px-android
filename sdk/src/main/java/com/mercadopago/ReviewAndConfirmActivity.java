@@ -43,12 +43,10 @@ import com.mercadopago.preferences.ReviewScreenPreference;
 import com.mercadopago.presenters.ReviewAndConfirmPresenter;
 import com.mercadopago.providers.MPTrackingProvider;
 import com.mercadopago.providers.ReviewAndConfirmProviderImpl;
-import com.mercadopago.px_tracking.MPTracker;
 import com.mercadopago.px_tracking.model.ScreenViewEvent;
 import com.mercadopago.uicontrollers.FontCache;
 import com.mercadopago.util.ErrorUtil;
 import com.mercadopago.util.JsonUtil;
-import com.mercadopago.util.TextUtil;
 import com.mercadopago.util.TrackingUtil;
 import com.mercadopago.views.ReviewAndConfirmView;
 
@@ -263,14 +261,18 @@ public class ReviewAndConfirmActivity extends MercadoPagoBaseActivity implements
             ScreenViewEvent.Builder builder = new ScreenViewEvent.Builder()
                     .setScreenId(TrackingUtil.SCREEN_ID_REVIEW_AND_CONFIRM)
                     .setScreenName(TrackingUtil.SCREEN_NAME_REVIEW_AND_CONFIRM)
-                    .addAditionalInfo(TrackingUtil.ADDITIONAL_SHIPPING_INFO, TrackingUtil.HAS_SHIPPING_DEFAULT_VALUE);
+                    .addMetaData(TrackingUtil.METADATA_SHIPPING_INFO, TrackingUtil.HAS_SHIPPING_DEFAULT_VALUE);
 
             if (paymentData.getPaymentMethod() != null) {
-                builder.addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_TYPE_ID, paymentData.getPaymentMethod().getPaymentTypeId());
-                builder.addAditionalInfo(TrackingUtil.ADDITIONAL_PAYMENT_METHOD_ID, paymentData.getPaymentMethod().getId());
+                if (paymentData.getPaymentMethod().getPaymentTypeId() != null) {
+                    builder.addMetaData(TrackingUtil.METADATA_PAYMENT_TYPE_ID, paymentData.getPaymentMethod().getPaymentTypeId());
+                }
+                if (paymentData.getPaymentMethod().getId() != null) {
+                    builder.addMetaData(TrackingUtil.METADATA_PAYMENT_METHOD_ID, paymentData.getPaymentMethod().getId());
+                }
             }
-            if (paymentData.getIssuer() != null) {
-                builder.addAditionalInfo(TrackingUtil.ADDITIONAL_ISSUER_ID, String.valueOf(paymentData.getIssuer().getId()));
+            if (paymentData.getIssuer() != null && paymentData.getIssuer().getId() != null) {
+                builder.addMetaData(TrackingUtil.METADATA_ISSUER_ID, String.valueOf(paymentData.getIssuer().getId()));
             }
 
             ScreenViewEvent event = builder.build();

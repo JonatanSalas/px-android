@@ -537,14 +537,14 @@ public class CardVaultActivity extends AppCompatActivity implements CardVaultVie
     }
 
     @Override
-    public void showApiExceptionError(ApiException exception) {
-        ApiUtil.showApiExceptionError(this, exception, mPublicKey);
+    public void showApiExceptionError(ApiException exception, String requestOrigin) {
+        ApiUtil.showApiExceptionError(this, exception, mPublicKey, requestOrigin);
     }
 
     @Override
-    public void showError(MercadoPagoError error) {
+    public void showError(MercadoPagoError error, String requestOrigin) {
         if (error.isApiException()) {
-            showApiExceptionError(error.getApiException());
+            showApiExceptionError(error.getApiException(), requestOrigin);
         } else {
             ErrorUtil.startErrorActivity(this, error, mPublicKey);
         }
