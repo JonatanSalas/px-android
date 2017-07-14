@@ -105,6 +105,8 @@ public class MPTrackerTest {
 
         events.add(screenViewEvent);
 
+        MPTracker.getInstance().setTrackingEnabled(trackingEnabled);
+
         MPTracker.getInstance().setMPTrackingService(new MPMockedTrackingService());
 
         MPTracker.getInstance().setTracksListener(new TracksListener() {
@@ -118,7 +120,7 @@ public class MPTrackerTest {
 
             }
         });
-        EventTrackIntent eventTrackIntent = MPTracker.getInstance().trackEvents(MOCKED_CLIENT_ID, appInformation, deviceInfo, events, trackingEnabled, appContext);
+        EventTrackIntent eventTrackIntent = MPTracker.getInstance().trackEvents(MOCKED_CLIENT_ID, appInformation, deviceInfo, events, appContext);
 
         assertEquals(eventTrackIntent.getApplication(), appInformation);
         assertEquals(eventTrackIntent.getDevice(), deviceInfo);
@@ -161,6 +163,8 @@ public class MPTrackerTest {
 
         events.add(actionEvent);
 
+        MPTracker.getInstance().setTrackingEnabled(trackingEnabled);
+
         MPTracker.getInstance().setMPTrackingService(new MPMockedTrackingService());
 
         MPTracker.getInstance().setTracksListener(new TracksListener() {
@@ -180,7 +184,7 @@ public class MPTrackerTest {
             }
         });
 
-        EventTrackIntent eventTrackIntent = MPTracker.getInstance().trackEvents(MOCKED_CLIENT_ID, appInformation, deviceInfo, events, trackingEnabled, appContext);
+        EventTrackIntent eventTrackIntent = MPTracker.getInstance().trackEvents(MOCKED_CLIENT_ID, appInformation, deviceInfo, events, appContext);
 
         assertEquals(eventTrackIntent.getApplication(), appInformation);
         assertEquals(eventTrackIntent.getDevice(), deviceInfo);
@@ -220,6 +224,8 @@ public class MPTrackerTest {
 
         events.add(errorEvent);
 
+        MPTracker.getInstance().setTrackingEnabled(trackingEnabled);
+
         MPTracker.getInstance().setMPTrackingService(new MPMockedTrackingService());
 
         MPTracker.getInstance().setTracksListener(new TracksListener() {
@@ -234,7 +240,7 @@ public class MPTrackerTest {
             }
         });
 
-        EventTrackIntent eventTrackIntent = MPTracker.getInstance().trackEvents(MOCKED_CLIENT_ID, appInformation, deviceInfo, events, trackingEnabled, appContext);
+        EventTrackIntent eventTrackIntent = MPTracker.getInstance().trackEvents(MOCKED_CLIENT_ID, appInformation, deviceInfo, events, appContext);
 
         assertEquals(eventTrackIntent.getApplication(), appInformation);
         assertEquals(eventTrackIntent.getDevice(), deviceInfo);
@@ -290,6 +296,8 @@ public class MPTrackerTest {
         events.add(actionEvent);
         events.add(errorEvent);
 
+        MPTracker.getInstance().setTrackingEnabled(trackingEnabled);
+
         MPTracker.getInstance().setMPTrackingService(new MPMockedTrackingService());
 
         MPTracker.getInstance().setTracksListener(new TracksListener() {
@@ -304,7 +312,7 @@ public class MPTrackerTest {
             }
         });
 
-        EventTrackIntent eventTrackIntent = MPTracker.getInstance().trackEvents(MOCKED_CLIENT_ID, appInformation, deviceInfo, events, trackingEnabled, appContext);
+        EventTrackIntent eventTrackIntent = MPTracker.getInstance().trackEvents(MOCKED_CLIENT_ID, appInformation, deviceInfo, events, appContext);
 
         assertEquals(eventTrackIntent.getApplication(), appInformation);
         assertEquals(eventTrackIntent.getDevice(), deviceInfo);
@@ -411,6 +419,8 @@ public class MPTrackerTest {
 
         events.add(errorEvent);
 
+        MPTracker.getInstance().setTrackingEnabled(trackingEnabled);
+
         MPTracker.getInstance().setMPTrackingService(new MPMockedTrackingService());
 
         MPTracker.getInstance().setTracksListener(new TracksListener() {
@@ -425,7 +435,7 @@ public class MPTrackerTest {
             }
         });
 
-        EventTrackIntent eventTrackIntent = MPTracker.getInstance().trackEvents(MOCKED_CLIENT_ID, appInformation, deviceInfo, events, trackingEnabled, appContext);
+        EventTrackIntent eventTrackIntent = MPTracker.getInstance().trackEvents(MOCKED_CLIENT_ID, appInformation, deviceInfo, events, appContext);
 
         assertEquals(eventTrackIntent.getApplication(), appInformation);
         assertEquals(eventTrackIntent.getDevice(), deviceInfo);
@@ -474,6 +484,8 @@ public class MPTrackerTest {
 
         events.add(screenViewEvent);
 
+        MPTracker.getInstance().setTrackingEnabled(trackingEnabled);
+
         MPTracker.getInstance().setMPTrackingService(new MPMockedTrackingService());
 
         MPTracker.getInstance().setTracksListener(new TracksListener() {
@@ -487,7 +499,7 @@ public class MPTrackerTest {
 
             }
         });
-        EventTrackIntent eventTrackIntent = MPTracker.getInstance().trackEvents(MOCKED_CLIENT_ID, appInformation, deviceInfo, events, trackingEnabled ,appContext);
+        EventTrackIntent eventTrackIntent = MPTracker.getInstance().trackEvents(MOCKED_CLIENT_ID, appInformation, deviceInfo, events ,appContext);
 
         assertEquals(eventTrackIntent.getApplication(), appInformation);
         assertEquals(eventTrackIntent.getDevice(), deviceInfo);

@@ -190,11 +190,12 @@ public class MercadoPagoCheckout {
     }
 
     public void trackScreen() {
+        //TODO delete trackingEnabled
+        MPTracker.getInstance().setTrackingEnabled(true);
+
         MPTrackingProvider mpTrackingProvider = new MPTrackingProvider.Builder()
                 .setContext(activity)
                 .setCheckoutVersion(BuildConfig.VERSION_NAME)
-                //TODO delete trackingEnabled
-                .setTrackingEnabled(true)
                 .setPublicKey(publicKey)
                 .build();
 

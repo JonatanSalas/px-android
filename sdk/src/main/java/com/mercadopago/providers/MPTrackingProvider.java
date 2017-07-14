@@ -23,12 +23,10 @@ public class MPTrackingProvider {
     private String clientId;
     private AppInformation appInformation;
     private DeviceInfo deviceInfo;
-    private Boolean trackingEnabled;
 
     private MPTrackingProvider(Builder builder) {
         this.context = builder.context;
         this.eventList = new ArrayList<>();
-        this.trackingEnabled = builder.trackingEnabled;
 
         if (builder.eventList != null && !builder.eventList.isEmpty()) {
             this.eventList = builder.eventList;
@@ -40,6 +38,7 @@ public class MPTrackingProvider {
         if (builder.publicKey != null && builder.checkoutVersion != null) {
             this.appInformation = initializeAppInformation(builder.publicKey, builder.checkoutVersion);
         }
+
     }
 
     private String initializeClientId() {
@@ -66,14 +65,12 @@ public class MPTrackingProvider {
 
 
     public void addTrackEvent(Event event) {
-        //For now we create a list and only add one element
-        //Later we will store the events in the list and send them all at once
         if (eventList == null) {
             this.eventList = new ArrayList<>();
         }
         this.eventList.add(event);
 
-        MPTracker.getInstance().trackEvents(clientId, appInformation, deviceInfo, eventList, trackingEnabled, context);
+        MPTracker.getInstance().trackEvents(clientId, appInformation, deviceInfo, eventList, context);
     }
 
 
@@ -82,7 +79,6 @@ public class MPTrackingProvider {
         private String publicKey;
         private String checkoutVersion;
         private List<Event> eventList;
-        private Boolean trackingEnabled;
 
         public Builder setContext(Context context) {
             this.context = context;
@@ -101,11 +97,6 @@ public class MPTrackingProvider {
 
         public Builder setEventList(List<Event> eventList) {
             this.eventList = eventList;
-            return this;
-        }
-
-        public Builder setTrackingEnabled(Boolean trackingEnabled) {
-            this.trackingEnabled = trackingEnabled;
             return this;
         }
 

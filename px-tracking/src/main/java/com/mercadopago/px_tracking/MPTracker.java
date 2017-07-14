@@ -132,11 +132,11 @@ public class MPTracker {
      * @param events         List of events to track
      * @param context        Application context
      */
-    public EventTrackIntent trackEvents(String clientId, AppInformation appInformation, DeviceInfo deviceInfo, List<Event> events, Boolean trackingEnabled, Context context) {
+    public EventTrackIntent trackEvents(String clientId, AppInformation appInformation, DeviceInfo deviceInfo, List<Event> events, Context context) {
         EventTrackIntent eventTrackIntent = new EventTrackIntent(clientId, appInformation, deviceInfo, events);
         initializeMPTrackingService();
 
-        if (trackingEnabled != null && trackingEnabled) {
+        if (mTrackingEnabled != null && mTrackingEnabled) {
             getTrackingStrategy().trackEvents(eventTrackIntent, context);
         }
 
