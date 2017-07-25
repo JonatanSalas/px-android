@@ -16,7 +16,7 @@ import com.mercadopago.px_tracking.model.TrackingIntent;
 import com.mercadopago.px_tracking.strategies.BatchTrackingStrategy;
 import com.mercadopago.px_tracking.strategies.ConnectivityCheckerImpl;
 import com.mercadopago.px_tracking.strategies.EventsDatabaseImpl;
-import com.mercadopago.px_tracking.strategies.RealTimeTrackingStrategy;
+import com.mercadopago.px_tracking.strategies.ForcedStrategy;
 import com.mercadopago.px_tracking.strategies.TrackingStrategy;
 import com.mercadopago.px_tracking.services.MPTrackingService;
 import com.mercadopago.px_tracking.services.MPTrackingServiceImpl;
@@ -52,11 +52,22 @@ public class MPTracker {
     private static final String DEFAULT_SITE = "";
     private static final String DEFAULT_FLAVOUR = "3";
 
+    //TODO use from TrackingUtil
+    private static final String SCREEN_NAME_ERROR = "Error View";
+    private static final String SCREEN_NAME_PAYMENT_RESULT_APPROVED = "Payment Approved";
+    private static final String SCREEN_NAME_PAYMENT_RESULT_PENDING = "Payment Pending";
+    private static final String SCREEN_NAME_PAYMENT_RESULT_REJECTED = "Payment Rejected";
+    private static final String SCREEN_NAME_PAYMENT_RESULT_INSTRUCTIONS = "Payment Instructions";
+    private static final String SCREEN_NAME_PAYMENT_VAULT = "Payment method selection";
+    private static final String SCREEN_NAME_REVIEW_AND_CONFIRM = "Review and confirm";
+
+
     private Boolean trackerInitialized = false;
 
     private TrackingStrategy trackingStrategy;
 
-    protected MPTracker() {}
+    protected MPTracker() {
+    }
 
     synchronized public static MPTracker getInstance() {
         if (mMPTrackerInstance == null) {
@@ -92,8 +103,8 @@ public class MPTracker {
     }
 
     /**
-     * @param paymentId       The payment id of a payment method off. Cannot be {@code null}.
-     * @param typeId          The payment type id. It has to be a card type.
+     * @param paymentId The payment id of a payment method off. Cannot be {@code null}.
+     * @param typeId    The payment type id. It has to be a card type.
      */
     public PaymentIntent trackPayment(Long paymentId, String typeId) {
 
@@ -137,8 +148,12 @@ public class MPTracker {
         EventTrackIntent eventTrackIntent = new EventTrackIntent(clientId, appInformation, deviceInfo, events);
         initializeMPTrackingService();
 
-        getTrackingStrategy(context).trackEvents(eventTrackIntent, context);
+        //TODO persistir la lista de eventos
+        getTrackingStrategy(context, events);
 
+        if (trackingStrategy != null) {
+            trackingStrategy.trackEvents(eventTrackIntent, context);
+        }
 
         //Notify external listeners
         for (Event event : eventTrackIntent.getEvents()) {
@@ -158,7 +173,8 @@ public class MPTracker {
         Map<String, String> eventMap = new HashMap<>();
 
         String eventJson = JsonConverter.getInstance().toJson(actionEvent);
-        Type type = new TypeToken<Map<String, String>>() {}.getType();
+        Type type = new TypeToken<Map<String, String>>() {
+        }.getType();
         Map<String, String> actionEventDataMap = new Gson().fromJson(eventJson, type);
 
         eventMap.putAll(actionEventDataMap);
@@ -187,7 +203,6 @@ public class MPTracker {
     }
 
     /**
-     *
      * @param publicKey  The public key of the merchant. Cannot be {@code null}.
      * @param siteId     The site that comes in the preference. Cannot be {@code null}.
      * @param sdkVersion The Mercado Pago sdk version. Cannot be {@code null}.
@@ -226,10 +241,61 @@ public class MPTracker {
         return paymentTypeId.equals("credit_card") || paymentTypeId.equals("debit_card") || paymentTypeId.equals("prepaid_card");
     }
 
-    private TrackingStrategy getTrackingStrategy(Context context) {
+    private TrackingStrategy getTrackingStrategy(Context context, List<Event> events) {
+
         if (trackingStrategy == null) {
-            trackingStrategy = new BatchTrackingStrategy(new EventsDatabaseImpl(context), new ConnectivityCheckerImpl(context), mMPTrackingService);
+            if (hasBatchStrategyScreenEvent(events)) {
+                trackingStrategy = new BatchTrackingStrategy(new EventsDatabaseImpl(context), new ConnectivityCheckerImpl(context), mMPTrackingService);
+            } else if (hasForcedStrategyScreenEvent(events)) {
+                trackingStrategy = new ForcedStrategy(new EventsDatabaseImpl(context), new ConnectivityCheckerImpl(context), mMPTrackingService);
+            }
         }
+
         return trackingStrategy;
+    }
+
+    private boolean hasForcedStrategyScreenEvent(List<Event> events) {
+        boolean hasForcedStrategyScreenEvent = false;
+
+        for (Event event : events) {
+            if (event instanceof ScreenViewEvent) {
+                ScreenViewEvent screenViewEvent = (ScreenViewEvent) event;
+                if (isForcedStrategyScreenEvent(screenViewEvent)) {
+                    hasForcedStrategyScreenEvent = true;
+                }
+            }
+        }
+        return hasForcedStrategyScreenEvent;
+    }
+
+    private boolean hasBatchStrategyScreenEvent(List<Event> events) {
+        boolean hasBatchStrategyScreenEvent = false;
+
+        for (Event event : events) {
+            if (event instanceof ScreenViewEvent) {
+                ScreenViewEvent screenViewEvent = (ScreenViewEvent) event;
+                if (isBatchTrackingStrategyScreenEvent(screenViewEvent)) {
+                    hasBatchStrategyScreenEvent = true;
+                }
+            }
+        }
+        return hasBatchStrategyScreenEvent;
+    }
+
+    private boolean isForcedStrategyScreenEvent(ScreenViewEvent screenViewEvent) {
+        return isErrorScreen(screenViewEvent.getScreenName()) || isResultScreen(screenViewEvent.getScreenName());
+    }
+
+    private boolean isErrorScreen(String name) {
+        return name.equals(SCREEN_NAME_ERROR);
+    }
+
+    private boolean isResultScreen(String name) {
+        return name.equals(SCREEN_NAME_PAYMENT_RESULT_APPROVED) || name.equals(SCREEN_NAME_PAYMENT_RESULT_PENDING) || name.equals(SCREEN_NAME_PAYMENT_RESULT_REJECTED) ||
+                name.equals(SCREEN_NAME_PAYMENT_RESULT_INSTRUCTIONS);
+    }
+
+    private boolean isBatchTrackingStrategyScreenEvent(ScreenViewEvent screenViewEvent) {
+        return screenViewEvent.getScreenName().equals(SCREEN_NAME_PAYMENT_VAULT) || screenViewEvent.getScreenName().equals(SCREEN_NAME_REVIEW_AND_CONFIRM);
     }
 }

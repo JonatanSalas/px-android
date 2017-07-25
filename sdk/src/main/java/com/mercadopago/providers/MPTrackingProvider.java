@@ -71,7 +71,6 @@ public class MPTrackingProvider {
         this.eventList.add(event);
 
         MPTracker.getInstance().trackEvents(clientId, appInformation, deviceInfo, eventList, context);
-
     }
 
 
