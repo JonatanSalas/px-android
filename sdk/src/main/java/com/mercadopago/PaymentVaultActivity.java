@@ -19,7 +19,6 @@ import com.google.gson.reflect.TypeToken;
 
 import com.mercadopago.adapters.PaymentMethodSearchItemAdapter;
 import com.mercadopago.callbacks.OnSelectedCallback;
-import com.mercadopago.constants.PaymentTypes;
 import com.mercadopago.controllers.CheckoutTimer;
 import com.mercadopago.core.MercadoPagoCheckout;
 import com.mercadopago.core.MercadoPagoComponents;
@@ -46,7 +45,6 @@ import com.mercadopago.preferences.ServicePreference;
 import com.mercadopago.presenters.PaymentVaultPresenter;
 import com.mercadopago.providers.MPTrackingProvider;
 import com.mercadopago.providers.PaymentVaultProviderImpl;
-import com.mercadopago.px_tracking.MPTracker;
 import com.mercadopago.px_tracking.model.ScreenViewEvent;
 import com.mercadopago.uicontrollers.FontCache;
 import com.mercadopago.uicontrollers.discounts.DiscountRowView;
@@ -57,8 +55,7 @@ import com.mercadopago.util.ApiUtil;
 import com.mercadopago.util.ErrorUtil;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.ScaleUtil;
-import com.mercadopago.util.TrackingUtil;
-import com.mercadopago.views.PaymentTypesActivityView;
+import com.mercadopago.px_tracking.utils.TrackingUtil;
 import com.mercadopago.views.PaymentVaultView;
 
 import java.lang.reflect.Type;

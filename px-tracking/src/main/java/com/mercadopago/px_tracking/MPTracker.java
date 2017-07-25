@@ -21,6 +21,7 @@ import com.mercadopago.px_tracking.strategies.TrackingStrategy;
 import com.mercadopago.px_tracking.services.MPTrackingService;
 import com.mercadopago.px_tracking.services.MPTrackingServiceImpl;
 import com.mercadopago.px_tracking.utils.JsonConverter;
+import com.mercadopago.px_tracking.utils.TrackingUtil;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -51,16 +52,6 @@ public class MPTracker {
 
     private static final String DEFAULT_SITE = "";
     private static final String DEFAULT_FLAVOUR = "3";
-
-    //TODO use from TrackingUtil
-    private static final String SCREEN_NAME_ERROR = "Error View";
-    private static final String SCREEN_NAME_PAYMENT_RESULT_APPROVED = "Payment Approved";
-    private static final String SCREEN_NAME_PAYMENT_RESULT_PENDING = "Payment Pending";
-    private static final String SCREEN_NAME_PAYMENT_RESULT_REJECTED = "Payment Rejected";
-    private static final String SCREEN_NAME_PAYMENT_RESULT_INSTRUCTIONS = "Payment Instructions";
-    private static final String SCREEN_NAME_PAYMENT_VAULT = "Payment method selection";
-    private static final String SCREEN_NAME_REVIEW_AND_CONFIRM = "Review and confirm";
-
 
     private Boolean trackerInitialized = false;
 
@@ -287,15 +278,15 @@ public class MPTracker {
     }
 
     private boolean isErrorScreen(String name) {
-        return name.equals(SCREEN_NAME_ERROR);
+        return name.equals(TrackingUtil.SCREEN_NAME_ERROR);
     }
 
     private boolean isResultScreen(String name) {
-        return name.equals(SCREEN_NAME_PAYMENT_RESULT_APPROVED) || name.equals(SCREEN_NAME_PAYMENT_RESULT_PENDING) || name.equals(SCREEN_NAME_PAYMENT_RESULT_REJECTED) ||
-                name.equals(SCREEN_NAME_PAYMENT_RESULT_INSTRUCTIONS);
+        return name.equals(TrackingUtil.SCREEN_NAME_PAYMENT_RESULT_APPROVED) || name.equals(TrackingUtil.SCREEN_NAME_PAYMENT_RESULT_PENDING) || name.equals(TrackingUtil.SCREEN_NAME_PAYMENT_RESULT_REJECTED) ||
+                name.equals(TrackingUtil.SCREEN_NAME_PAYMENT_RESULT_INSTRUCTIONS);
     }
 
     private boolean isBatchTrackingStrategyScreenEvent(ScreenViewEvent screenViewEvent) {
-        return screenViewEvent.getScreenName().equals(SCREEN_NAME_PAYMENT_VAULT) || screenViewEvent.getScreenName().equals(SCREEN_NAME_REVIEW_AND_CONFIRM);
+        return screenViewEvent.getScreenName().equals(TrackingUtil.SCREEN_NAME_PAYMENT_VAULT) || screenViewEvent.getScreenName().equals(TrackingUtil.SCREEN_NAME_REVIEW_AND_CONFIRM);
     }
 }
